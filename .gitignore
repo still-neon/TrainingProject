@@ -6,8 +6,8 @@
 
 *.zip
 
-*target/
+target/
 
-*build/
+build/
 
-*.idea/
+.idea/
