@@ -1,7 +1,6 @@
 package by.stn.trainingproject.counter.swing;
 
 
-
 import javax.swing.*;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
@@ -18,7 +17,11 @@ public class UICreator {
 
     public UICreator()  {
         // TODO execute on EDT and check the bug
-        createUI();
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                createUI();
+            }
+        });
     }
 
     private void createUI()  {
