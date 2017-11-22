@@ -16,7 +16,6 @@ public class UICreator {
     private JTextField inputField;
 
     public UICreator()  {
-        // TODO execute on EDT and check the bug
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 createUI();

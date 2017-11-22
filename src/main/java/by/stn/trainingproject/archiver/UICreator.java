@@ -18,9 +18,8 @@ public class UICreator {
     private static final String PATH = System.getProperty("user.dir");
     private static final String REGULAR_FILE = "test.pdf";
     private static final String ARCHIVED_FILE = "test";
-    //TODO file separator instead of \\
     private static final String INPUT_FILE = PATH + FS + "src" + FS + "main" + FS + "resources" + FS + REGULAR_FILE;
-    private static final String OUTPUT_FILE = PATH + FS + "src" + FS + "main" + FS + "resources" + FS + ARCHIVED_FILE + ".zip";
+    private static final String OUTPUT_FILE = PATH + FS + "src" + FS + "main" + FS + "resources" + FS + ARCHIVED_FILE;
 
     public UICreator() {
         SwingUtilities.invokeLater(new Runnable() {
@@ -57,7 +56,6 @@ public class UICreator {
         contents.add(startThirdProcess);
         contents.add(processThirdInfo);
 
-        //TODO Anonimus
         startFirstProcess.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 ExecutorService service = Executors.newFixedThreadPool(3);

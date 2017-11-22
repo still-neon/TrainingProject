@@ -23,16 +23,14 @@ public class Archiver {
             zipOutputStream.putNextEntry(zipEntry);
 
             FileInputStream fileInputStream = new FileInputStream(inputFile);
-            //TODO check time 1024 and more
 
-            byte[] buf = new byte[1024];
+            byte[] buf = new byte[1024000];
             int bytesRead;
             long start = System.currentTimeMillis();
             while ((bytesRead = fileInputStream.read(buf)) > 0) {
                 zipOutputStream.write(buf, 0, bytesRead);
             }
             System.out.println(System.currentTimeMillis()-start);
-            //TODO finally or try with recources
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
