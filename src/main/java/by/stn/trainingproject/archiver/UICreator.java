@@ -3,7 +3,6 @@ package by.stn.trainingproject.archiver;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -14,6 +13,7 @@ public class UICreator {
     private JFrame frame;
     private JLabel processFirstInfo, processSecondInfo, processThirdInfo;
     private JButton startFirstProcess, startSecondProcess, startThirdProcess;
+    private ExecutorService service;
     private static final String FS = System.getProperty("file.separator");
     private static final String PATH = System.getProperty("user.dir");
     private static final String REGULAR_FILE = "test.pdf";
@@ -30,22 +30,26 @@ public class UICreator {
     }
 
     private void createUI() {
+        service = Executors.newFixedThreadPool(10);
         frame = new JFrame("Archive File");
         frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        frame.setSize(400, 200);
+        frame.setSize(250, 200);
         frame.setResizable(false);
         frame.setVisible(true);
 
         JPanel contents = new JPanel(new FlowLayout(FlowLayout.LEFT));
         frame.setContentPane(contents);
 
-        startFirstProcess = new JButton("Archive file1");
-        startSecondProcess = new JButton("Archive file2");
-        startThirdProcess = new JButton("Archive file3");
+        processFirstInfo = new JLabel("Archive file: " + REGULAR_FILE);
+        processSecondInfo = new JLabel("Archive file: " + REGULAR_FILE);
+        processThirdInfo = new JLabel("Archive file: " + REGULAR_FILE);
 
-        processFirstInfo = new JLabel("Press button for archive file: " + REGULAR_FILE);
-        processSecondInfo = new JLabel("Press button for archive file: " + REGULAR_FILE);
-        processThirdInfo = new JLabel("Press button for archive file: " + REGULAR_FILE);
+        startFirstProcess = new JButton();
+        startFirstProcess.setAction(new ExitAction("Archive file1", startFirstProcess, processFirstInfo));
+        startSecondProcess = new JButton();
+        startSecondProcess.setAction(new ExitAction("Archive file2", startSecondProcess, processSecondInfo));
+        startThirdProcess = new JButton();
+        startThirdProcess.setAction(new ExitAction("Archive file3", startThirdProcess, processThirdInfo));
 
         contents.add(startFirstProcess);
         contents.add(processFirstInfo);
@@ -55,25 +59,35 @@ public class UICreator {
 
         contents.add(startThirdProcess);
         contents.add(processThirdInfo);
+    }
 
-        startFirstProcess.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                ExecutorService service = Executors.newFixedThreadPool(3);
-                startFirstProcess.setEnabled(false);
-                final int finalCounter = 1;
-                service.submit(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            System.out.println("Started" + finalCounter);
-                            new Archiver().zipFile(new File(INPUT_FILE), OUTPUT_FILE + finalCounter + ".zip");
-                        } catch (IOException e1) {
-                            e1.printStackTrace();
-                        }
-                        processFirstInfo.setText("File " + REGULAR_FILE + " is zipped to " + ARCHIVED_FILE + finalCounter + ".zip");
+    class ExitAction extends AbstractAction {
+        private JButton button;
+        private JLabel label;
+        private char fileNumber;
+
+        ExitAction(String name, JButton button, JLabel label) {
+            this.button = button;
+            this.label = label;
+            fileNumber = name.charAt(name.length() - 1);
+            putValue(Action.NAME, name);
+        }
+
+        public void actionPerformed(ActionEvent e) {
+            putValue(Action.NAME, "In progress");
+            button.setEnabled(false);
+            service.submit(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        new Archiver(label).zipFile(new File(INPUT_FILE), OUTPUT_FILE + fileNumber + ".zip");
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
                     }
-                });
-            }
-       });
+                    putValue(Action.NAME, "Finished");
+                    label.setText("File " + REGULAR_FILE + " is zipped");
+                }
+            });
+        }
     }
 }
