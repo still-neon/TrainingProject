@@ -30,7 +30,7 @@ public class UICreator {
     }
 
     private void createUI() {
-        service = Executors.newFixedThreadPool(10);
+        service = Executors.newFixedThreadPool(3);
         frame = new JFrame("Archive File");
         frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
         frame.setSize(250, 200);
@@ -43,9 +43,9 @@ public class UICreator {
         processFirstInfo = new JLabel("Archive file: " + REGULAR_FILE);
         processSecondInfo = new JLabel("Archive file: " + REGULAR_FILE);
         processThirdInfo = new JLabel("Archive file: " + REGULAR_FILE);
-
-        startFirstProcess = new JButton();
-        startFirstProcess.setAction(new ExitAction("Archive file1", startFirstProcess, processFirstInfo));
+        //TODO пусть Вася сделает
+        startFirstProcess = new JButton();//TODO make good numbers
+        startFirstProcess.setAction(new ArchiveAction("Archive file1", startFirstProcess, processFirstInfo));
         startSecondProcess = new JButton();
         startSecondProcess.setAction(new ExitAction("Archive file2", startSecondProcess, processSecondInfo));
         startThirdProcess = new JButton();
@@ -61,7 +61,7 @@ public class UICreator {
         contents.add(processThirdInfo);
     }
 
-    class ExitAction extends AbstractAction {
+    class static ArchiveAction extends AbstractAction {
         private JButton button;
         private JLabel label;
         private char fileNumber;
@@ -80,7 +80,12 @@ public class UICreator {
                 @Override
                 public void run() {
                     try {
-                        new Archiver(label).zipFile(new File(INPUT_FILE), OUTPUT_FILE + fileNumber + ".zip");
+                        Archiver.zipFile(new File(INPUT_FILE), OUTPUT_FILE + fileNumber + ".zip", new Archiver.Callback() {
+                            @Override
+                            public void statusUpdate(long status) {
+                                label.setText("Zipped " + status / (1024 * 1024) + "Mb");
+                            }
+                        });
                     } catch (IOException e1) {
                         e1.printStackTrace();
                     }
@@ -88,6 +93,22 @@ public class UICreator {
                     label.setText("File " + REGULAR_FILE + " is zipped");
                 }
             });
+        }
+
+        private void changeState(ComponetsState state) {
+            // TODO button state and label text
+        }
+
+        private enum ComponetsState {
+            INITIAL(false,"Archive file"), IN_PROGRESS(true,"In progress"), FINISHED(true,"Finished");
+
+            private boolean disabled;
+            private String labelText;
+
+            ArchiveComponetsState(boolean disabled, String labelText) {
+                this.disabled = disabled;
+                this.labelText = labelText;
+            }
         }
     }
 }

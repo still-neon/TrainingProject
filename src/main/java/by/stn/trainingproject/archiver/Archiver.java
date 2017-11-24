@@ -14,22 +14,13 @@ import java.util.TimerTask;
  * Created by eugenkrasotkin on 11/21/2017.
  */
 public class Archiver {
-    private FileOutputStream fileOutputStream;
-    private ZipOutputStream zipOutputStream;
-    private JLabel label;
-    private Timer timer;
-    private File file;
 
-
-    Archiver(JLabel label) {
-        this.label = label;
-    }
-
-    public void zipFile(File inputFile, final String zipFilePath) throws IOException {
+    public static void zipFile(File inputFile, final String zipFilePath, final Callback callback) throws IOException {
+        FileOutputStream fileOutputStream = new FileOutputStream(zipFilePath);
+        ZipOutputStream zipOutputStream = new ZipOutputStream(fileOutputStream);
+        final Timer[] timer = new Timer[1];
+        final File[] file = new File[1];
         try {
-            fileOutputStream = new FileOutputStream(zipFilePath);
-            zipOutputStream = new ZipOutputStream(fileOutputStream);
-
             ZipEntry zipEntry = new ZipEntry(inputFile.getName());
             zipOutputStream.putNextEntry(zipEntry);
 
@@ -38,14 +29,15 @@ public class Archiver {
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
-                    timer = new Timer();
+                    timer[0] = new Timer();
                     TimerTask timerTask = new TimerTask() {
                         public void run() {
-                            file = new File(zipFilePath);
-                            label.setText("Zipped " + file.length() / 1000000 + "Mb");
+                            file[0] = new File(zipFilePath);
+                            // TODO change to bytes read not written
+                            callback.statusUpdate(file[0].length());
                         }
                     };
-                    timer.schedule(timerTask, 1000, 3000);
+                    timer[0].schedule(timerTask, 1000, 3000);
                 }
             });
 
@@ -61,7 +53,12 @@ public class Archiver {
             zipOutputStream.closeEntry();
             zipOutputStream.close();
             fileOutputStream.close();
-            timer.cancel();
+            timer[0].cancel();
         }
     }
+
+    public interface Callback {
+        void statusUpdate(long status);
+    }
+
 }
