@@ -6,7 +6,7 @@ package by.stn.callslogproject;
 public class CallsLogger {
     private String callerName;
     private String adresseeName;
-    //add
+    //add 12213
 
     private enum CallType {
         INCOMMING, OUTGOING, CONFERENCE
