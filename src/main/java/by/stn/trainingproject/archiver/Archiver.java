@@ -19,34 +19,16 @@ public class Archiver {
         try {
             ZipEntry zipEntry = new ZipEntry(inputFile.getName());
             zipOutputStream.putNextEntry(zipEntry);
-
             FileInputStream fileInputStream = new FileInputStream(inputFile);
-
-           /* SwingUtilities.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                    timer[0] = new Timer();
-                    TimerTask timerTask = new TimerTask() {
-                        public void run() {
-
-                            // TODO change to bytes read not written
-                            callback.statusUpdate();
-                        }
-                    };
-                    timer[0].schedule(timerTask, 1000, 3000);
-                }
-            });*/
 
             byte[] buf = new byte[1024000];
             int bytesRead;
-            long counter = 0;
-            long readedSize;
+            long sizeRead = 0;
 
             while ((bytesRead = fileInputStream.read(buf)) > 0) {
                 zipOutputStream.write(buf, 0, bytesRead);
-                readedSize = bytesRead * counter;
-                counter++;
-                callback.statusUpdate(readedSize * 100/ inputFile.length());
+                sizeRead += bytesRead;
+                callback.statusUpdate(sizeRead * 100/ inputFile.length());
             }
         } catch (IOException e) {
             e.printStackTrace();
