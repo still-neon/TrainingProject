@@ -4,7 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
-import static by.stn.trainingproject.archiver.WorkerPool.OUTPUT_FILE_FORMAT;
 import static by.stn.trainingproject.archiver.WorkerPool.REGULAR_FILE;
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
@@ -46,7 +45,7 @@ public class UICreator {
         }
         for (int i = 0; i < OUTPUT_FILE_COUNT; i++) {
             buttons[i] = new JButton();
-            buttons[i].setAction(new ArchiveAction(buttons[i], labels[i], workerPool,String.format(OUTPUT_FILE_FORMAT, i + 1)));
+            buttons[i].setAction(new ArchiveAction(buttons[i], labels[i], workerPool, i + 1));
         }
         for (int i = 0; i < OUTPUT_FILE_COUNT; i++) {
             contents.add(buttons[i]);
@@ -61,14 +60,14 @@ public class UICreator {
 
         private ComponentsState state;
         WorkerPool workerPool;
-        String output_file;
+        int outputFileNum;
 
 
-        ArchiveAction(JButton button, JLabel label,  WorkerPool workerPool, String output_file) {
+        ArchiveAction(JButton button, JLabel label, WorkerPool workerPool, int outputFileNum) {
             this.button = button;
             this.label = label;
             this.workerPool = workerPool;
-            this.output_file = output_file;
+            this.outputFileNum = outputFileNum;
             changeState(ComponentsState.INITIAL);
         }
 
@@ -76,15 +75,15 @@ public class UICreator {
             switch (state) {
                 case INITIAL:
                     changeState(ComponentsState.INPROGRESS);
-                    workerPool.start(label,output_file);
+                    workerPool.start(label, outputFileNum);
                     break;
                 case INPROGRESS:
                     changeState(ComponentsState.SUSPEND);
-                    workerPool.resume();
+                    workerPool.suspend(outputFileNum);
                     break;
                 case SUSPEND:
                     changeState(ComponentsState.INPROGRESS);
-                    workerPool.suspend();
+                    workerPool.resume(outputFileNum);
                     break;
                 case FINISHED:
                     break;

@@ -3,72 +3,120 @@ package by.stn.trainingproject.archiver;
 import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class WorkerPool {
-
+    public static final String REGULAR_FILE = "test.pdf";
     private static final String FS = System.getProperty("file.separator");
     private static final String PATH = System.getProperty("user.dir");
-    public static final String REGULAR_FILE = "test.pdf";
     private static final String INPUT_FILE = PATH + FS + "src" + FS + "main" + FS + "resources" + FS + REGULAR_FILE;
     private static final String ARCHIVED_FILE = "test";
-    public static final String OUTPUT_FILE_FORMAT = PATH + FS + "src" + FS + "main" + FS + "resources" + FS + ARCHIVED_FILE + "%d.zip";
-    Object lock = this;
-    private boolean suspendFlag;
+    private static final String OUTPUT_FILE_FORMAT = PATH + FS + "src" + FS + "main" + FS + "resources" + FS + ARCHIVED_FILE + "%d.zip";
+    private Locker locker;
+    private Signaler signaler;
+    private ExecutorService service;
 
-
-    // Wrapper Pattern
-    private ExecutorService service = Executors.newFixedThreadPool(3);
-
-
-    public void start(final JLabel label, final String output_file){
-        //suspendFlag = false;
-
-        service.submit(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Archiver.zipFile(new File(INPUT_FILE), output_file, new Archiver.Callback() {
-                        @Override
-                        public void statusUpdate(long status) {
-                            label.setText("File is " + status + "% zipped");
-                            /*
-                            synchronized (lock) {
-                                // TODO create suspend() method
-                                while (suspendFlag) {
-                                    suspend();
-                                }
-                            }*/
-                        }
-                    });
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
-                //changeState(UICreator.ArchiveAction.ComponentsState.FINISHED);
-                label.setText("File " + REGULAR_FILE + " is zipped");
-            }
-        });
-
+    public WorkerPool() {
+        service = Executors.newFixedThreadPool(3);
+        locker = new Locker();
+        signaler = new Signaler();
     }
 
-    public void suspend() {
+    public void start(final JLabel label, int fileNum) {
+        Object lock = locker.getLock(fileNum);
         synchronized (lock) {
-            try {
-                lock.wait();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            service.submit(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Archiver.zipFile(new File(INPUT_FILE), String.format(OUTPUT_FILE_FORMAT, fileNum), new Archiver.Callback() {
+                            @Override
+                            public void statusUpdate(long status) {
+                                label.setText("File is " + status + "% zipped");
+
+
+                                // TODO create suspend() method
+                                synchronized (lock) {
+                                    if (signaler.hasToStop(fileNum)) {
+                                        {
+                                            try {
+                                                lock.wait();
+                                            } catch (InterruptedException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                    }
+                                }
+
+
+                            }
+                        });
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+                    //changeState(UICreator.ArchiveAction.ComponentsState.FINISHED);
+                    label.setText("File " + REGULAR_FILE + " is zipped");
+                }
+            });
         }
     }
 
-    public synchronized void resume() {
-        //suspendFlag = false;
-        lock.notify();
-
+    public void suspend(int fileNum) {
+        Object lock = locker.getLock(fileNum);
+        synchronized (lock) {
+            signaler.switchSignal(fileNum);
+        }
     }
 
+    public void resume(int fileNum) {
+        Object lock = locker.getLock(fileNum);
+        synchronized (lock) {
+            signaler.switchSignal(fileNum);
+            lock.notify();
+        }
+    }
 
-//    public interface Archiv
+    private static class Locker {
+        private final Map<Integer, Object> locks;
+
+        public Locker() {
+            this.locks = new HashMap<>();
+        }
+
+        public Object getLock(int fileNum) {
+            Object lock = locks.get(fileNum);
+            if (lock == null) {
+                lock = new Object();
+                locks.put(fileNum, lock);
+            }
+            return lock;
+        }
+    }
+
+    private static class Signaler {
+        private final Map<Integer, Boolean> suspend;
+
+        public Signaler() {
+            this.suspend = new HashMap<>();
+        }
+
+        public boolean hasToStop(int fileNum) {
+            Boolean flag = suspend.get(fileNum);
+            if (flag == null) {
+                flag = false;
+                suspend.put(fileNum, flag);
+            }
+            return flag;
+        }
+
+        public void switchSignal(int fileNum) {
+            boolean flag = hasToStop(fileNum);
+            suspend.put(fileNum, !flag);
+        }
+    }
+
 }
 
