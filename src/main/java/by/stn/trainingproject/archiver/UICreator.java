@@ -3,21 +3,20 @@ package by.stn.trainingproject.archiver;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.io.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
+import static by.stn.trainingproject.archiver.WorkerPool.OUTPUT_FILE_FORMAT;
 import static by.stn.trainingproject.archiver.WorkerPool.REGULAR_FILE;
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
 public class UICreator {
     public static final int OUTPUT_FILE_COUNT = 3;
-    private static final String appName = "Archive file";
-    private static final String buttonSuspendText = "Suspend";
-    private static final String buttonResumeText = "Resume";
-    private static final String buttonFinishedText = "Finished";
-    private static final String LABEL_TEXT = appName + ": " + REGULAR_FILE;
+    private static final String APP_NAME = "Archive file";
+    private static final String BUTTON_SUSPEND_TEXT = "Suspend";
+    private static final String BUTTON_RESUME_TEXT = "Resume";
+    private static final String BUTTON_FINISHED_TEXT = "Finished";
+    private static final String LABEL_TEXT = APP_NAME + ": " + REGULAR_FILE;
 
+    private WorkerPool workerPool;
     private JFrame frame;
     private JLabel[] labels = new JLabel[OUTPUT_FILE_COUNT];
     private JButton[] buttons = new JButton[OUTPUT_FILE_COUNT];
@@ -30,11 +29,10 @@ public class UICreator {
         });
     }
 
-    //TODO tem comment
-
     private void createUI() {
-        service = Executors.newFixedThreadPool(3);
-        frame = new JFrame(appName);
+        workerPool = new WorkerPool();
+
+        frame = new JFrame(APP_NAME);
         frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
         frame.setSize(240, 200);
         frame.setResizable(false);
@@ -48,7 +46,7 @@ public class UICreator {
         }
         for (int i = 0; i < OUTPUT_FILE_COUNT; i++) {
             buttons[i] = new JButton();
-            buttons[i].setAction(new ArchiveAction(buttons[i], labels[i], service, String.format(OUTPUT_FILE_FORMAT, i + 1)));
+            buttons[i].setAction(new ArchiveAction(buttons[i], labels[i], workerPool,String.format(OUTPUT_FILE_FORMAT, i + 1)));
         }
         for (int i = 0; i < OUTPUT_FILE_COUNT; i++) {
             contents.add(buttons[i]);
@@ -59,36 +57,34 @@ public class UICreator {
     private static class ArchiveAction extends AbstractAction {
         private JButton button;
         private JLabel label;
-        private Object lock = this;
-        private boolean suspendFlag;
-        private ExecutorService service;
-        private String output_file;
-        private ComponentsState state;
+        private Object lock = new Object();
 
-        ArchiveAction(JButton button, JLabel label, ExecutorService service, String output_file) {
+        private ComponentsState state;
+        WorkerPool workerPool;
+        String output_file;
+
+
+        ArchiveAction(JButton button, JLabel label,  WorkerPool workerPool, String output_file) {
             this.button = button;
             this.label = label;
-            changeState(ComponentsState.INITIAL);
-            this.service = service;
+            this.workerPool = workerPool;
             this.output_file = output_file;
-        }
-
-        public synchronized void resume() {
-            lock.notify();
+            changeState(ComponentsState.INITIAL);
         }
 
         public void actionPerformed(ActionEvent e) {
             switch (state) {
                 case INITIAL:
                     changeState(ComponentsState.INPROGRESS);
-                    start();
+                    workerPool.start(label,output_file);
                     break;
                 case INPROGRESS:
                     changeState(ComponentsState.SUSPEND);
+                    workerPool.resume();
                     break;
                 case SUSPEND:
                     changeState(ComponentsState.INPROGRESS);
-                    resume();
+                    workerPool.suspend();
                     break;
                 case FINISHED:
                     break;
@@ -100,45 +96,11 @@ public class UICreator {
         private void changeState(ComponentsState state) {
             this.state = state;
             putValue(Action.NAME, state.labelText);
-            suspendFlag = state.suspend;
             button.setEnabled(state.enabled);
         }
 
-        private void start() {
-            // TODO
-            // workerPool.start()
-            // плюс, каким-то образом должны обновлять процентик
-            service.submit(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        Archiver.zipFile(new File(INPUT_FILE), output_file, new Archiver.Callback() {
-                            @Override
-                            public void statusUpdate(long status) {
-                                label.setText("File is " + status + "% zipped");
-                                synchronized (lock) {
-                                    // TODO create suspend() method
-                                    while (suspendFlag) {
-                                        try {
-                                            lock.wait();
-                                        } catch (InterruptedException e1) {
-                                            e1.printStackTrace();
-                                        }
-                                    }
-                                }
-                            }
-                        });
-                    } catch (IOException e1) {
-                        e1.printStackTrace();
-                    }
-                    changeState(ComponentsState.FINISHED);
-                    label.setText("File " + REGULAR_FILE + " is zipped");
-                }
-            });
-        }
-
         private enum ComponentsState {
-            INITIAL(false, true, appName), INPROGRESS(false, true, buttonSuspendText), SUSPEND(true, true, buttonResumeText), FINISHED(false, false, buttonFinishedText);
+            INITIAL(false, true, APP_NAME), INPROGRESS(false, true, BUTTON_SUSPEND_TEXT), SUSPEND(true, true, BUTTON_RESUME_TEXT), FINISHED(false, false, BUTTON_FINISHED_TEXT);
 
             private boolean suspend;
             private boolean enabled;
