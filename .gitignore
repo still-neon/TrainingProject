@@ -8,7 +8,7 @@
 
 *.pdf
 
-classes
+classes/
 
 target/
 
