@@ -28,7 +28,7 @@ public class Archiver {
             while ((bytesRead = fileInputStream.read(buf)) > 0) {
                 zipOutputStream.write(buf, 0, bytesRead);
                 sizeRead += bytesRead;
-                callback.statusUpdate(sizeRead * 100/ inputFile.length());
+                callback.statusUpdate(sizeRead * 100 / inputFile.length());
             }
         } catch (IOException e) {
             e.printStackTrace();

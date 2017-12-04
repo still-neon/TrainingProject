@@ -56,12 +56,9 @@ public class UICreator {
     private static class ArchiveAction extends AbstractAction {
         private JButton button;
         private JLabel label;
-        private Object lock = new Object();
-
         private ComponentsState state;
-        WorkerPool workerPool;
-        int outputFileNum;
-
+        private WorkerPool workerPool;
+        private int outputFileNum;
 
         ArchiveAction(JButton button, JLabel label, WorkerPool workerPool, int outputFileNum) {
             this.button = button;
@@ -75,7 +72,17 @@ public class UICreator {
             switch (state) {
                 case INITIAL:
                     changeState(ComponentsState.INPROGRESS);
-                    workerPool.start(label, outputFileNum);
+                    workerPool.start(outputFileNum, new WorkerPool.Callback() {
+                        @Override
+                        public void labelUpdate(long status) {
+                            if (status < 100) {
+                                label.setText("File is " + status + "% zipped");
+                            } else if (status == 100) {
+                                label.setText("File " + REGULAR_FILE + " is zipped");
+                                changeState(UICreator.ArchiveAction.ComponentsState.FINISHED);
+                            }
+                        }
+                    });
                     break;
                 case INPROGRESS:
                     changeState(ComponentsState.SUSPEND);
@@ -86,6 +93,7 @@ public class UICreator {
                     workerPool.resume(outputFileNum);
                     break;
                 case FINISHED:
+
                     break;
                 default:
                     throw new IllegalStateException("Unsupported enum value = " + state);
@@ -99,14 +107,13 @@ public class UICreator {
         }
 
         private enum ComponentsState {
-            INITIAL(false, true, APP_NAME), INPROGRESS(false, true, BUTTON_SUSPEND_TEXT), SUSPEND(true, true, BUTTON_RESUME_TEXT), FINISHED(false, false, BUTTON_FINISHED_TEXT);
+            INITIAL(true, APP_NAME), INPROGRESS(true, BUTTON_SUSPEND_TEXT), SUSPEND(true, BUTTON_RESUME_TEXT), FINISHED(false, BUTTON_FINISHED_TEXT);
 
-            private boolean suspend;
             private boolean enabled;
             private String labelText;
 
-            ComponentsState(boolean suspend, boolean enabled, String labelText) {
-                this.suspend = suspend;
+            ComponentsState(boolean enabled, String labelText) {
+
                 this.enabled = enabled;
                 this.labelText = labelText;
             }

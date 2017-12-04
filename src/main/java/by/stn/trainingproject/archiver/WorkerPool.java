@@ -1,6 +1,5 @@
 package by.stn.trainingproject.archiver;
 
-import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -25,7 +24,7 @@ public class WorkerPool {
         signaler = new Signaler();
     }
 
-    public void start(final JLabel label, int fileNum) {
+    public void start(int fileNum, final Callback callback) {
         Object lock = locker.getLock(fileNum);
         synchronized (lock) {
             service.submit(new Runnable() {
@@ -35,10 +34,7 @@ public class WorkerPool {
                         Archiver.zipFile(new File(INPUT_FILE), String.format(OUTPUT_FILE_FORMAT, fileNum), new Archiver.Callback() {
                             @Override
                             public void statusUpdate(long status) {
-                                label.setText("File is " + status + "% zipped");
-
-
-                                // TODO create suspend() method
+                                callback.labelUpdate(status);
                                 synchronized (lock) {
                                     if (signaler.hasToStop(fileNum)) {
                                         {
@@ -50,15 +46,11 @@ public class WorkerPool {
                                         }
                                     }
                                 }
-
-
                             }
                         });
                     } catch (IOException e1) {
                         e1.printStackTrace();
                     }
-                    //changeState(UICreator.ArchiveAction.ComponentsState.FINISHED);
-                    label.setText("File " + REGULAR_FILE + " is zipped");
                 }
             });
         }
@@ -118,5 +110,7 @@ public class WorkerPool {
         }
     }
 
+    public interface Callback {
+        void labelUpdate(long status);
+    }
 }
-
