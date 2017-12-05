@@ -41,7 +41,7 @@ public final class WorkerPool {
                         Archiver.zipFile(new File(INPUT_FILE), String.format(OUTPUT_FILE_FORMAT, fileNum), new Archiver.Callback() {
                             @Override
                             public void statusUpdate(long status) {
-                                callback.labelUpdate(status);
+                                callback.update(status);
                                 synchronized (lock) {
                                     if (signaler.hasToStop(fileNum)) {
                                         {
@@ -118,6 +118,6 @@ public final class WorkerPool {
     }
 
     public interface Callback {
-        void labelUpdate(long status);
+        void update(long status);
     }
 }

@@ -1,7 +1,5 @@
 package by.stn.trainingproject.archiver;
 
-import jdk.nashorn.internal.objects.annotations.Getter;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -76,7 +74,7 @@ public class UICreator {
                     changeState(ComponentsState.INPROGRESS);
                     workerPool.start(outputFileNum, new WorkerPool.Callback() {
                         @Override
-                        public void labelUpdate(long status) {
+                        public void update(long status) {
                             if (status < 100) {
                                 label.setText("File is " + status + "% zipped");
                             } else if (status == 100) {
