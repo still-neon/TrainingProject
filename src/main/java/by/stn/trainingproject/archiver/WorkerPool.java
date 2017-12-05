@@ -7,21 +7,28 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class WorkerPool {
+public final class WorkerPool {
     public static final String REGULAR_FILE = "test.pdf";
-    private static final String FS = System.getProperty("file.separator");
-    private static final String PATH = System.getProperty("user.dir");
-    private static final String INPUT_FILE = PATH + FS + "src" + FS + "main" + FS + "resources" + FS + REGULAR_FILE;
     private static final String ARCHIVED_FILE = "test";
+    private static final String PATH = System.getProperty("user.dir");
+    private static final String FS = System.getProperty("file.separator");
+    private static final String INPUT_FILE = PATH + FS + "src" + FS + "main" + FS + "resources" + FS + REGULAR_FILE;
     private static final String OUTPUT_FILE_FORMAT = PATH + FS + "src" + FS + "main" + FS + "resources" + FS + ARCHIVED_FILE + "%d.zip";
     private Locker locker;
     private Signaler signaler;
     private ExecutorService service;
+    private static WorkerPool _instance = null;
 
-    public WorkerPool() {
+    private WorkerPool() {
         service = Executors.newFixedThreadPool(3);
         locker = new Locker();
         signaler = new Signaler();
+    }
+
+    public synchronized static WorkerPool getInstance() {
+        if (_instance == null)
+            _instance = new WorkerPool();
+        return _instance;
     }
 
     public void start(int fileNum, final Callback callback) {

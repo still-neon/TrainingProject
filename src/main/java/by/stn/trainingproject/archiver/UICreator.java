@@ -1,5 +1,7 @@
 package by.stn.trainingproject.archiver;
 
+import jdk.nashorn.internal.objects.annotations.Getter;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -29,7 +31,7 @@ public class UICreator {
     }
 
     private void createUI() {
-        workerPool = new WorkerPool();
+        workerPool = WorkerPool.getInstance();
 
         frame = new JFrame(APP_NAME);
         frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
