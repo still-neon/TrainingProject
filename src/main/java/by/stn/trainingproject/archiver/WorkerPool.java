@@ -31,8 +31,8 @@ public final class WorkerPool {
         return _instance;
     }
 
-    public void start(int fileNum, final Callback callback) {
-        Object lock = locker.getLock(fileNum);
+    public void start(final int fileNum, final Callback callback) {
+        final Object lock = locker.getLock(fileNum);
         synchronized (lock) {
             service.submit(new Runnable() {
                 @Override
