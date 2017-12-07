@@ -10,15 +10,15 @@ public class JDBCtest {
     public static void main(String[] args) {
         Connection connection = null;
 
-        String url = "jdbc:postgresql://127.0.0.1:5433/CallsLogProject";
+        String url = "jdbc:postgresql://127.0.0.1:5432/CallsLogProject";
 
         String name = "postgres";
 
-        String password = "LockDog84";
+        String password = "still-neon84";
 
         try {
             //Загружаем драйвер
-            Class.forName("org.postgresql.Driver");
+            //Class.forName("org.postgresql.Driver");
             System.out.println("Драйвер подключен");
             //Создаём соединение
             connection = DriverManager.getConnection(url, name, password);
@@ -42,9 +42,6 @@ public class JDBCtest {
             }
             // Вставить запись
             //statement.executeUpdate("INSERT INTO persons(name) values('name')");
-
-            //Обновить запись
-            //statement.executeUpdate("UPDATE users SET username = 'admin' where id = 1");
 
         } catch (Exception ex) {
             //выводим наиболее значимые сообщения
