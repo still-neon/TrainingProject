@@ -9,7 +9,7 @@ import java.util.Set;
 public class Tester {
     public static void main(String[] args) {
         Set persons = new HashSet();
-        PersonDaoImpl test = new PersonDaoImpl();
+        PersonDao test = new PersonDaoImpl();
         persons = test.getAllPerson();
         System.out.print(persons.toString());
     }

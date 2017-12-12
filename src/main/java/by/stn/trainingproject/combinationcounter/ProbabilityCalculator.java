@@ -3,10 +3,11 @@ package by.stn.trainingproject.combinationcounter;
 public class ProbabilityCalculator {
     private static final int MIN = 60;
     private static final int HOUR = 24;
+    private static final int TOTAL = HOUR * MIN;
     private static final int[] MULTIPLICITY = {2, 3};
 
-    public static void calculate(boolean withMultiplicity) {
-        int total = HOUR * MIN;
+
+    public static void calculate(boolean multi) {
         int counter = 0;
 
         for (int h = 0; h < HOUR; h++) {
@@ -15,7 +16,7 @@ public class ProbabilityCalculator {
                     //System.out.println(h + " = " + m);
                     counter++;
                 }
-                if (withMultiplicity == true) {
+                if (multi) {
                     if (h != 0 && (m == MULTIPLICITY[0] * h || m == MULTIPLICITY[1] * h)) {
                         //System.out.println(h + " = " + m);
                         counter++;
@@ -23,6 +24,6 @@ public class ProbabilityCalculator {
                 }
             }
         }
-       System.out.println("Probability = " + String.format("%.2f",(double) counter / total * 100) + "%");
+        System.out.println("Probability = " + String.format("%.2f", (double) counter / TOTAL * 100) + "%");
     }
 }

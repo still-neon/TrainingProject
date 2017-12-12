@@ -21,10 +21,6 @@ public class ReverseValueComparator {
             minReversed += sb.charAt(i);
         }
 
-        if (hour.equals(minReversed)) {
-            //System.out.println(hour + " = " + min);
-            return true;
-        }
-        return false;
+        return hour.equals(minReversed);
     }
 }
