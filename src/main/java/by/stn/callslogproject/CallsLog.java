@@ -8,10 +8,11 @@ import java.util.Date;
 /**
  * Created by EugenKrasotkin on 11/29/2017.
  */
-public class CallLogEntry {
-    @Getter @Setter private PersonInfo caller;
-    @Getter @Setter private PersonInfo addressee;
+public class CallsLog {
+    @Getter @Setter private Integer id;
     @Getter @Setter private CallType callType;
+    @Getter @Setter private Person callerId;
+    @Getter @Setter private Person addresseeId;
     @Getter @Setter private Date startDate;
     @Getter @Setter private Date endDate;
 
