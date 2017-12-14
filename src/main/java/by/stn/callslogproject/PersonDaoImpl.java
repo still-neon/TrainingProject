@@ -6,7 +6,7 @@ import java.sql.SQLException;
 /**
  * Created by EugenKrasotkin on 12/12/2017.
  */
-public class PersonDao extends AbstractEntityDao<Person> {
+public class PersonDaoImpl extends AbstractEntityDao<Person> implements PersonsDao {
     private static final String PERSON_TABLE_NAME = "person";
 
     @Override
@@ -14,7 +14,7 @@ public class PersonDao extends AbstractEntityDao<Person> {
         return PERSON_TABLE_NAME;
     }
 
-    @Override
+    @Override//переделать метод тк в сете может быть несколько записей
     protected Person fromRS(ResultSet rs) throws SQLException {
         Person person = new Person(rs.getInt("id"));
         person.setName(rs.getString("name"));

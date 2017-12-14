@@ -1,8 +1,8 @@
 package by.stn.trainingproject.combinationcounter;
 
 public class ProbabilityCalculator {
-    private static final int MIN = 60;
-    private static final int HOUR = 24;
+    private static final int MIN = 24;
+    private static final int HOUR = 60;
     private static final int TOTAL = HOUR * MIN;
     private static final int[] MULTIPLICITY = {2, 3};
 

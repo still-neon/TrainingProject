@@ -2,6 +2,7 @@ package by.stn.trainingproject.combinationcounter;
 
 public class ReverseValueComparator {
     public static boolean compare(int h, int m) {
+        //константа с 10
         int counter = 0;
         int minReversed = m;
         int minTmp = m;

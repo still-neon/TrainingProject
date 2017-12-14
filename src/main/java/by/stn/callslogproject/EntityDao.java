@@ -2,7 +2,7 @@ package by.stn.callslogproject;
 
 import java.util.Set;
 
-public interface EntityDao<T> {
+public interface EntityDao<T extends MyEntity> {
     T get(long id) throws Exception;
 
     Set<T> getAll() throws Exception;
