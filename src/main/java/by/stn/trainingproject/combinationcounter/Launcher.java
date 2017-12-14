@@ -2,8 +2,10 @@ package by.stn.trainingproject.combinationcounter;
 
 public class Launcher {
     private static final boolean enableMultiplicity = false;
+    private static double probability;
 
     public static void main(String[] args) {
-        ProbabilityCalculator.calculate(enableMultiplicity);
+        probability = ProbabilityCalculator.calculate(enableMultiplicity);
+        System.out.println("Probability = " + String.format("%.2f", probability) + "%");
     }
 }

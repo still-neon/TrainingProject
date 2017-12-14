@@ -2,25 +2,20 @@ package by.stn.trainingproject.combinationcounter;
 
 public class ReverseValueComparator {
     public static boolean compare(int h, int m) {
-        String hour = String.valueOf(h);
-        String min = String.valueOf(m);
-        String minReversed = "";
+        int counter = 0;
+        int minReversed = m;
+        int minTmp = m;
 
-        if (h > 0 && h < 10) {
-            hour = "0" + String.valueOf(h);
-        }
-        if (m > 0 && m < 10) {
-            min = "0" + String.valueOf(m);
+        while (minReversed != 0) {
+            minReversed /= 10;
+            counter++;
         }
 
-        StringBuilder sb = new StringBuilder();
-        sb.append(min);
-        sb = sb.reverse();
-
-        for (int i = 0; i < sb.length(); i++) {
-            minReversed += sb.charAt(i);
+        for (int i = 0; i < counter; counter--) {
+            minReversed += minTmp % 10 * (int) Math.pow(10, counter - 1);
+            minTmp /= 10;
         }
-
-        return hour.equals(minReversed);
+        if (m < 10) minReversed *= 10;
+        return h == minReversed;
     }
 }
