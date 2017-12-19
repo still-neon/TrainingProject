@@ -3,7 +3,7 @@ package by.stn.trainingproject.combinationcounter;
 import lombok.Setter;
 
 public class ProbabilityCalculator {
-    @Setter
+    @Setter//сделать не статик поля
     private static int min = 60;
     @Setter
     private static int hour = 24;

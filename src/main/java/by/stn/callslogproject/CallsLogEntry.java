@@ -14,10 +14,10 @@ public class CallsLogEntry extends AbstractEntity {
     private CallType callType;
     @Getter
     @Setter
-    private PersonsInfo callerId;
+    private PersonsInfo caller;
     @Getter
     @Setter
-    private PersonsInfo addresseeId;
+    private PersonsInfo addressee;
     @Getter
     @Setter
     private Date startDate;
@@ -29,18 +29,28 @@ public class CallsLogEntry extends AbstractEntity {
         super(id);
     }
 
-    private enum CallType {
-        INCOMING(), OUTGOING(), CONFERENCE();
+    public void setCallType(int stateNum) {
+        callType = CallType.byId(stateNum);
     }
 
-    public void setCallType(int stateNum) {
-        switch (stateNum) {
-            case 1:
-                callType = callType.INCOMING;
-            case 2:
-                callType = callType.OUTGOING;
-            case 3:
-                callType = callType.CONFERENCE;
+    private enum CallType {
+        INCOMING(1), OUTGOING(2), CONFERENCE(3);
+
+        private int id;
+
+        CallType(int id) {
+            this.id = id;
+        }
+
+        public static CallType byId(int id) {
+            for (CallType val : CallType.values()) {
+                if (val.id == id) {
+                    return val;
+                }
+            }
+            throw new IllegalStateException("CallType{id=" + id + "} is not supported!");
         }
     }
+
+
 }

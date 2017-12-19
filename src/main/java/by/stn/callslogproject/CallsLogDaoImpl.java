@@ -15,8 +15,8 @@ public class CallsLogDaoImpl extends AbstractEntityDao<CallsLogEntry> implements
     protected CallsLogEntry fromRS(ResultSet rs) throws SQLException {
         CallsLogEntry callsLog = new CallsLogEntry(rs.getInt("id"));
         callsLog.setCallType(rs.getInt("calltype"));
-        callsLog.setCallerId(new PersonsInfo(rs.getInt("callerid")));
-        callsLog.setAddresseeId(new PersonsInfo(rs.getInt("addresseeid")));
+        callsLog.setCaller(new PersonsInfo(rs.getInt("callerid"))); //нужно засетить настоящих персонов а не создавать новых
+        callsLog.setAddressee(new PersonsInfo(rs.getInt("addresseeid"))); //нужно засетить настоящих персонов а не создавать новых
         callsLog.setEndDate(rs.getDate("startdate"));
         callsLog.setStartDate(rs.getDate("enddate"));
         return callsLog;

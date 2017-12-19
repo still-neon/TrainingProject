@@ -14,9 +14,10 @@ public abstract class AbstractEntityDao<T extends MyEntity> implements EntityDao
     private static final String UPDATE_ENTITY_QUERY_FORMAT = "UPDATE %s SET column1 = value1, column2 = value2, ...WHERE id=%s";
 
     protected abstract String getTableName();
+
     protected abstract T fromRS(ResultSet rs) throws SQLException;
 
-    public T get(long id) throws Exception {
+    public T get(long id) throws Exception { //опциональный параметр ...
         ResultSet rs = getStatement().executeQuery(String.format(GET_ENTITY_QUERY_FORMAT, getTableName(), id));
         return rs.next() ? fromRS(rs) : null;
     }
@@ -35,24 +36,23 @@ public abstract class AbstractEntityDao<T extends MyEntity> implements EntityDao
     }
 
     @Override
-    public void saveOrUpdate(T entity) throws Exception {
+    public long saveOrUpdate(T entity) throws Exception {
         //getStatement().executeQuery(String.format(UPDATE_ENTITY_QUERY_FORMAT, getTableName(), id));
         // TODO
-        throw new IllegalStateException("Method unimplemented yet!");
+        //throw new IllegalStateException("Method unimplemented yet!");
+        return 1;
     }
 
     @Override
     public boolean delete(long id) throws Exception {
         getStatement().executeQuery(String.format(DELETE_ENTITY_QUERY_FORMAT, getTableName(), id));
+        // проверять и возвращать тру если удалилось
         return true;
         // TODO
         //throw new IllegalStateException("Method unimplemented yet!");
     }
 
-    @Override
-    public Statement getStatement() throws Exception{
-        Connection connection = ConnectionFactory.getConnection();
-        Statement stmt = connection.createStatement();
-        return stmt;
+    public Statement getStatement() throws Exception {
+        return ConnectionFactory.getConnection().createStatement();
     }
 }

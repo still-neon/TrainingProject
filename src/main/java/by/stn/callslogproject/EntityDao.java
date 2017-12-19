@@ -1,6 +1,5 @@
 package by.stn.callslogproject;
 
-import java.sql.Statement;
 import java.util.Set;
 
 public interface EntityDao<T extends MyEntity> {
@@ -8,9 +7,7 @@ public interface EntityDao<T extends MyEntity> {
 
     Set<T> getAll() throws Exception;
 
-    void saveOrUpdate(T entity) throws Exception;
+    long saveOrUpdate(T entity) throws Exception;
 
     boolean delete(long id) throws Exception;
-
-    Statement getStatement() throws Exception;
 }
