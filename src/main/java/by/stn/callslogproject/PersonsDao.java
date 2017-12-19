@@ -1,4 +1,4 @@
 package by.stn.callslogproject;
 
-public interface PersonsDao extends EntityDao<Person> {
+public interface PersonsDao extends EntityDao<PersonsInfo> {
 }

@@ -1,23 +1,28 @@
 package by.stn.trainingproject.combinationcounter;
 
+import lombok.Setter;
+
 public class ProbabilityCalculator {
-    private static final int MIN = 24;
-    private static final int HOUR = 60;
-    private static final int TOTAL = HOUR * MIN;
-    private static final int[] MULTIPLICITY = {2, 3};
+    @Setter
+    private static int min = 60;
+    @Setter
+    private static int hour = 24;
+    @Setter
+    private static int[] multiplicity = {2, 3};
+    private static final int TOTAL = hour * min;
 
     public static double calculate(boolean multi) {
         int counter = 0;
         double probability;
 
-        for (int hour = 0; hour < HOUR; hour++) {
-            for (int min = 0; min < MIN; min++) {
-                if (hour == min | ReverseValueComparator.compare(hour, min)) {
+        for (int h = 0; h < hour; h++) {
+            for (int m = 0; m < min; m++) {
+                if (h == m | ReverseValueComparator.compare(h, m)) {
                     //System.out.println(hour + " = " + min);
                     counter++;
                 }
                 if (multi) {
-                    if (hour != 0 && (min == MULTIPLICITY[0] * hour || min == MULTIPLICITY[1] * hour)) {
+                    if (h != 0 && (m == multiplicity[0] * h || m == multiplicity[1] * h)) {
                         //System.out.println(hour + " = " + min);
                         counter++;
                     }

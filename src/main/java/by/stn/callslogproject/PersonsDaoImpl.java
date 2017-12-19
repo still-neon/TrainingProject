@@ -6,7 +6,7 @@ import java.sql.SQLException;
 /**
  * Created by EugenKrasotkin on 12/12/2017.
  */
-public class PersonDaoImpl extends AbstractEntityDao<Person> implements PersonsDao {
+public class PersonsDaoImpl extends AbstractEntityDao<PersonsInfo> implements PersonsDao {
     private static final String PERSON_TABLE_NAME = "person";
 
     @Override
@@ -15,10 +15,10 @@ public class PersonDaoImpl extends AbstractEntityDao<Person> implements PersonsD
     }
 
     @Override//переделать метод тк в сете может быть несколько записей
-    protected Person fromRS(ResultSet rs) throws SQLException {
-        Person person = new Person(rs.getInt("id"));
-        person.setName(rs.getString("name"));
-        person.setOrganization(rs.getString("organization"));
+    protected PersonsInfo fromRS(ResultSet rs) throws SQLException {
+        PersonsInfo person = new PersonsInfo(rs.getInt("id"));
+        person.setFullName(rs.getString("fullName"));
+        person.setOrganizationName(rs.getString("organizationName"));
         person.setPhone(rs.getString("phone"));
         person.setEmail(rs.getString("email"));
         person.setCreationDate(rs.getDate("creationdate"));

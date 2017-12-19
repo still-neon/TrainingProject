@@ -8,13 +8,13 @@ import lombok.Setter;
 /**
  * Created by EugenKrasotkin on 11/29/2017.
  */
-public class Person extends AbstractEntity {
+public class PersonsInfo extends AbstractEntity {
     @Getter
     @Setter
-    private String name;
+    private String fullName;
     @Getter
     @Setter
-    private String organization;
+    private String organizationName;
     @Getter
     @Setter
     private String phone;
@@ -25,7 +25,7 @@ public class Person extends AbstractEntity {
     @Setter
     private Date creationDate;
 
-    public Person(long id) {
+    public PersonsInfo(long id) {
         super(id);
     }
 }
