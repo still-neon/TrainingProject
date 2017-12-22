@@ -2,7 +2,7 @@ package by.stn.callslogproject;
 
 import lombok.Getter;
 
-public abstract class AbstractEntity implements MyEntity {
+public abstract class AbstractEntity implements Entity {
     @Getter
     private long id;
 

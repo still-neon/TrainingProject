@@ -7,52 +7,53 @@ import java.util.Set;
 /**
  * Created by EugenKrasotkin on 12/11/2017.
  */
-public abstract class AbstractEntityDao<T extends MyEntity> implements EntityDao<T> {
+public abstract class AbstractEntityDao<T extends Entity> implements EntityDao<T> {
     private static final String GET_ENTITY_QUERY_FORMAT = "SELECT * FROM %s WHERE id=%s";
     private static final String GET_ALL_QUERY_FORMAT = "SELECT * FROM %s";
     private static final String DELETE_ENTITY_QUERY_FORMAT = "DELETE FROM %s WHERE id=%s";
-    private static final String UPDATE_ENTITY_QUERY_FORMAT = "UPDATE %s SET column1 = value1, column2 = value2, ...WHERE id=%s";
+    private static final String UPDATE_ENTITY_QUERY_FORMAT = "UPDATE %s SET column1 = %s, column2 = %s, WHERE id=%s";
+    private static final String INSERT_ENTITY_QUERY_FORMAT = "INSERT INTO %s (%s, %s) VALUES (123, 'A description of part 123.')";
+    private ResultSet rs;
 
     protected abstract String getTableName();
 
     protected abstract T fromRS(ResultSet rs) throws SQLException;
 
+    protected abstract Set<T> fromRS(ResultSet rs, Set<T> records) throws SQLException;
+
     public T get(long id) throws Exception { //опциональный параметр ...
-        ResultSet rs = getStatement().executeQuery(String.format(GET_ENTITY_QUERY_FORMAT, getTableName(), id));
+        rs = getResultSet(GET_ENTITY_QUERY_FORMAT, id);
         return rs.next() ? fromRS(rs) : null;
     }
 
     @Override
     public Set<T> getAll() throws Exception {
         // TODO do method without copipaste
-        ResultSet rs = getStatement().executeQuery(String.format(GET_ALL_QUERY_FORMAT, getTableName()));
-        Set<T> records = new HashSet();
-
-        while (rs.next()) {
-            T t = fromRS(rs);
-            records.add(t);
-        }
-        return records;
+        return fromRS(getResultSet(GET_ALL_QUERY_FORMAT), new HashSet<T>());
     }
 
     @Override
     public long saveOrUpdate(T entity) throws Exception {
-        //getStatement().executeQuery(String.format(UPDATE_ENTITY_QUERY_FORMAT, getTableName(), id));
+        long id = entity.getId();
+        if (getResultSet(GET_ENTITY_QUERY_FORMAT, id).next()) {
+            getResultSet(UPDATE_ENTITY_QUERY_FORMAT, id);
+        } else if (!getResultSet(GET_ENTITY_QUERY_FORMAT, id).next()) {
+            getResultSet(INSERT_ENTITY_QUERY_FORMAT);
+        }
+        return id;
         // TODO
-        //throw new IllegalStateException("Method unimplemented yet!");
-        return 1;
+
     }
 
     @Override
     public boolean delete(long id) throws Exception {
-        getStatement().executeQuery(String.format(DELETE_ENTITY_QUERY_FORMAT, getTableName(), id));
+        getResultSet(DELETE_ENTITY_QUERY_FORMAT, id);
+        return !getResultSet(GET_ENTITY_QUERY_FORMAT, id).next();
         // проверять и возвращать тру если удалилось
-        return true;
-        // TODO
-        //throw new IllegalStateException("Method unimplemented yet!");
     }
 
-    public Statement getStatement() throws Exception {
-        return ConnectionFactory.getConnection().createStatement();
+    public ResultSet getResultSet(String query, long... id) throws Exception {
+        Statement stm = ConnectionFactory.getConnection().createStatement();
+        return stm.executeQuery(String.format(query, getTableName(), id));
     }
 }

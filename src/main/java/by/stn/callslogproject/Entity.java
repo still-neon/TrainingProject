@@ -1,5 +1,5 @@
 package by.stn.callslogproject;
 
-public interface MyEntity {
+public interface Entity {
     long getId();
 }

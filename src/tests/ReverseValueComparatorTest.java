@@ -1,5 +1,3 @@
-package by.stn.trainingproject.combinationcounter.tests;
-
 import by.stn.trainingproject.combinationcounter.ReverseValueComparator;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -12,7 +10,7 @@ public class ReverseValueComparatorTest {
     private static ReverseValueComparator reverseValueComparator;
 
     @Test
-    public void reverse_21h12m_returntrue() {
+    public void reverse_1337h7331m() {
         Assert.assertTrue(reverseValueComparator.compare(1337,7331));
     }
 

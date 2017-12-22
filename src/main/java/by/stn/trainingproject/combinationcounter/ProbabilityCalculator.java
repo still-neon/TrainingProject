@@ -3,15 +3,11 @@ package by.stn.trainingproject.combinationcounter;
 import lombok.Setter;
 
 public class ProbabilityCalculator {
-    @Setter//сделать не статик поля
-    private static int min = 60;
-    @Setter
-    private static int hour = 24;
-    @Setter
     private static int[] multiplicity = {2, 3};
-    private static final int TOTAL = hour * min;
 
-    public static double calculate(boolean multi) {
+
+    public static double calculate(int hour, int min, boolean multi) {
+        int total = hour * min;
         int counter = 0;
         double probability;
 
@@ -29,7 +25,7 @@ public class ProbabilityCalculator {
                 }
             }
         }
-        probability = (double) counter / TOTAL * 100;
+        probability = (double) counter / total * 100;
         return probability;
     }
 }
