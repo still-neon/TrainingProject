@@ -11,25 +11,21 @@ public abstract class AbstractEntityDao<T extends Entity> implements EntityDao<T
     private static final String GET_ENTITY_QUERY_FORMAT = "SELECT * FROM %s WHERE id=%s";
     private static final String GET_ALL_QUERY_FORMAT = "SELECT * FROM %s";
     private static final String DELETE_ENTITY_QUERY_FORMAT = "DELETE FROM %s WHERE id=%s";
-    private static final String UPDATE_ENTITY_QUERY_FORMAT = "UPDATE %s SET column1 = %s, column2 = %s, WHERE id=%s";
+    private static final String UPDATE_ENTITY_QUERY_FORMAT = "UPDATE %s SET column1 = %s, column2 = %s, WHERE id=%s";//получить список колонок из ентит по аналогии с getName
     private static final String INSERT_ENTITY_QUERY_FORMAT = "INSERT INTO %s (%s, %s) VALUES (123, 'A description of part 123.')";
-    private ResultSet rs;
 
     protected abstract String getTableName();
 
-    protected abstract T fromRS(ResultSet rs) throws SQLException;
+    protected abstract T toEntity(ResultSet rs) throws SQLException;
 
-    protected abstract Set<T> fromRS(ResultSet rs, Set<T> records) throws SQLException;
-
-    public T get(long id) throws Exception { //опциональный параметр ...
-        rs = getResultSet(GET_ENTITY_QUERY_FORMAT, id);
-        return rs.next() ? fromRS(rs) : null;
+    public T get(long id) throws Exception {
+        ResultSet rs = getResultSet(GET_ENTITY_QUERY_FORMAT, id);
+        return rs.next() ? toEntity(rs) : null;
     }
 
     @Override
     public Set<T> getAll() throws Exception {
-        // TODO do method without copipaste
-        return fromRS(getResultSet(GET_ALL_QUERY_FORMAT), new HashSet<T>());
+        return toEntities(getResultSet(GET_ALL_QUERY_FORMAT));
     }
 
     @Override
@@ -42,18 +38,24 @@ public abstract class AbstractEntityDao<T extends Entity> implements EntityDao<T
         }
         return id;
         // TODO
-
     }
 
     @Override
     public boolean delete(long id) throws Exception {
-        getResultSet(DELETE_ENTITY_QUERY_FORMAT, id);
-        return !getResultSet(GET_ENTITY_QUERY_FORMAT, id).next();
-        // проверять и возвращать тру если удалилось
+        return getResultSet(DELETE_ENTITY_QUERY_FORMAT, id).getInt(1) > 0;
     }
 
     public ResultSet getResultSet(String query, long... id) throws Exception {
         Statement stm = ConnectionFactory.getConnection().createStatement();
         return stm.executeQuery(String.format(query, getTableName(), id));
+    }
+
+    protected Set<T> toEntities(ResultSet rs) throws Exception {
+        Set<T> result = new HashSet<T>();
+        while (rs.next()) {
+            T ent = toEntity(rs);
+            result.add(ent);
+        }
+        return result;
     }
 }

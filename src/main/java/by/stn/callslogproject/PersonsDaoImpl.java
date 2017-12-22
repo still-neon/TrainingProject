@@ -2,7 +2,6 @@ package by.stn.callslogproject;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -17,7 +16,7 @@ public class PersonsDaoImpl extends AbstractEntityDao<PersonsInfo> implements Pe
     }
 
     @Override//переделать метод тк в сете может быть несколько записей
-    protected PersonsInfo fromRS(ResultSet rs) throws SQLException {
+    protected PersonsInfo toEntity(ResultSet rs) throws SQLException {
         PersonsInfo person = new PersonsInfo(rs.getInt("id"));
         person.setFullName(rs.getString("fullName"));
         person.setOrganizationName(rs.getString("organizationName"));
@@ -25,15 +24,5 @@ public class PersonsDaoImpl extends AbstractEntityDao<PersonsInfo> implements Pe
         person.setEmail(rs.getString("email"));
         person.setCreationDate(rs.getDate("creationdate"));
         return person;
-    }
-
-    //переделать метод тк в сете может быть несколько записей
-    @Override
-    protected Set<PersonsInfo> fromRS(ResultSet rs, Set<PersonsInfo> records) throws SQLException {
-        while (rs.next()) {
-            PersonsInfo person = fromRS(rs);
-            records.add(person);
-        }
-        return records;
     }
 }

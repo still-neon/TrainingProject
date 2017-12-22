@@ -9,11 +9,14 @@ import java.util.Set;
  */
 public class CallsLogDaoImpl extends AbstractEntityDao<CallsLogEntry> implements CallsLogDao {
     private static final String PERSON_TABLE_NAME = "callslog";
-    public String getTableName(){
-        return PERSON_TABLE_NAME;
-    };
 
-    protected CallsLogEntry fromRS(ResultSet rs) throws SQLException {
+    public String getTableName() {
+        return PERSON_TABLE_NAME;
+    }
+
+    ;
+
+    protected CallsLogEntry toEntity(ResultSet rs) throws SQLException {
         CallsLogEntry callsLog = new CallsLogEntry(rs.getInt("id"));
         callsLog.setCallType(rs.getInt("calltype"));
         callsLog.setCaller(new PersonsInfo(rs.getInt("callerid"))); //нужно засетить настоящих персонов а не создавать новых
@@ -21,13 +24,5 @@ public class CallsLogDaoImpl extends AbstractEntityDao<CallsLogEntry> implements
         callsLog.setEndDate(rs.getDate("startdate"));
         callsLog.setStartDate(rs.getDate("enddate"));
         return callsLog;
-    }
-    @Override
-    protected Set<CallsLogEntry> fromRS(ResultSet rs, Set<CallsLogEntry> records) throws SQLException {
-        while (rs.next()) {
-            CallsLogEntry callsLog = fromRS(rs);
-            records.add(callsLog);
-        }
-        return records;
     }
 }
