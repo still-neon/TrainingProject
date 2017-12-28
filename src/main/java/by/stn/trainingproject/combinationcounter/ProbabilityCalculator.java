@@ -1,10 +1,7 @@
 package by.stn.trainingproject.combinationcounter;
 
-import lombok.Setter;
-
 public class ProbabilityCalculator {
-    private static int[] multiplicity = {2, 3};
-
+    private static final int[] MULTIPLICITY = {2, 3, 4};
 
     public static double calculate(int hour, int min, boolean multi) {
         int total = hour * min;
@@ -14,13 +11,13 @@ public class ProbabilityCalculator {
         for (int h = 0; h < hour; h++) {
             for (int m = 0; m < min; m++) {
                 if (h == m | ReverseValueComparator.compare(h, m)) {
-                    //System.out.println(hour + " = " + min);
                     counter++;
                 }
                 if (multi) {
-                    if (h != 0 && (m == multiplicity[0] * h || m == multiplicity[1] * h)) {
-                        //System.out.println(hour + " = " + min);
-                        counter++;
+                    for (int i : MULTIPLICITY) {
+                        if (h != 0 && (m == i * h || h == i * m)) {
+                            counter++;
+                        }
                     }
                 }
             }

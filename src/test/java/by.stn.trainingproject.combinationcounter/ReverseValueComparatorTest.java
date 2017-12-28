@@ -1,4 +1,5 @@
-import by.stn.trainingproject.combinationcounter.ReverseValueComparator;
+package by.stn.trainingproject.combinationcounter;
+
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;

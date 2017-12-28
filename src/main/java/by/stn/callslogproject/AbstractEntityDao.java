@@ -11,10 +11,11 @@ public abstract class AbstractEntityDao<T extends Entity> implements EntityDao<T
     private static final String GET_ENTITY_QUERY_FORMAT = "SELECT * FROM %s WHERE id=%s";
     private static final String GET_ALL_QUERY_FORMAT = "SELECT * FROM %s";
     private static final String DELETE_ENTITY_QUERY_FORMAT = "DELETE FROM %s WHERE id=%s";
-    private static final String UPDATE_ENTITY_QUERY_FORMAT = "UPDATE %s SET column1 = %s, column2 = %s, WHERE id=%s";//получить список колонок из ентит по аналогии с getName
+    private static final String UPDATE_ENTITY_QUERY_FORMAT = "UPDATE %s SET %s WHERE id=%s";//получить список колонок из ентит по аналогии с getName
     private static final String INSERT_ENTITY_QUERY_FORMAT = "INSERT INTO %s (%s, %s) VALUES (123, 'A description of part 123.')";
 
     protected abstract String getTableName();
+    protected abstract String[] getColumnsNames();
 
     protected abstract T toEntity(ResultSet rs) throws SQLException;
 
@@ -31,9 +32,10 @@ public abstract class AbstractEntityDao<T extends Entity> implements EntityDao<T
     @Override
     public long saveOrUpdate(T entity) throws Exception {
         long id = entity.getId();
-        if (getResultSet(GET_ENTITY_QUERY_FORMAT, id).next()) {
+
+        if (getResultSet(GET_ENTITY_QUERY_FORMAT, id).getInt(1) > 0) {
             getResultSet(UPDATE_ENTITY_QUERY_FORMAT, id);
-        } else if (!getResultSet(GET_ENTITY_QUERY_FORMAT, id).next()) {
+        } else if (getResultSet(GET_ENTITY_QUERY_FORMAT, id).getInt(1) == 0) {
             getResultSet(INSERT_ENTITY_QUERY_FORMAT);
         }
         return id;
@@ -42,12 +44,13 @@ public abstract class AbstractEntityDao<T extends Entity> implements EntityDao<T
 
     @Override
     public boolean delete(long id) throws Exception {
-        return getResultSet(DELETE_ENTITY_QUERY_FORMAT, id).getInt(1) > 0;
+        return getResultSet(DELETE_ENTITY_QUERY_FORMAT, id).getInt(1) == 0;//== or <0
     }
 
     public ResultSet getResultSet(String query, long... id) throws Exception {
         Statement stm = ConnectionFactory.getConnection().createStatement();
-        return stm.executeQuery(String.format(query, getTableName(), id));
+        if (id.length > 0) return stm.executeQuery(String.format(query, getTableName(), id[0]));
+        else return stm.executeQuery(String.format(query, getTableName()));
     }
 
     protected Set<T> toEntities(ResultSet rs) throws Exception {
@@ -57,5 +60,16 @@ public abstract class AbstractEntityDao<T extends Entity> implements EntityDao<T
             result.add(ent);
         }
         return result;
+    }
+    public String queryBuilder(String query, T entity) throws Exception {
+        ResultSet rs = getResultSet(GET_ENTITY_QUERY_FORMAT, entity.getId());
+        String temp = "";
+        for(String str:getColumnsNames()) {
+            temp = temp + str + "= ?";
+        }
+
+
+
+        return "";
     }
 }
