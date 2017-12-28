@@ -3,6 +3,7 @@ package by.stn.callslogproject;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,10 +34,16 @@ public class CallsLogDaoImpl extends AbstractEntityDao<CallsLogEntry> implements
     }
 
     void m() throws SQLException {
+
         String t = "";
         PreparedStatement preparedStatement = ConnectionFactory.getConnection().prepareStatement(t);
         for(String tr: CALLSLOGENTRY_COLUMNS_NAMES) {
             t+= tr + "=" +
         }
+    }
+
+    @Override
+    protected void setParametersForQuery(Statement query, CallsLogEntry entity) {
+        entity.get
     }
 }
