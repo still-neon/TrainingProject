@@ -1,18 +1,14 @@
 package by.stn.callslogproject;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.HashMap;
-import java.util.Map;
+import java.sql.*;
+
 
 /**
  * Created by EugenKrasotkin on 12/12/2017.
  */
 public class CallsLogDaoImpl extends AbstractEntityDao<CallsLogEntry> implements CallsLogDao {
     private static final String CALLSLOGENTRY_TABLE_NAME = "callslog";
-    private static final String[] CALLSLOGENTRY_COLUMNS_NAMES = {"id","calltype", "callerid","addresseeid","startdate","enddate"};
+    private static final String[] CALLSLOGENTRY_COLUMNS_NAMES = {"calltype", "callerid", "addresseeid", "startdate", "enddate"};
 
     public String getTableName() {
         return CALLSLOGENTRY_TABLE_NAME;
@@ -24,26 +20,29 @@ public class CallsLogDaoImpl extends AbstractEntityDao<CallsLogEntry> implements
 
 
     protected CallsLogEntry toEntity(ResultSet rs) throws SQLException {
-        CallsLogEntry callsLog = new CallsLogEntry(rs.getInt(CALLSLOGENTRY_COLUMNS_NAMES[0]));
-        callsLog.setCallType(rs.getInt(CALLSLOGENTRY_COLUMNS_NAMES[1]));
-        callsLog.setCaller(new PersonsInfo(rs.getInt(CALLSLOGENTRY_COLUMNS_NAMES[2]))); //нужно засетить настоящих персонов а не создавать новых
-        callsLog.setAddressee(new PersonsInfo(rs.getInt(CALLSLOGENTRY_COLUMNS_NAMES[3]))); //нужно засетить настоящих персонов а не создавать новых
-        callsLog.setEndDate(rs.getDate(CALLSLOGENTRY_COLUMNS_NAMES[4]));
-        callsLog.setStartDate(rs.getDate(CALLSLOGENTRY_COLUMNS_NAMES[5]));
+        CallsLogEntry callsLog = new CallsLogEntry(rs.getInt("id"));
+        callsLog.setCallType(rs.getInt("calltype"));
+        callsLog.setCaller(new PersonsInfo(rs.getInt("callerid"))); //нужно засетить настоящих персонов а не создавать новых
+        callsLog.setAddressee(new PersonsInfo(rs.getInt("addresseeid"))); //нужно засетить настоящих персонов а не создавать новых
+        callsLog.setEndDate(rs.getDate("startdate"));
+        callsLog.setStartDate(rs.getDate("enddate"));
         return callsLog;
     }
 
-    void m() throws SQLException {
-
-        String t = "";
-        PreparedStatement preparedStatement = ConnectionFactory.getConnection().prepareStatement(t);
-        for(String tr: CALLSLOGENTRY_COLUMNS_NAMES) {
-            t+= tr + "=" +
-        }
+    @Override
+    protected void setParametersForQuery(PreparedStatement query, CallsLogEntry entity) throws SQLException {
+        query.setInt(1, entity.getCallType().getId());
+        query.setLong(2, entity.getCaller().getId());
+        query.setLong(3, entity.getAddressee().getId());
+        query.setDate(4, (Date) entity.getStartDate());
+        query.setDate(5, (Date) entity.getStartDate());
     }
 
     @Override
-    protected void setParametersForQuery(Statement query, CallsLogEntry entity) {
-        entity.get
+    protected String getParametersForQuery(CallsLogEntry entity) throws SQLException {
+        StringBuffer sb = new StringBuffer();
+        sb.append(entity.getCallType().getId()).append(entity.getCaller().getId()).append(entity.getAddressee()
+                .getId()).append(entity.getStartDate()).append(entity.getStartDate());
+        return sb.toString();
     }
 }

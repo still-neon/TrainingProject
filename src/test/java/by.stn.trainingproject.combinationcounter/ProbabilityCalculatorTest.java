@@ -13,15 +13,14 @@ public class ProbabilityCalculatorTest {
 
     @Test
     public void checkMultiplicity() {
-        assertTrue("Enabled multiplicity should increase the probability", probabilityCalculator.calculate(24, 60, false) < probabilityCalculator.calculate(24, 60, true));
+        assertTrue("Enabled multiplicity should increase the probability", probabilityCalculator.calculate(24, 60, new int[]{}) < probabilityCalculator.calculate(24, 60, new int[]{2, 3}));
     }
 
     @Test
     public void checkReverseArguments() {
-        //написать метод отлавливающий косяки
         assertTrue("Reversed values should make the same result",
-                (probabilityCalculator.calculate(24, 60, true) == probabilityCalculator.calculate(60, 24, true)) &&
-                        (probabilityCalculator.calculate(24, 60, false) == probabilityCalculator.calculate(60, 24, false)));
+                (probabilityCalculator.calculate(24, 60, new int[]{2, 3}) == probabilityCalculator.calculate(60, 24, new int[]{2, 3})) &&
+                        (probabilityCalculator.calculate(24, 60, new int[]{}) == probabilityCalculator.calculate(60, 24, new int[]{})));
     }
 
     @BeforeClass

@@ -11,15 +11,17 @@ public abstract class AbstractEntityDao<T extends Entity> implements EntityDao<T
     private static final String GET_ENTITY_QUERY_FORMAT = "SELECT * FROM %s WHERE id=%d";
     private static final String GET_ALL_QUERY_FORMAT = "SELECT * FROM %s";
     private static final String DELETE_ENTITY_QUERY_FORMAT = "DELETE FROM %s WHERE id=%d";
-    private static final String UPDATE_ENTITY_QUERY_FORMAT = "UPDATE %s SET %s WHERE id=%d";//получить список колонок из ентит по аналогии с getName
-    private static final String INSERT_ENTITY_QUERY_FORMAT = "INSERT INTO %s (%s, %s) VALUES (123, 'A description of part 123.')";
+    private static final String UPDATE_ENTITY_QUERY_FORMAT = "UPDATE %s SET %s WHERE id=%d";
+    private static final String INSERT_ENTITY_QUERY_FORMAT = "INSERT INTO %s (%s) VALUES (%s)";
 
     protected abstract String getTableName();
     protected abstract String[] getColumnsNames();
 
     protected abstract T toEntity(ResultSet rs) throws SQLException;
 
-    protected abstract void setParametersForQuery(Statement query, T entity);
+    protected abstract void setParametersForQuery(PreparedStatement query, T entity) throws SQLException;
+
+    protected abstract String getParametersForQuery(T entity) throws SQLException;
 
     public T get(long id) throws Exception {
         ResultSet rs = getResultSet(GET_ENTITY_QUERY_FORMAT, id);
@@ -34,18 +36,22 @@ public abstract class AbstractEntityDao<T extends Entity> implements EntityDao<T
     @Override
     public long saveOrUpdate(T entity) throws Exception {
         long id = entity.getId();
-
+        String namedQuery;
+        PreparedStatement pstm;
         if (getResultSet(GET_ENTITY_QUERY_FORMAT, id).getInt(1) > 0) {
             // private
-            String namedQuery = getNamedQueryForUpdate();
+            namedQuery = getNamedQueryForUpdate();
+            pstm = ConnectionFactory.getConnection().prepareStatement(namedQuery);
 
-            setParametersForQuery(namedQuery, entity);
-
-            getResultSet(UPDATE_ENTITY_QUERY_FORMAT, id);
+            setParametersForQuery(pstm, entity);
+            getResultSet(String.format(UPDATE_ENTITY_QUERY_FORMAT, getTableName(),pstm,id));
         } else if (getResultSet(GET_ENTITY_QUERY_FORMAT, id).getInt(1) == 0) {
-            getResultSet(INSERT_ENTITY_QUERY_FORMAT);
+            namedQuery = getNamedQueryForInsert();
+            pstm = ConnectionFactory.getConnection().prepareStatement(namedQuery);
+            getParametersForQuery(entity);
+            getResultSet(String.format(INSERT_ENTITY_QUERY_FORMAT, getTableName(),namedQuery,pstm,id));
         }
-        return id;
+        return getResultSet(GET_ENTITY_QUERY_FORMAT, id).getInt(1);
         // TODO
     }
 
@@ -68,15 +74,19 @@ public abstract class AbstractEntityDao<T extends Entity> implements EntityDao<T
         }
         return result;
     }
-    public String queryBuilder(String query, T entity) throws Exception {
-        ResultSet rs = getResultSet(GET_ENTITY_QUERY_FORMAT, entity.getId());
-        String temp = "";//Buffer or builder
-        for(String str:getColumnsNames()) {
-            temp = temp + str + "= ?";
+    public String getNamedQueryForUpdate() {
+        //Buffer or builder
+        StringBuffer sb = new StringBuffer();
+        for(String str: getColumnsNames()) {
+            sb.append(str).append("=?,");
         }
-
-
-
-        return "";
+        return sb.deleteCharAt(sb.length()-1).toString();
+    }
+    public String getNamedQueryForInsert() {
+        StringBuffer sb = new StringBuffer();
+        for(String str: getColumnsNames()) {
+            sb.append(str).append(",");
+        }
+        return sb.deleteCharAt(sb.length()-1).toString();
     }
 }

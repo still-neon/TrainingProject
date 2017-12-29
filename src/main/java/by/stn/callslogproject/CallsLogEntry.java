@@ -33,9 +33,10 @@ public class CallsLogEntry extends AbstractEntity {
         callType = CallType.byId(stateNum);
     }
 
-    private enum CallType {
+    public enum CallType {
         INCOMING(1), OUTGOING(2), CONFERENCE(3);
 
+        @Getter
         private int id;
 
         CallType(int id) {
@@ -51,6 +52,4 @@ public class CallsLogEntry extends AbstractEntity {
             throw new IllegalStateException("CallType{id=" + id + "} is not supported!");
         }
     }
-
-
 }

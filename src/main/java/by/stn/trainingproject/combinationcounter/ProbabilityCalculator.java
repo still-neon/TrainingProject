@@ -1,9 +1,9 @@
 package by.stn.trainingproject.combinationcounter;
 
 public class ProbabilityCalculator {
-    private static final int[] MULTIPLICITY = {2, 3, 4};//передавать в метод массив, если пустой, ио не считать
+    //передавать в метод массив, если пустой, ио не считать
 
-    public static double calculate(int hour, int min, boolean multi) {
+    public static double calculate(int hour, int min, int[] MULTIPLICITY) {
         int total = hour * min;
         int counter = 0;
         double probability;
@@ -13,7 +13,7 @@ public class ProbabilityCalculator {
                 if (h == m | ReverseValueComparator.compare(h, m)) {
                     counter++;
                 }
-                if (multi) {
+                if (MULTIPLICITY.length > 0) {
                     for (int i : MULTIPLICITY) {
                         if (h != 0 && (m == i * h || h == i * m)) {
                             counter++;
