@@ -18,7 +18,7 @@ public class CallsLogDaoImpl extends AbstractEntityDao<CallsLogEntry> implements
         return CALLSLOGENTRY_COLUMNS_NAMES;
     }
 
-
+    @Override
     protected CallsLogEntry toEntity(ResultSet rs) throws SQLException {
         CallsLogEntry callsLog = new CallsLogEntry(rs.getInt("id"));
         callsLog.setCallType(rs.getInt("calltype"));

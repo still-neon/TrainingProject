@@ -38,4 +38,9 @@ public class PersonsDaoImpl extends AbstractEntityDao<PersonsInfo> implements Pe
         query.setString(4, entity.getEmail());
         query.setDate(5, (Date) entity.getCreationDate());
     }
+
+    @Override
+    protected String getParametersForQuery(PersonsInfo entity) throws SQLException {
+        return null;
+    }
 }

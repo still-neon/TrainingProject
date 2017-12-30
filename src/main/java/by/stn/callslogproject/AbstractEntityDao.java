@@ -15,6 +15,7 @@ public abstract class AbstractEntityDao<T extends Entity> implements EntityDao<T
     private static final String INSERT_ENTITY_QUERY_FORMAT = "INSERT INTO %s (%s) VALUES (%s)";
 
     protected abstract String getTableName();
+
     protected abstract String[] getColumnsNames();
 
     protected abstract T toEntity(ResultSet rs) throws SQLException;
@@ -35,21 +36,20 @@ public abstract class AbstractEntityDao<T extends Entity> implements EntityDao<T
 
     @Override
     public long saveOrUpdate(T entity) throws Exception {
-        long id = entity.getId();
+        Long id = entity.getId();//проверка на null
         String namedQuery;
         PreparedStatement pstm;
-        if (getResultSet(GET_ENTITY_QUERY_FORMAT, id).getInt(1) > 0) {
-            // private
-            namedQuery = getNamedQueryForUpdate();
-            pstm = ConnectionFactory.getConnection().prepareStatement(namedQuery);
-
-            setParametersForQuery(pstm, entity);
-            getResultSet(String.format(UPDATE_ENTITY_QUERY_FORMAT, getTableName(),pstm,id));
-        } else if (getResultSet(GET_ENTITY_QUERY_FORMAT, id).getInt(1) == 0) {
+        if (id == null) {
             namedQuery = getNamedQueryForInsert();
             pstm = ConnectionFactory.getConnection().prepareStatement(namedQuery);
             getParametersForQuery(entity);
-            getResultSet(String.format(INSERT_ENTITY_QUERY_FORMAT, getTableName(),namedQuery,pstm,id));
+            getResultSet(String.format(INSERT_ENTITY_QUERY_FORMAT, getTableName(), namedQuery, pstm, id));
+        } else {
+            namedQuery = getNamedQueryForUpdate();
+            pstm = ConnectionFactory.getConnection().prepareStatement(namedQuery);//нужно кидать полноценный запрос с вопросами
+            //закрывать connection try(resources) vs finally
+            setParametersForQuery(pstm, entity);
+            getResultSet(String.format(UPDATE_ENTITY_QUERY_FORMAT, getTableName(), pstm, id));
         }
         return getResultSet(GET_ENTITY_QUERY_FORMAT, id).getInt(1);
         // TODO
@@ -60,13 +60,13 @@ public abstract class AbstractEntityDao<T extends Entity> implements EntityDao<T
         return getResultSet(DELETE_ENTITY_QUERY_FORMAT, id).getInt(1) > 0;
     }
 
-    public ResultSet getResultSet(String query, long... id) throws Exception {
+    private ResultSet getResultSet(String query, long... id) throws Exception {
         Statement stm = ConnectionFactory.getConnection().createStatement();
         if (id.length > 0) return stm.executeQuery(String.format(query, getTableName(), id[0]));
         else return stm.executeQuery(String.format(query, getTableName()));
     }
 
-    protected Set<T> toEntities(ResultSet rs) throws Exception {
+    private Set<T> toEntities(ResultSet rs) throws Exception {
         Set<T> result = new HashSet<T>();
         while (rs.next()) {
             T ent = toEntity(rs);
@@ -74,19 +74,24 @@ public abstract class AbstractEntityDao<T extends Entity> implements EntityDao<T
         }
         return result;
     }
-    public String getNamedQueryForUpdate() {
-        //Buffer or builder
-        StringBuffer sb = new StringBuffer();
-        for(String str: getColumnsNames()) {
+
+    private String getNamedQueryForUpdate() {
+        StringBuilder sb = new StringBuilder();
+        for (String str : getColumnsNames()) {
             sb.append(str).append("=?,");
         }
-        return sb.deleteCharAt(sb.length()-1).toString();
+        return sb.deleteCharAt(sb.length() - 1).toString();
     }
-    public String getNamedQueryForInsert() {
-        StringBuffer sb = new StringBuffer();
-        for(String str: getColumnsNames()) {
+
+    private String getNamedQueryForInsert() {
+        StringBuilder sb = new StringBuilder();
+        for (String str : getColumnsNames()) {
             sb.append(str).append(",");
         }
-        return sb.deleteCharAt(sb.length()-1).toString();
+        String.format(UPDATE_ENTITY_QUERY_FORMAT, getTableName(), sb.deleteCharAt(sb.length() - 1).toString(), ?)
+        return sb.deleteCharAt(sb.length() - 1).toString();
+    }
+    protected getPreparedStatement(String namedQuery) {
+        //доделать этот метод
     }
 }

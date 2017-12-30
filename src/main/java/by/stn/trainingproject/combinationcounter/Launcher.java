@@ -7,7 +7,7 @@ public class Launcher {
     private static double probability;
 
     public static void main(String[] args) {
-        probability = ProbabilityCalculator.calculate(HOUR, MIN, MULTIPLICITY);
+        probability = ProbabilityCalculator.calculate(HOUR, MIN);
         System.out.println("Probability = " + String.format("%.2f", probability) + "%");
     }
 }
