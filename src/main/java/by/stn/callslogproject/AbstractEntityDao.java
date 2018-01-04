@@ -11,18 +11,18 @@ public abstract class AbstractEntityDao<T extends Entity> implements EntityDao<T
     private static final String GET_ENTITY_QUERY_FORMAT = "SELECT * FROM %s WHERE id=%d";
     private static final String GET_ALL_QUERY_FORMAT = "SELECT * FROM %s";
     private static final String DELETE_ENTITY_QUERY_FORMAT = "DELETE FROM %s WHERE id=%d";
-    private static final String UPDATE_ENTITY_QUERY_FORMAT = "UPDATE %s SET %s WHERE id=%d";
-    private static final String INSERT_ENTITY_QUERY_FORMAT = "INSERT INTO %s (%s) VALUES (%s)";
+    private static final String UPDATE_ENTITY_QUERY_FORMAT = "UPDATE %s SET %s WHERE id=%s";
+    private static final String INSERT_ENTITY_QUERY_FORMAT = "INSERT INTO %s (id,%s) VALUES (DEFAULT,%s) RETURNING id";
 
     protected abstract String getTableName();
 
     protected abstract String[] getColumnsNames();
 
-    protected abstract T toEntity(ResultSet rs) throws SQLException;
+    protected abstract T toEntity(ResultSet rs) throws Exception;
 
-    protected abstract void setParametersForQuery(PreparedStatement query, T entity) throws SQLException;
+    protected abstract void setParametersForUpdateQuery(PreparedStatement query, T entity) throws SQLException;
 
-    protected abstract String getParametersForQuery(T entity) throws SQLException;
+    protected abstract void setParametersForInsertQuery(PreparedStatement query, T entity) throws SQLException;
 
     public T get(long id) throws Exception {
         ResultSet rs = getResultSet(GET_ENTITY_QUERY_FORMAT, id);
@@ -37,33 +37,45 @@ public abstract class AbstractEntityDao<T extends Entity> implements EntityDao<T
     @Override
     public long saveOrUpdate(T entity) throws Exception {
         Long id = entity.getId();//проверка на null
-        String namedQuery;
         PreparedStatement pstm;
-        if (id == null) {
-            namedQuery = getNamedQueryForInsert();
-            pstm = ConnectionFactory.getConnection().prepareStatement(namedQuery);
-            getParametersForQuery(entity);
-            getResultSet(String.format(INSERT_ENTITY_QUERY_FORMAT, getTableName(), namedQuery, pstm, id));
-        } else {
-            namedQuery = getNamedQueryForUpdate();
-            pstm = ConnectionFactory.getConnection().prepareStatement(namedQuery);//нужно кидать полноценный запрос с вопросами
+        try (Connection con = ConnectionFactory.getConnection()) {
+            if (id == null) {
+                pstm = con.prepareStatement(getPreparedQueryForInsert());
+                setParametersForInsertQuery(pstm, entity);
+                ResultSet rs = pstm.executeQuery();
+                rs.next();
+                id = rs.getLong(1);
+            } else {
+                pstm = con.prepareStatement(getPreparedQueryForUpdate());//нужно кидать полноценный запрос с вопросами
+                setParametersForUpdateQuery(pstm, entity);
+                pstm.executeUpdate();
+            }
             //закрывать connection try(resources) vs finally
-            setParametersForQuery(pstm, entity);
-            getResultSet(String.format(UPDATE_ENTITY_QUERY_FORMAT, getTableName(), pstm, id));
         }
-        return getResultSet(GET_ENTITY_QUERY_FORMAT, id).getInt(1);
+        return id;
         // TODO
     }
 
     @Override
     public boolean delete(long id) throws Exception {
-        return getResultSet(DELETE_ENTITY_QUERY_FORMAT, id).getInt(1) > 0;
+        int result;
+        try (Connection con = ConnectionFactory.getConnection()) {
+            result = con.createStatement().executeUpdate(String.format(DELETE_ENTITY_QUERY_FORMAT, getTableName(), id));
+        }
+        return result > 0;
     }
 
     private ResultSet getResultSet(String query, long... id) throws Exception {
-        Statement stm = ConnectionFactory.getConnection().createStatement();
-        if (id.length > 0) return stm.executeQuery(String.format(query, getTableName(), id[0]));
-        else return stm.executeQuery(String.format(query, getTableName()));
+        ResultSet rs;
+        try (Connection con = ConnectionFactory.getConnection()) {
+            Statement stm = con.createStatement();
+            if (id.length > 0) {
+                rs = stm.executeQuery(String.format(query, getTableName(), id[0]));
+            } else {
+                rs = stm.executeQuery(String.format(query, getTableName()));
+            }
+        }
+        return rs;
     }
 
     private Set<T> toEntities(ResultSet rs) throws Exception {
@@ -75,23 +87,26 @@ public abstract class AbstractEntityDao<T extends Entity> implements EntityDao<T
         return result;
     }
 
-    private String getNamedQueryForUpdate() {
+    private String getPreparedQueryForUpdate() {
         StringBuilder sb = new StringBuilder();
         for (String str : getColumnsNames()) {
             sb.append(str).append("=?,");
         }
-        return sb.deleteCharAt(sb.length() - 1).toString();
+        return String.format(UPDATE_ENTITY_QUERY_FORMAT, getTableName(), sb.deleteCharAt(sb.length() - 1).toString(), "?");
     }
 
-    private String getNamedQueryForInsert() {
-        StringBuilder sb = new StringBuilder();
+    private String getPreparedQueryForInsert() {
+        StringBuilder sb1 = new StringBuilder();
+        StringBuilder sb2 = new StringBuilder();
         for (String str : getColumnsNames()) {
-            sb.append(str).append(",");
+            sb1.append(str).append(",");
+            sb2.append("?,");
         }
-        String.format(UPDATE_ENTITY_QUERY_FORMAT, getTableName(), sb.deleteCharAt(sb.length() - 1).toString(), ?)
-        return sb.deleteCharAt(sb.length() - 1).toString();
+        return String.format(INSERT_ENTITY_QUERY_FORMAT, getTableName(), sb1.deleteCharAt(sb1.length() - 1).toString(), sb2.deleteCharAt(sb2.length() - 1).toString());
     }
-    protected getPreparedStatement(String namedQuery) {
-        //доделать этот метод
-    }
+
+    //private String getPreparedStatement(String namedQuery) {
+    //return String.format(UPDATE_ENTITY_QUERY_FORMAT, getTableName(), namedQuery, "?");
+    //доделать этот метод
+    //}
 }
