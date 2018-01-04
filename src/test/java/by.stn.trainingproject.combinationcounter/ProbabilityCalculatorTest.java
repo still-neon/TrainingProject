@@ -18,7 +18,7 @@ public class ProbabilityCalculatorTest {
 
     @Test
     public void checkReverseArguments() {
-        assertTrue("Reversed values should make the same result",
+        assertTrue("Reversed values should produce the same result",
                 (probabilityCalculator.calculate(24, 60, new int[]{2, 3}) == probabilityCalculator.calculate(60, 24, new int[]{2, 3})) &&
                         (probabilityCalculator.calculate(24, 60) == probabilityCalculator.calculate(60, 24)));
     }

@@ -1,8 +1,9 @@
 Task
-1. доделать persons и callslog, коменты, разобраться как все работает
-2. доделать тесты и калькулятор коменты+
-3. statement vs prepared statement, namedQuery почитать
-3. запилить на свинге UI и вывести таблицу звонков;
+1. доделать классы, коменты
+2. запилить на свинге UI и вывести таблицу звонков;
+3.
+4. почитать про спринг: Application Context, Inversion of Control (IoC), Dependency Injection
++ внедрить эту хрень в ProbabilityCounter - сделать калькулятор и компаратор спринг бинами
 Questions
-1. Почему не получать ps в getNamedQueryForUpdate()? зачем getPreparedStatement? protected?
-2. Подстановка ? вместо id?
+1. Доделать задачку
+

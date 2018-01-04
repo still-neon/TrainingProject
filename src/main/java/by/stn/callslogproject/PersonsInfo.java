@@ -25,7 +25,7 @@ public class PersonsInfo extends AbstractEntity {
     @Setter
     private Date creationDate;
 
-    public PersonsInfo(long id) {
+    public PersonsInfo(Long id) {
         super(id);
     }
 }

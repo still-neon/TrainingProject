@@ -10,54 +10,52 @@ import java.util.Set;
 public abstract class AbstractEntityDao<T extends Entity> implements EntityDao<T> {
     private static final String GET_ENTITY_QUERY_FORMAT = "SELECT * FROM %s WHERE id=%d";
     private static final String GET_ALL_QUERY_FORMAT = "SELECT * FROM %s";
-    private static final String DELETE_ENTITY_QUERY_FORMAT = "DELETE FROM %s WHERE id=%d";
-    private static final String UPDATE_ENTITY_QUERY_FORMAT = "UPDATE %s SET %s WHERE id=%s";
+    private static final String DELETE_ENTITY_QUERY_FORMAT = "DELETE FROM %s WHERE id=%d";//? вместо %s
+    private static final String UPDATE_ENTITY_QUERY_FORMAT = "UPDATE %s SET %s WHERE id=%s";//добавить константы на , ? = и суммарные константы(комбинации) 5,6 шт
     private static final String INSERT_ENTITY_QUERY_FORMAT = "INSERT INTO %s (id,%s) VALUES (DEFAULT,%s) RETURNING id";
 
     protected abstract String getTableName();
 
     protected abstract String[] getColumnsNames();
 
-    protected abstract T toEntity(ResultSet rs) throws Exception;
+    protected abstract T toEntity(ResultSet rs) throws SQLException;
 
-    protected abstract void setParametersForUpdateQuery(PreparedStatement query, T entity) throws SQLException;
+    protected abstract void setUpdateQueryArguments(PreparedStatement query, T entity) throws SQLException;
 
-    protected abstract void setParametersForInsertQuery(PreparedStatement query, T entity) throws SQLException;
+    protected abstract void setInsertQueryArguments(PreparedStatement query, T entity) throws SQLException;
 
-    public T get(long id) throws Exception {
+    public T get(long id) throws SQLException {
         ResultSet rs = getResultSet(GET_ENTITY_QUERY_FORMAT, id);
         return rs.next() ? toEntity(rs) : null;
     }
 
     @Override
-    public Set<T> getAll() throws Exception {
+    public Set<T> getAll() throws SQLException {
         return toEntities(getResultSet(GET_ALL_QUERY_FORMAT));
     }
 
     @Override
-    public long saveOrUpdate(T entity) throws Exception {
-        Long id = entity.getId();//проверка на null
+    public long saveOrUpdate(T entity) throws SQLException {
+        Long id = entity.getId();
         PreparedStatement pstm;
         try (Connection con = ConnectionFactory.getConnection()) {
             if (id == null) {
                 pstm = con.prepareStatement(getPreparedQueryForInsert());
-                setParametersForInsertQuery(pstm, entity);
+                setInsertQueryArguments(pstm, entity);
                 ResultSet rs = pstm.executeQuery();
                 rs.next();
                 id = rs.getLong(1);
             } else {
-                pstm = con.prepareStatement(getPreparedQueryForUpdate());//нужно кидать полноценный запрос с вопросами
-                setParametersForUpdateQuery(pstm, entity);
+                pstm = con.prepareStatement(getPreparedQueryForUpdate());
+                setUpdateQueryArguments(pstm, entity);
                 pstm.executeUpdate();
             }
-            //закрывать connection try(resources) vs finally
         }
         return id;
-        // TODO
     }
 
     @Override
-    public boolean delete(long id) throws Exception {
+    public boolean delete(long id) throws SQLException {
         int result;
         try (Connection con = ConnectionFactory.getConnection()) {
             result = con.createStatement().executeUpdate(String.format(DELETE_ENTITY_QUERY_FORMAT, getTableName(), id));
@@ -65,7 +63,7 @@ public abstract class AbstractEntityDao<T extends Entity> implements EntityDao<T
         return result > 0;
     }
 
-    private ResultSet getResultSet(String query, long... id) throws Exception {
+    private ResultSet getResultSet(String query, long... id) throws SQLException {
         ResultSet rs;
         try (Connection con = ConnectionFactory.getConnection()) {
             Statement stm = con.createStatement();
@@ -78,7 +76,7 @@ public abstract class AbstractEntityDao<T extends Entity> implements EntityDao<T
         return rs;
     }
 
-    private Set<T> toEntities(ResultSet rs) throws Exception {
+    private Set<T> toEntities(ResultSet rs) throws SQLException {
         Set<T> result = new HashSet<T>();
         while (rs.next()) {
             T ent = toEntity(rs);
@@ -104,9 +102,4 @@ public abstract class AbstractEntityDao<T extends Entity> implements EntityDao<T
         }
         return String.format(INSERT_ENTITY_QUERY_FORMAT, getTableName(), sb1.deleteCharAt(sb1.length() - 1).toString(), sb2.deleteCharAt(sb2.length() - 1).toString());
     }
-
-    //private String getPreparedStatement(String namedQuery) {
-    //return String.format(UPDATE_ENTITY_QUERY_FORMAT, getTableName(), namedQuery, "?");
-    //доделать этот метод
-    //}
 }

@@ -31,17 +31,13 @@ public class PersonsDaoImpl extends AbstractEntityDao<PersonsInfo> implements Pe
     }
 
     @Override
-    protected void setParametersForUpdateQuery(PreparedStatement query, PersonsInfo entity) throws SQLException {
-        query.setString(1,entity.getFullName());
-        query.setString(2,entity.getOrganizationName());
-        query.setString(3,entity.getPhone());
-        query.setString(4,entity.getEmail());
-        query.setDate(5,(Date) entity.getCreationDate());
+    protected void setUpdateQueryArguments(PreparedStatement query, PersonsInfo entity) throws SQLException {
+        setInsertQueryArguments(query,entity);
         query.setLong(6, entity.getId());
     }
 
     @Override
-    protected void setParametersForInsertQuery(PreparedStatement query, PersonsInfo entity) throws SQLException {
+    protected void setInsertQueryArguments(PreparedStatement query, PersonsInfo entity) throws SQLException {
         query.setString(1,entity.getFullName());
         query.setString(2,entity.getOrganizationName());
         query.setString(3,entity.getPhone());

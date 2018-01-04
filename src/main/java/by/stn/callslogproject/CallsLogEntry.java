@@ -25,7 +25,7 @@ public class CallsLogEntry extends AbstractEntity {
     @Setter
     private Date endDate;
 
-    public CallsLogEntry(long id) {
+    public CallsLogEntry(Long id) {
         super(id);
     }
 
