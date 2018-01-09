@@ -1,4 +1,6 @@
-package by.stn.callslogproject;
+package by.stn.callslogproject.entity;
+
+import by.stn.callslogproject.connection.ConnectionFactory;
 
 import java.sql.*;
 import java.util.HashSet;
@@ -11,8 +13,13 @@ public abstract class AbstractEntityDao<T extends Entity> implements EntityDao<T
     private static final String GET_ENTITY_QUERY_FORMAT = "SELECT * FROM %s WHERE id=%d";
     private static final String GET_ALL_QUERY_FORMAT = "SELECT * FROM %s";
     private static final String DELETE_ENTITY_QUERY_FORMAT = "DELETE FROM %s WHERE id=%d";//? вместо %s
-    private static final String UPDATE_ENTITY_QUERY_FORMAT = "UPDATE %s SET %s WHERE id=%s";//добавить константы на , ? = и суммарные константы(комбинации) 5,6 шт
+    private static final String UPDATE_ENTITY_QUERY_FORMAT = "UPDATE %s SET %s WHERE id=?";//добавить константы на , ? = и суммарные константы(комбинации) 5,6 шт
     private static final String INSERT_ENTITY_QUERY_FORMAT = "INSERT INTO %s (id,%s) VALUES (DEFAULT,%s) RETURNING id";
+    private static final String PREPARED_QUERY_PARAMETER_SIGN = "?";
+    private static final String PREPARED_QUERY_EQUAL_SIGN = "=";
+    private static final String PREPARED_QUERY_COLUMN_SEPARATOR_SIGN = ",";
+    private static final String PREPARED_QUERY_PARAMETER_PLUS_SEPARATOR = PREPARED_QUERY_PARAMETER_SIGN + PREPARED_QUERY_COLUMN_SEPARATOR_SIGN;
+    private static final String PREPARED_QUERY_EQUAL_PLUS_PARAMETER_PLUS_SEPARATOR = PREPARED_QUERY_EQUAL_SIGN + PREPARED_QUERY_PARAMETER_PLUS_SEPARATOR;
 
     protected abstract String getTableName();
 
@@ -24,6 +31,7 @@ public abstract class AbstractEntityDao<T extends Entity> implements EntityDao<T
 
     protected abstract void setInsertQueryArguments(PreparedStatement query, T entity) throws SQLException;
 
+    @Override
     public T get(long id) throws SQLException {
         ResultSet rs = getResultSet(GET_ENTITY_QUERY_FORMAT, id);
         return rs.next() ? toEntity(rs) : null;
@@ -88,17 +96,17 @@ public abstract class AbstractEntityDao<T extends Entity> implements EntityDao<T
     private String getPreparedQueryForUpdate() {
         StringBuilder sb = new StringBuilder();
         for (String str : getColumnsNames()) {
-            sb.append(str).append("=?,");
+            sb.append(str).append(PREPARED_QUERY_EQUAL_PLUS_PARAMETER_PLUS_SEPARATOR);
         }
-        return String.format(UPDATE_ENTITY_QUERY_FORMAT, getTableName(), sb.deleteCharAt(sb.length() - 1).toString(), "?");
+        return String.format(UPDATE_ENTITY_QUERY_FORMAT, getTableName(), sb.deleteCharAt(sb.length() - 1).toString());
     }
 
     private String getPreparedQueryForInsert() {
         StringBuilder sb1 = new StringBuilder();
         StringBuilder sb2 = new StringBuilder();
         for (String str : getColumnsNames()) {
-            sb1.append(str).append(",");
-            sb2.append("?,");
+            sb1.append(str).append(PREPARED_QUERY_COLUMN_SEPARATOR_SIGN);
+            sb2.append(PREPARED_QUERY_PARAMETER_PLUS_SEPARATOR);
         }
         return String.format(INSERT_ENTITY_QUERY_FORMAT, getTableName(), sb1.deleteCharAt(sb1.length() - 1).toString(), sb2.deleteCharAt(sb2.length() - 1).toString());
     }

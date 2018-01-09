@@ -1,4 +1,4 @@
-package by.stn.callslogproject;
+package by.stn.callslogproject.entity;
 
 import lombok.Getter;
 

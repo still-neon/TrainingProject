@@ -1,4 +1,4 @@
-package by.stn.callslogproject;
+package by.stn.callslogproject.connection;
 
 import java.sql.*;
 

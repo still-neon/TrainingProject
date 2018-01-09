@@ -1,5 +1,9 @@
 package by.stn.callslogproject;
 
+import by.stn.callslogproject.callslog.CallsLogDaoImpl;
+import by.stn.callslogproject.callslog.CallsLogEntry;
+import by.stn.callslogproject.personsinfo.PersonsInfo;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -27,7 +31,7 @@ public class Test {
         scl.add(cl);
 
         //new CallsLogDaoImpl().saveOrUpdate(cl);
-        System.out.println(new CallsLogDaoImpl().saveOrUpdate(cl));
+        System.out.println(CallsLogDaoImpl.getInstance().saveOrUpdate(cl));
         //System.out.println(new CallsLogDaoImpl().delete(15));
         //System.out.println(new CallsLogDaoImpl().get(16));
         //System.out.println(new CallsLogDaoImpl().getAll(scl));

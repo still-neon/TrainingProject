@@ -1,9 +1,7 @@
 package by.stn.trainingproject.combinationcounter;
 
 public class ProbabilityCalculator {
-    //передавать в метод массив, если пустой, ио не считать
-
-    public static double calculate(int hour, int min, int... MULTIPLICITY) {
+        public static double calculate(int hour, int min, int... MULTIPLICITY) {
         int total = hour * min;
         double probability;
 

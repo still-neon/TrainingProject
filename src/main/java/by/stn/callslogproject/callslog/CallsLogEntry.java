@@ -1,5 +1,7 @@
-package by.stn.callslogproject;
+package by.stn.callslogproject.callslog;
 
+import by.stn.callslogproject.entity.AbstractEntity;
+import by.stn.callslogproject.personsinfo.PersonsInfo;
 import lombok.Getter;
 import lombok.Setter;
 

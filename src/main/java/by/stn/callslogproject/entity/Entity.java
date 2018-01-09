@@ -1,4 +1,4 @@
-package by.stn.callslogproject;
+package by.stn.callslogproject.entity;
 
 public interface Entity {
     Long getId();

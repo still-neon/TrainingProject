@@ -1,4 +1,8 @@
-package by.stn.callslogproject;
+package by.stn.callslogproject.callslog;
+
+import by.stn.callslogproject.entity.AbstractEntityDao;
+import by.stn.callslogproject.personsinfo.PersonsDaoImpl;
+import lombok.Getter;
 
 import java.sql.*;
 
@@ -8,6 +12,7 @@ import java.sql.*;
 public class CallsLogDaoImpl extends AbstractEntityDao<CallsLogEntry> implements CallsLogDao {
     private static final String CALLSLOGENTRY_TABLE_NAME = "callslog";
     private static final String[] CALLSLOGENTRY_COLUMNS_NAMES = {"calltype", "callerid", "addresseeid", "startdate", "enddate"};
+    private static CallsLogDaoImpl instance;
 
     public String getTableName() {
         return CALLSLOGENTRY_TABLE_NAME;
@@ -17,12 +22,23 @@ public class CallsLogDaoImpl extends AbstractEntityDao<CallsLogEntry> implements
         return CALLSLOGENTRY_COLUMNS_NAMES;
     }
 
+    private CallsLogDaoImpl() {
+
+    }
+
+    public static CallsLogDaoImpl getInstance() {
+        if (instance == null) {
+            instance = new CallsLogDaoImpl();
+        }
+        return instance;
+    }
+
     @Override
     protected CallsLogEntry toEntity(ResultSet rs) throws SQLException {
         CallsLogEntry callsLog = new CallsLogEntry((long) rs.getInt("id"));
         callsLog.setCallType(rs.getInt("calltype"));
-        callsLog.setCaller(new PersonsDaoImpl().get(rs.getInt("callerid"))); //Singleton ссылка на PersonsDaoImpl без создания
-        callsLog.setAddressee(new PersonsDaoImpl().get(rs.getInt("addresseeid"))); //тоже самое. каждый dao
+        callsLog.setCaller(PersonsDaoImpl.getInstance().get(rs.getInt("callerid"))); //Singleton ссылка на PersonsDaoImpl без создания
+        callsLog.setAddressee(PersonsDaoImpl.getInstance().get(rs.getInt("addresseeid"))); //тоже самое. каждый dao
         callsLog.setEndDate(rs.getDate("startdate"));
         callsLog.setStartDate(rs.getDate("enddate"));
         return callsLog;

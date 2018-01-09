@@ -2,7 +2,7 @@ package by.stn.trainingproject.combinationcounter;
 
 import lombok.Getter;
 
-public class InheritanceInitializationTask implements Printable {
+public class InheritanceInitializationTask /*implements Printable*/ {
 
     private Zopa zo = new Zopa();
 
@@ -72,7 +72,7 @@ public class InheritanceInitializationTask implements Printable {
 
     public static void main(String[] args) {
         InheritanceInitializationTask iit = new InheritanceInitializationTask();
-        Zopa zo = new iit.getZo();
+        //Zopa zo = new iit.getZo();
         Zulu zu = new Zulu();
         Sigma s = new Sigma();
 

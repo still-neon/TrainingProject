@@ -1,7 +1,8 @@
-package by.stn.callslogproject;
+package by.stn.callslogproject.personsinfo;
 
 import java.util.Date;
 
+import by.stn.callslogproject.entity.AbstractEntity;
 import lombok.Getter;
 import lombok.Setter;
 

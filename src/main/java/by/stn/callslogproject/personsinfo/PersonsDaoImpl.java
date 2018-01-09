@@ -1,4 +1,6 @@
-package by.stn.callslogproject;
+package by.stn.callslogproject.personsinfo;
+
+import by.stn.callslogproject.entity.AbstractEntityDao;
 
 import java.sql.*;
 
@@ -8,6 +10,18 @@ import java.sql.*;
 public class PersonsDaoImpl extends AbstractEntityDao<PersonsInfo> implements PersonsDao {
     private static final String PERSONINFO_TABLE_NAME = "person";
     private static final String[] PERSONINFO_COLUMNS_NAMES = {"fullName", "organizationName", "phone", "email", "creationdate"};
+    private static PersonsDaoImpl instance;
+
+    private PersonsDaoImpl() {
+
+    }
+
+    public static PersonsDaoImpl getInstance() {
+        if (instance == null) {
+            instance = new PersonsDaoImpl();
+        }
+        return instance;
+    }
 
     @Override
     protected String getTableName() {
@@ -21,7 +35,7 @@ public class PersonsDaoImpl extends AbstractEntityDao<PersonsInfo> implements Pe
 
     @Override
     protected PersonsInfo toEntity(ResultSet rs) throws SQLException {
-        PersonsInfo person = new PersonsInfo(rs.getInt("id"));
+        PersonsInfo person = new PersonsInfo((long)rs.getInt("id"));
         person.setFullName(rs.getString("fullName"));
         person.setOrganizationName(rs.getString("organizationName"));
         person.setPhone(rs.getString("phone"));
