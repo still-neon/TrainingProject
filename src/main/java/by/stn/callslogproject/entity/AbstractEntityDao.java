@@ -12,14 +12,14 @@ import java.util.Set;
 public abstract class AbstractEntityDao<T extends Entity> implements EntityDao<T> {
     private static final String GET_ENTITY_QUERY_FORMAT = "SELECT * FROM %s WHERE id=%d";
     private static final String GET_ALL_QUERY_FORMAT = "SELECT * FROM %s";
-    private static final String DELETE_ENTITY_QUERY_FORMAT = "DELETE FROM %s WHERE id=%d";//? вместо %s
-    private static final String UPDATE_ENTITY_QUERY_FORMAT = "UPDATE %s SET %s WHERE id=?";//добавить константы на , ? = и суммарные константы(комбинации) 5,6 шт
+    private static final String DELETE_ENTITY_QUERY_FORMAT = "DELETE FROM %s WHERE id=%d";
+    private static final String UPDATE_ENTITY_QUERY_FORMAT = "UPDATE %s SET %s WHERE id=?";
     private static final String INSERT_ENTITY_QUERY_FORMAT = "INSERT INTO %s (id,%s) VALUES (DEFAULT,%s) RETURNING id";
     private static final String PREPARED_QUERY_PARAMETER_SIGN = "?";
     private static final String PREPARED_QUERY_EQUAL_SIGN = "=";
     private static final String PREPARED_QUERY_COLUMN_SEPARATOR_SIGN = ",";
-    private static final String PREPARED_QUERY_PARAMETER_PLUS_SEPARATOR = PREPARED_QUERY_PARAMETER_SIGN + PREPARED_QUERY_COLUMN_SEPARATOR_SIGN;
-    private static final String PREPARED_QUERY_EQUAL_PLUS_PARAMETER_PLUS_SEPARATOR = PREPARED_QUERY_EQUAL_SIGN + PREPARED_QUERY_PARAMETER_PLUS_SEPARATOR;
+    private static final String PREPARED_QUERY_PARAMETER_PLACE = PREPARED_QUERY_PARAMETER_SIGN + PREPARED_QUERY_COLUMN_SEPARATOR_SIGN;
+    private static final String PREPARED_QUERY_PARAMETER_FOR_UPDATE = PREPARED_QUERY_EQUAL_SIGN + PREPARED_QUERY_PARAMETER_PLACE;
 
     protected abstract String getTableName();
 
@@ -96,7 +96,7 @@ public abstract class AbstractEntityDao<T extends Entity> implements EntityDao<T
     private String getPreparedQueryForUpdate() {
         StringBuilder sb = new StringBuilder();
         for (String str : getColumnsNames()) {
-            sb.append(str).append(PREPARED_QUERY_EQUAL_PLUS_PARAMETER_PLUS_SEPARATOR);
+            sb.append(str).append(PREPARED_QUERY_PARAMETER_FOR_UPDATE);
         }
         return String.format(UPDATE_ENTITY_QUERY_FORMAT, getTableName(), sb.deleteCharAt(sb.length() - 1).toString());
     }
@@ -106,7 +106,7 @@ public abstract class AbstractEntityDao<T extends Entity> implements EntityDao<T
         StringBuilder sb2 = new StringBuilder();
         for (String str : getColumnsNames()) {
             sb1.append(str).append(PREPARED_QUERY_COLUMN_SEPARATOR_SIGN);
-            sb2.append(PREPARED_QUERY_PARAMETER_PLUS_SEPARATOR);
+            sb2.append(PREPARED_QUERY_PARAMETER_PLACE);
         }
         return String.format(INSERT_ENTITY_QUERY_FORMAT, getTableName(), sb1.deleteCharAt(sb1.length() - 1).toString(), sb2.deleteCharAt(sb2.length() - 1).toString());
     }

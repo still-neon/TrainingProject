@@ -36,7 +36,7 @@ public class CallsLogEntry extends AbstractEntity {
     }
 
     public enum CallType {
-        INCOMING(1), OUTGOING(2), CONFERENCE(3);
+        INCOMING(0), OUTGOING(1), CONFERENCE(2);
 
         @Getter
         private int id;

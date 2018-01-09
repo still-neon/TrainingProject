@@ -51,7 +51,7 @@ public class UICreator {
                 button.setVisible(false);
                 TableModel model = null;
                 try {
-                    model = new MyTableModel(CallsLogDaoImpl.getInstance().getAll());
+                    model = new CallsLogTableModel(CallsLogDaoImpl.getInstance().getAll());
                 } catch (SQLException e1) {
                     e1.printStackTrace();
                 }

@@ -9,7 +9,7 @@ import java.sql.*;
  */
 public class PersonsDaoImpl extends AbstractEntityDao<PersonsInfo> implements PersonsDao {
     private static final String PERSONINFO_TABLE_NAME = "person";
-    private static final String[] PERSONINFO_COLUMNS_NAMES = {"fullName", "organizationName", "phone", "email", "creationdate"};
+    private static final String[] PERSONINFO_COLUMNS_NAMES = {"fullname", "organizationname", "phone", "email", "creationdate"};
     private static PersonsDaoImpl instance;
 
     private PersonsDaoImpl() {
@@ -36,8 +36,8 @@ public class PersonsDaoImpl extends AbstractEntityDao<PersonsInfo> implements Pe
     @Override
     protected PersonsInfo toEntity(ResultSet rs) throws SQLException {
         PersonsInfo person = new PersonsInfo((long)rs.getInt("id"));
-        person.setFullName(rs.getString("fullName"));
-        person.setOrganizationName(rs.getString("organizationName"));
+        person.setFullName(rs.getString("fullname"));
+        person.setOrganizationName(rs.getString("organizationname"));
         person.setPhone(rs.getString("phone"));
         person.setEmail(rs.getString("email"));
         person.setCreationDate(rs.getDate("creationdate"));

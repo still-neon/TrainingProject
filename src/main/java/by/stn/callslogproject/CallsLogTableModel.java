@@ -10,11 +10,11 @@ import java.util.Set;
 /**
  * Created by EugenKrasotkin on 1/8/2018.
  */
-public class MyTableModel implements TableModel {
+public class CallsLogTableModel implements TableModel {
 
     private Set<CallsLogEntry> callsLog;
 
-    public MyTableModel(Set<CallsLogEntry> callsLog) {
+    public CallsLogTableModel(Set<CallsLogEntry> callsLog) {
         this.callsLog = callsLog;
     }
 
