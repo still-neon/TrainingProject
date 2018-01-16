@@ -10,18 +10,6 @@ import java.sql.*;
 public class PersonsDaoImpl extends AbstractEntityDao<PersonsInfo> implements PersonsDao {
     private static final String PERSONINFO_TABLE_NAME = "person";
     private static final String[] PERSONINFO_COLUMNS_NAMES = {"fullname", "organizationname", "phone", "email", "creationdate"};
-    private static PersonsDaoImpl instance;
-
-    private PersonsDaoImpl() {
-
-    }
-
-    public static PersonsDaoImpl getInstance() {
-        if (instance == null) {
-            instance = new PersonsDaoImpl();
-        }
-        return instance;
-    }
 
     @Override
     protected String getTableName() {
@@ -35,7 +23,7 @@ public class PersonsDaoImpl extends AbstractEntityDao<PersonsInfo> implements Pe
 
     @Override
     protected PersonsInfo toEntity(ResultSet rs) throws SQLException {
-        PersonsInfo person = new PersonsInfo((long)rs.getInt("id"));
+        PersonsInfo person = new PersonsInfo((long) rs.getInt("id"));
         person.setFullName(rs.getString("fullname"));
         person.setOrganizationName(rs.getString("organizationname"));
         person.setPhone(rs.getString("phone"));
@@ -46,17 +34,16 @@ public class PersonsDaoImpl extends AbstractEntityDao<PersonsInfo> implements Pe
 
     @Override
     protected void setUpdateQueryArguments(PreparedStatement query, PersonsInfo entity) throws SQLException {
-        setInsertQueryArguments(query,entity);
+        setInsertQueryArguments(query, entity);
         query.setLong(6, entity.getId());
     }
 
     @Override
     protected void setInsertQueryArguments(PreparedStatement query, PersonsInfo entity) throws SQLException {
-        query.setString(1,entity.getFullName());
-        query.setString(2,entity.getOrganizationName());
-        query.setString(3,entity.getPhone());
-        query.setString(4,entity.getEmail());
-        query.setDate(5,(Date) entity.getCreationDate());
+        query.setString(1, entity.getFullName());
+        query.setString(2, entity.getOrganizationName());
+        query.setString(3, entity.getPhone());
+        query.setString(4, entity.getEmail());
+        query.setDate(5, (Date) entity.getCreationDate());
     }
-
 }

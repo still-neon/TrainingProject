@@ -1,9 +1,12 @@
 Task
-1. почитать про спринг: Application Context, Inversion of Control (IoC), Dependency Injection
-+ внедрить эту хрень в calls log. anotation configuration vs xml configuration
-DAO,ConnectionFactory, UICreator (public метод create) - все бинами
-2. CallerId AddresseID вывести ввиде имен, сортировка,
+1. почитать про спринг: Application Context, Inversion of Control (IoC), Dependency Injection+
++ внедрить эту хрень в calls log. anotation configuration vs xml configuration+
+DAO,ConnectionFactory, UICreator (public метод create) - все бинами+
+2. CallerId AddresseID вывести ввиде имен, сортировка+
 кнопка добавить строку, удалить, редактировать, id не выводить, CallType, Calerid, Addresse id дропдаунами. приоритет нормально релизнуть одну вещь. даты конторлами выводить
 Questions
 1. Доделать задачку васе
+2. context и config?
+3. Connection bean?
+4. bean id wrong?
 

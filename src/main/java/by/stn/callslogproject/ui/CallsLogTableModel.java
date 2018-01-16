@@ -1,6 +1,8 @@
-package by.stn.callslogproject;
+package by.stn.callslogproject.ui;
 
+import by.stn.callslogproject.callslog.CallsLogDaoImpl;
 import by.stn.callslogproject.callslog.CallsLogEntry;
+import lombok.Setter;
 
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
@@ -11,6 +13,9 @@ import java.util.Set;
  * Created by EugenKrasotkin on 1/8/2018.
  */
 public class CallsLogTableModel implements TableModel {
+    private static final int NUMBER_OF_COLUMNS = 6;
+    @Setter
+    private CallsLogDaoImpl callsLogDaoImpl;
 
     private Set<CallsLogEntry> callsLog;
 
@@ -20,24 +25,25 @@ public class CallsLogTableModel implements TableModel {
 
     @Override
     public int getColumnCount() {
-        return 6;
+        return NUMBER_OF_COLUMNS;
     }
 
     @Override
     public String getColumnName(int columnIndex) {
+
         switch (columnIndex) {
             case 0:
-                return "Id";
-            case 1:
                 return "CallType";
-            case 2:
+            case 1:
                 return "CallerId";
-            case 3:
+            case 2:
                 return "AddresseeId";
-            case 4:
+            case 3:
                 return "StartDate";
-            case 5:
+            case 4:
                 return "EndDate";
+            case 5:
+                return "ID";
         }
         return "";
     }
@@ -54,17 +60,17 @@ public class CallsLogTableModel implements TableModel {
         CallsLogEntry cl = list.get(rowIndex);
         switch (columnIndex) {
             case 0:
-                return cl.getId();
-            case 1:
                 return cl.getCallType();
+            case 1:
+                return cl.getCaller().getFullName();
             case 2:
-                return cl.getCaller().getId();
+                return cl.getAddressee().getFullName();
             case 3:
-                return cl.getAddressee().getId();
+                return cl.getStartDate();
             case 4:
                 return cl.getStartDate();
             case 5:
-                return cl.getStartDate();
+                return cl.getId();
         }
         return "";
     }

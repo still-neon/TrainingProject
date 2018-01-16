@@ -2,17 +2,17 @@ package by.stn.callslogproject.callslog;
 
 import by.stn.callslogproject.entity.AbstractEntityDao;
 import by.stn.callslogproject.personsinfo.PersonsDaoImpl;
-import lombok.Getter;
+import lombok.Setter;
 
 import java.sql.*;
 
 /**
  * Created by EugenKrasotkin on 12/12/2017.
  */
+
 public class CallsLogDaoImpl extends AbstractEntityDao<CallsLogEntry> implements CallsLogDao {
     private static final String CALLSLOGENTRY_TABLE_NAME = "callslog";
     private static final String[] CALLSLOGENTRY_COLUMNS_NAMES = {"calltype", "callerid", "addresseeid", "startdate", "enddate"};
-    private static CallsLogDaoImpl instance;
 
     public String getTableName() {
         return CALLSLOGENTRY_TABLE_NAME;
@@ -21,24 +21,15 @@ public class CallsLogDaoImpl extends AbstractEntityDao<CallsLogEntry> implements
     public String[] getColumnsNames() {
         return CALLSLOGENTRY_COLUMNS_NAMES;
     }
-
-    private CallsLogDaoImpl() {
-
-    }
-
-    public static CallsLogDaoImpl getInstance() {
-        if (instance == null) {
-            instance = new CallsLogDaoImpl();
-        }
-        return instance;
-    }
+    @Setter
+    PersonsDaoImpl personsDaoImpl;
 
     @Override
     protected CallsLogEntry toEntity(ResultSet rs) throws SQLException {
         CallsLogEntry callsLog = new CallsLogEntry((long) rs.getInt("id"));
         callsLog.setCallType(rs.getInt("calltype"));
-        callsLog.setCaller(PersonsDaoImpl.getInstance().get(rs.getInt("callerid")));
-        callsLog.setAddressee(PersonsDaoImpl.getInstance().get(rs.getInt("addresseeid")));
+        callsLog.setCaller(personsDaoImpl.get(rs.getInt("callerid")));
+        callsLog.setAddressee(personsDaoImpl.get(rs.getInt("addresseeid")));
         callsLog.setEndDate(rs.getDate("startdate"));
         callsLog.setStartDate(rs.getDate("enddate"));
         return callsLog;
@@ -46,7 +37,7 @@ public class CallsLogDaoImpl extends AbstractEntityDao<CallsLogEntry> implements
 
     @Override
     protected void setUpdateQueryArguments(PreparedStatement query, CallsLogEntry entity) throws SQLException {
-        setInsertQueryArguments(query,entity);
+        setInsertQueryArguments(query, entity);
         query.setLong(6, entity.getId());
     }
 
