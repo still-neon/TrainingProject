@@ -1,6 +1,7 @@
 package by.stn.callslogproject.callslog;
 
 import by.stn.callslogproject.entity.AbstractEntityDao;
+import by.stn.callslogproject.personsinfo.PersonsDao;
 import by.stn.callslogproject.personsinfo.PersonsDaoImpl;
 import lombok.Setter;
 
@@ -22,14 +23,14 @@ public class CallsLogDaoImpl extends AbstractEntityDao<CallsLogEntry> implements
         return CALLSLOGENTRY_COLUMNS_NAMES;
     }
     @Setter
-    PersonsDaoImpl personsDaoImpl;
+    PersonsDao personsDao;
 
     @Override
-    protected CallsLogEntry toEntity(ResultSet rs) throws SQLException {
+    protected CallsLogEntry toEntity(ResultSet rs) throws Exception {
         CallsLogEntry callsLog = new CallsLogEntry((long) rs.getInt("id"));
         callsLog.setCallType(rs.getInt("calltype"));
-        callsLog.setCaller(personsDaoImpl.get(rs.getInt("callerid")));
-        callsLog.setAddressee(personsDaoImpl.get(rs.getInt("addresseeid")));
+        callsLog.setCaller(personsDao.get(rs.getInt("callerid")));
+        callsLog.setAddressee(personsDao.get(rs.getInt("addresseeid")));
         callsLog.setEndDate(rs.getDate("startdate"));
         callsLog.setStartDate(rs.getDate("enddate"));
         return callsLog;

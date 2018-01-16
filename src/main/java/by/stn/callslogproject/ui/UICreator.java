@@ -1,6 +1,6 @@
 package by.stn.callslogproject.ui;
 
-import by.stn.callslogproject.callslog.CallsLogDaoImpl;
+import by.stn.callslogproject.callslog.CallsLogDao;
 import lombok.Setter;
 
 import javax.swing.*;
@@ -8,7 +8,7 @@ import javax.swing.table.TableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.SQLException;
+
 
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
@@ -21,7 +21,7 @@ public class UICreator {
     private static final String EDIT_BUTTON_TEXT = "Edit Call";
     private static final String DELETE_BUTTON_TEXT = "Delete Call";
     @Setter
-    private CallsLogDaoImpl callsLogDaoImpl;
+    private CallsLogDao callsLogDao;
 
     private JFrame frame;
     private JButton button;
@@ -47,14 +47,14 @@ public class UICreator {
 
                 TableModel model = null;
                 try {
-                    model = new CallsLogTableModel(callsLogDaoImpl.getAll());
-                } catch (SQLException e1) {
+                    model = new CallsLogTableModel(callsLogDao.getAll());
+                } catch (Exception e1) {
                     e1.printStackTrace();
                 }
                 final JTable table = new JTable(model);
                 contents.add(new JScrollPane(table));
-                //table.setAutoCreateRowSorter(true);
-                //table.getRowSorter().toggleSortOrder(3);
+                table.setAutoCreateRowSorter(true);
+                table.getRowSorter().toggleSortOrder(3);
 
 
 
@@ -65,7 +65,7 @@ public class UICreator {
                         System.out.println("row" + table.getSelectedRow() + "column" + (finalModel.getRowCount()-1));
                         System.out.println(finalModel.getValueAt(table.getSelectedRow(), finalModel.getRowCount()-1));
                         /*try {
-                            callsLogDaoImpl.delete(table.getSelectedRow());
+                            callsLogDao.delete(table.getSelectedRow());
                         } catch (SQLException e1) {
                             e1.printStackTrace();
                         }*/

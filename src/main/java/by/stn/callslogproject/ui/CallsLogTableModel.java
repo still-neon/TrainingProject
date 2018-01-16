@@ -14,8 +14,6 @@ import java.util.Set;
  */
 public class CallsLogTableModel implements TableModel {
     private static final int NUMBER_OF_COLUMNS = 6;
-    @Setter
-    private CallsLogDaoImpl callsLogDaoImpl;
 
     private Set<CallsLogEntry> callsLog;
 

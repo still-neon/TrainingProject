@@ -25,20 +25,20 @@ public abstract class AbstractEntityDao<T extends Entity> implements EntityDao<T
 
     protected abstract String[] getColumnsNames();
 
-    protected abstract T toEntity(ResultSet rs) throws SQLException;
+    protected abstract T toEntity(ResultSet rs) throws Exception;
 
     protected abstract void setUpdateQueryArguments(PreparedStatement query, T entity) throws SQLException;
 
     protected abstract void setInsertQueryArguments(PreparedStatement query, T entity) throws SQLException;
 
     @Override
-    public T get(long id) throws SQLException {
+    public T get(long id) throws Exception {
         ResultSet rs = getResultSet(GET_ENTITY_QUERY_FORMAT, id);
         return rs.next() ? toEntity(rs) : null;
     }
 
     @Override
-    public Set<T> getAll() throws SQLException {
+    public Set<T> getAll() throws Exception {
         return toEntities(getResultSet(GET_ALL_QUERY_FORMAT));
     }
 
@@ -84,7 +84,7 @@ public abstract class AbstractEntityDao<T extends Entity> implements EntityDao<T
         return rs;
     }
 
-    private Set<T> toEntities(ResultSet rs) throws SQLException {
+    private Set<T> toEntities(ResultSet rs) throws Exception {
         Set<T> result = new HashSet<T>();
         while (rs.next()) {
             T ent = toEntity(rs);

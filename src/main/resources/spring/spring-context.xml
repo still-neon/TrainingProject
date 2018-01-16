@@ -3,14 +3,14 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation=" http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="callsLogDaoImpl" class="by.stn.callslogproject.callslog.CallsLogDaoImpl">
-        <property name="personsDaoImpl" ref="personsDaoImpl"/>
+    <bean id="callsLogDao" class="by.stn.callslogproject.callslog.CallsLogDaoImpl">
+        <property name="personsDao" ref="personsDao"/>
     </bean>
-    <bean id="personsDaoImpl" class="by.stn.callslogproject.personsinfo.PersonsDaoImpl"></bean>
+    <bean id="personsDao" class="by.stn.callslogproject.personsinfo.PersonsDaoImpl"></bean>
     <bean id="uiCreator" class="by.stn.callslogproject.ui.UICreator">
-        <property name="callsLogDaoImpl" ref="callsLogDaoImpl"/>
+        <property name="callsLogDao" ref="callsLogDao"/>
     </bean>
     <!--<bean id="cl" class="by.stn.callslogproject.ui.CallsLogTableModel">
-        <property name="callsLogDaoImpl" ref="callsLogDaoImpl"/>
+        <property name="callsLogDao" ref="callsLogDao"/>
     </bean>-->
 </beans>
