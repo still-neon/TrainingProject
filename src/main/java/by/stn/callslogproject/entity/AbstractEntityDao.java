@@ -1,6 +1,7 @@
 package by.stn.callslogproject.entity;
 
 import by.stn.callslogproject.connection.ConnectionFactory;
+import lombok.Setter;
 
 import java.sql.*;
 import java.util.HashSet;

@@ -1,8 +1,6 @@
 package by.stn.callslogproject.ui;
 
-import by.stn.callslogproject.callslog.CallsLogDaoImpl;
 import by.stn.callslogproject.callslog.CallsLogEntry;
-import lombok.Setter;
 
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;

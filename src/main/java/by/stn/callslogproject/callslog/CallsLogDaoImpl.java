@@ -2,7 +2,6 @@ package by.stn.callslogproject.callslog;
 
 import by.stn.callslogproject.entity.AbstractEntityDao;
 import by.stn.callslogproject.personsinfo.PersonsDao;
-import by.stn.callslogproject.personsinfo.PersonsDaoImpl;
 import lombok.Setter;
 
 import java.sql.*;
@@ -23,7 +22,7 @@ public class CallsLogDaoImpl extends AbstractEntityDao<CallsLogEntry> implements
         return CALLSLOGENTRY_COLUMNS_NAMES;
     }
     @Setter
-    PersonsDao personsDao;
+    private PersonsDao personsDao;
 
     @Override
     protected CallsLogEntry toEntity(ResultSet rs) throws Exception {

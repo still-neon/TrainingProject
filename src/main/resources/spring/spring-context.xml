@@ -10,7 +10,5 @@
     <bean id="uiCreator" class="by.stn.callslogproject.ui.UICreator">
         <property name="callsLogDao" ref="callsLogDao"/>
     </bean>
-    <!--<bean id="cl" class="by.stn.callslogproject.ui.CallsLogTableModel">
-        <property name="callsLogDao" ref="callsLogDao"/>
-    </bean>-->
+    <bean id="connectionFactory" class="by.stn.callslogproject.connection.ConnectionFactory"></bean>
 </beans>

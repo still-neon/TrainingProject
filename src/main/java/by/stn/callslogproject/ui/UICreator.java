@@ -22,20 +22,19 @@ public class UICreator {
     private static final String DELETE_BUTTON_TEXT = "Delete Call";
     @Setter
     private CallsLogDao callsLogDao;
-
-    private JFrame frame;
-    private JButton button;
+    private TableModel model;
+    private JTable table = new JTable();
 
     public void create() {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                frame = new JFrame(APP_NAME);
+                JFrame frame = new JFrame(APP_NAME);
                 frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
                 frame.setSize(700, 300);
                 frame.setResizable(true);
                 frame.setVisible(true);
 
-                final JPanel contents = new JPanel(new FlowLayout(FlowLayout.LEFT));
+                JPanel contents = new JPanel(new FlowLayout(FlowLayout.LEFT));
                 frame.setContentPane(contents);
 
                 JButton addButton = new JButton(ADD_BUTTON_TEXT);
@@ -45,34 +44,59 @@ public class UICreator {
                 JButton deleteButton = new JButton(DELETE_BUTTON_TEXT);
                 contents.add(deleteButton);
 
-                TableModel model = null;
-                try {
-                    model = new CallsLogTableModel(callsLogDao.getAll());
-                } catch (Exception e1) {
-                    e1.printStackTrace();
-                }
-                final JTable table = new JTable(model);
                 contents.add(new JScrollPane(table));
-                table.setAutoCreateRowSorter(true);
-                table.getRowSorter().toggleSortOrder(3);
+                configTable();
 
 
 
-                final TableModel finalModel = model;
                 deleteButton.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        System.out.println("row" + table.getSelectedRow() + "column" + (finalModel.getRowCount()-1));
-                        System.out.println(finalModel.getValueAt(table.getSelectedRow(), finalModel.getRowCount()-1));
-                        /*try {
-                            callsLogDao.delete(table.getSelectedRow());
-                        } catch (SQLException e1) {
+
+                        System.out.println("row" + table.getSelectedRow() + " real " + table.convertRowIndexToModel(table.getSelectedRow()));
+                        System.out.println(model.getValueAt(table.convertRowIndexToModel(table.getSelectedRow()), model.getColumnCount() - 1));
+                        try {
+                            callsLogDao.delete((long) model.getValueAt(table.convertRowIndexToModel(table.getSelectedRow()), model.getColumnCount() - 1));
+                            configTable();
+                            table.repaint();
+                        } catch (Exception e1) {
                             e1.printStackTrace();
-                        }*/
+                        }
+
+                    }
+                });
+
+                addButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+
+
+                    }
+                });
+
+                editButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+
 
                     }
                 });
             }
         });
+    }
+
+    public TableModel getModel() {
+        try {
+            model = new CallsLogTableModel(callsLogDao.getAll());
+        } catch (Exception e1) {
+            e1.printStackTrace();
+        }
+        return model;
+    }
+
+    public void configTable () {
+        table.setModel(getModel());
+        table.setAutoCreateRowSorter(true);
+        table.getRowSorter().toggleSortOrder(5);
     }
 }
