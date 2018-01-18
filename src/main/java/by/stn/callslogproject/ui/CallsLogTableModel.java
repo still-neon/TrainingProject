@@ -78,7 +78,7 @@ public class CallsLogTableModel implements TableModel {
 
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-
+        //юзать этот метод, вызывать при переключении на дугую ячейку
     }
 
     @Override
@@ -93,6 +93,6 @@ public class CallsLogTableModel implements TableModel {
 
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
-        return false;
+        return true;
     }
 }

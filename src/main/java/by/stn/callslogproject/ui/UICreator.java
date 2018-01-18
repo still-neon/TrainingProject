@@ -22,8 +22,8 @@ public class UICreator {
     private static final String DELETE_BUTTON_TEXT = "Delete Call";
     @Setter
     private CallsLogDao callsLogDao;
-    private TableModel model;
     private JTable table = new JTable();
+    private TableModel model;
 
     public void create() {
         SwingUtilities.invokeLater(new Runnable() {
@@ -48,7 +48,6 @@ public class UICreator {
                 configTable();
 
 
-
                 deleteButton.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
@@ -57,12 +56,11 @@ public class UICreator {
                         System.out.println(model.getValueAt(table.convertRowIndexToModel(table.getSelectedRow()), model.getColumnCount() - 1));
                         try {
                             callsLogDao.delete((long) model.getValueAt(table.convertRowIndexToModel(table.getSelectedRow()), model.getColumnCount() - 1));
-                            configTable();
-                            table.repaint();
+                            configTable();//изменять модель а не создавать новую, проверка на удаление
+                            table.repaint();//выяснить EDT или нет, если нет сделать
                         } catch (Exception e1) {
                             e1.printStackTrace();
                         }
-
                     }
                 });
 
@@ -77,7 +75,7 @@ public class UICreator {
                 editButton.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-
+                //
 
                     }
                 });
@@ -85,7 +83,7 @@ public class UICreator {
         });
     }
 
-    public TableModel getModel() {
+    private TableModel getModel() {
         try {
             model = new CallsLogTableModel(callsLogDao.getAll());
         } catch (Exception e1) {
@@ -94,7 +92,7 @@ public class UICreator {
         return model;
     }
 
-    public void configTable () {
+    private void configTable() {//возможно нужен отдельный класс для table
         table.setModel(getModel());
         table.setAutoCreateRowSorter(true);
         table.getRowSorter().toggleSortOrder(5);
