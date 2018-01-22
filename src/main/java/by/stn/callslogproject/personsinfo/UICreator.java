@@ -1,6 +1,7 @@
-package by.stn.callslogproject.ui;
+package by.stn.callslogproject.personsinfo;
 
 import by.stn.callslogproject.callslog.CallsLogDao;
+import by.stn.callslogproject.ui.CallsLogTableModel;
 import lombok.Setter;
 
 import javax.swing.*;
