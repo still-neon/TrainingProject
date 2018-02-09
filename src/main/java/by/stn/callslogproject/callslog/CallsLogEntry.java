@@ -10,6 +10,7 @@ import java.util.Date;
 /**
  * Created by EugenKrasotkin on 11/29/2017.
  */
+
 public class CallsLogEntry extends AbstractEntity {
     @Getter
     @Setter
@@ -35,7 +36,8 @@ public class CallsLogEntry extends AbstractEntity {
         callType = CallType.byId(stateNum);
     }
 
-    public enum CallType {
+
+        public enum CallType {
         INCOMING(0), OUTGOING(1), CONFERENCE(2);
 
         @Getter
