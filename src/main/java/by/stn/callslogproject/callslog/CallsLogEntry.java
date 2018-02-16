@@ -1,5 +1,6 @@
 package by.stn.callslogproject.callslog;
 
+import by.stn.callslogproject.TableName;
 import by.stn.callslogproject.entity.AbstractEntity;
 import by.stn.callslogproject.personsinfo.PersonsInfo;
 import lombok.Getter;
@@ -11,6 +12,7 @@ import java.util.Date;
  * Created by EugenKrasotkin on 11/29/2017.
  */
 
+@TableName(name="callslog")
 public class CallsLogEntry extends AbstractEntity {
     @Getter
     @Setter

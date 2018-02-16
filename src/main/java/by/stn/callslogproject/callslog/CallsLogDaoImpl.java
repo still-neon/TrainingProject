@@ -11,8 +11,9 @@ import java.sql.*;
  */
 
 public class CallsLogDaoImpl extends AbstractEntityDao<CallsLogEntry> implements CallsLogDao {
-    private static final String CALLSLOGENTRY_TABLE_NAME = "callslog";
+    private static final String CALLSLOGENTRY_TABLE_NAME="callslog";
     private static final String[] CALLSLOGENTRY_COLUMNS_NAMES = {"calltype", "callerid", "addresseeid", "startdate", "enddate"};
+
 
     public String getTableName() {
         return CALLSLOGENTRY_TABLE_NAME;

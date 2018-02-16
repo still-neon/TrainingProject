@@ -1,4 +1,4 @@
-package by.stn.callslogproject.personsinfo;
+package by.stn.callslogproject.ui;
 
 import by.stn.callslogproject.callslog.CallsLogDao;
 import by.stn.callslogproject.ui.CallsLogTableModel;

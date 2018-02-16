@@ -1,5 +1,7 @@
 package by.stn.callslogproject.entity;
 
+import by.stn.callslogproject.TableName;
+import by.stn.callslogproject.callslog.CallsLogEntry;
 import by.stn.callslogproject.connection.ConnectionFactory;
 import lombok.Setter;
 
@@ -49,13 +51,13 @@ public abstract class AbstractEntityDao<T extends Entity> implements EntityDao<T
         PreparedStatement pstm;
         try (Connection con = ConnectionFactory.getConnection()) {
             if (id == null) {
-                pstm = con.prepareStatement(getPreparedQueryForInsert());
+                pstm = con.prepareStatement(getPreparedQueryForInsert(entity));
                 setInsertQueryArguments(pstm, entity);
                 ResultSet rs = pstm.executeQuery();
                 rs.next();
                 id = rs.getLong(1);
             } else {
-                pstm = con.prepareStatement(getPreparedQueryForUpdate());
+                pstm = con.prepareStatement(getPreparedQueryForUpdate(entity));
                 setUpdateQueryArguments(pstm, entity);
                 pstm.executeUpdate();
             }
@@ -67,19 +69,24 @@ public abstract class AbstractEntityDao<T extends Entity> implements EntityDao<T
     public boolean delete(long id) throws SQLException {
         int result;
         try (Connection con = ConnectionFactory.getConnection()) {
-            result = con.createStatement().executeUpdate(String.format(DELETE_ENTITY_QUERY_FORMAT, getTableName(), id));
+            result = con.createStatement().executeUpdate(String.format(DELETE_ENTITY_QUERY_FORMAT, getTable01(entity), id));
         }
         return result > 0;
     }
 
-    private ResultSet getResultSet(String query, long... id) throws SQLException {
+    private String getTable01 (T entity) {
+        TableName tn = entity.getClass().getAnnotation(TableName.class);
+        return tn.name();
+    }
+
+    private ResultSet getResultSet(T entity, String query, long... id) throws SQLException {
         ResultSet rs;
         try (Connection con = ConnectionFactory.getConnection()) {
             Statement stm = con.createStatement();
             if (id.length > 0) {
-                rs = stm.executeQuery(String.format(query, getTableName(), id[0]));
+                rs = stm.executeQuery(String.format(query, getTable01(entity), id[0]));
             } else {
-                rs = stm.executeQuery(String.format(query, getTableName()));
+                rs = stm.executeQuery(String.format(query, getTable01(entity)));
             }
         }
         return rs;
@@ -94,21 +101,21 @@ public abstract class AbstractEntityDao<T extends Entity> implements EntityDao<T
         return result;
     }
 
-    private String getPreparedQueryForUpdate() {
+    private String getPreparedQueryForUpdate(T entity) {
         StringBuilder sb = new StringBuilder();
         for (String str : getColumnsNames()) {
             sb.append(str).append(PREPARED_QUERY_PARAMETER_FOR_UPDATE);
         }
-        return String.format(UPDATE_ENTITY_QUERY_FORMAT, getTableName(), sb.deleteCharAt(sb.length() - 1).toString());
+        return String.format(UPDATE_ENTITY_QUERY_FORMAT, getTable01(entity), sb.deleteCharAt(sb.length() - 1).toString());
     }
 
-    private String getPreparedQueryForInsert() {
+    private String getPreparedQueryForInsert(T entity) {
         StringBuilder sb1 = new StringBuilder();
         StringBuilder sb2 = new StringBuilder();
         for (String str : getColumnsNames()) {
             sb1.append(str).append(PREPARED_QUERY_COLUMN_SEPARATOR_SIGN);
             sb2.append(PREPARED_QUERY_PARAMETER_PLACE);
         }
-        return String.format(INSERT_ENTITY_QUERY_FORMAT, getTableName(), sb1.deleteCharAt(sb1.length() - 1).toString(), sb2.deleteCharAt(sb2.length() - 1).toString());
+        return String.format(INSERT_ENTITY_QUERY_FORMAT, getTable01(entity), sb1.deleteCharAt(sb1.length() - 1).toString(), sb2.deleteCharAt(sb2.length() - 1).toString());
     }
 }

@@ -1,6 +1,5 @@
 package by.stn.callslogproject.ui;
 
-import by.stn.callslogproject.personsinfo.UICreator;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
