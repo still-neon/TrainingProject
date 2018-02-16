@@ -1,9 +1,7 @@
 package by.stn.callslogproject.entity;
 
-import by.stn.callslogproject.TableName;
-import by.stn.callslogproject.callslog.CallsLogEntry;
+import by.stn.callslogproject.Entity;
 import by.stn.callslogproject.connection.ConnectionFactory;
-import lombok.Setter;
 
 import java.sql.*;
 import java.util.HashSet;
@@ -12,7 +10,7 @@ import java.util.Set;
 /**
  * Created by EugenKrasotkin on 12/11/2017.
  */
-public abstract class AbstractEntityDao<T extends Entity> implements EntityDao<T> {
+public abstract class AbstractEntityDao<T extends by.stn.callslogproject.entity.Entity> implements EntityDao<T> {
     private static final String GET_ENTITY_QUERY_FORMAT = "SELECT * FROM %s WHERE id=%d";
     private static final String GET_ALL_QUERY_FORMAT = "SELECT * FROM %s";
     private static final String DELETE_ENTITY_QUERY_FORMAT = "DELETE FROM %s WHERE id=%d";
@@ -34,6 +32,9 @@ public abstract class AbstractEntityDao<T extends Entity> implements EntityDao<T
 
     protected abstract void setInsertQueryArguments(PreparedStatement query, T entity) throws SQLException;
 
+    //TODO конструктор с типом, поле, пример из скайпа
+    //конструктор в дао, передавать тип в super
+    //в спринге переедовать в конструктор тип
     @Override
     public T get(long id) throws Exception {
         ResultSet rs = getResultSet(GET_ENTITY_QUERY_FORMAT, id);
@@ -75,8 +76,9 @@ public abstract class AbstractEntityDao<T extends Entity> implements EntityDao<T
     }
 
     private String getTable01 (T entity) {
-        TableName tn = entity.getClass().getAnnotation(TableName.class);
-        return tn.name();
+        Object ob = new T();
+        Entity tn = entity.getClass().getAnnotation(Entity.class);
+        return tn.tableName();
     }
 
     private ResultSet getResultSet(T entity, String query, long... id) throws SQLException {

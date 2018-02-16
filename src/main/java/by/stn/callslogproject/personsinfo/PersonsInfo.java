@@ -2,7 +2,7 @@ package by.stn.callslogproject.personsinfo;
 
 import java.util.Date;
 
-import by.stn.callslogproject.TableName;
+import by.stn.callslogproject.Entity;
 import by.stn.callslogproject.entity.AbstractEntity;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,7 +10,7 @@ import lombok.Setter;
 /**
  * Created by EugenKrasotkin on 11/29/2017.
  */
-@TableName(name="person")
+@Entity(tableName ="person")
 public class PersonsInfo extends AbstractEntity {
     @Getter
     @Setter
