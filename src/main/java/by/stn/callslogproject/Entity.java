@@ -9,7 +9,9 @@ import java.lang.annotation.Target;
  * Created by EugenKrasotkin on 2/15/2018.
  */
 @Target(ElementType.TYPE)
-@Retention(RetentionPolicy.SOURCE)
+@Retention(RetentionPolicy.RUNTIME)
 public @interface Entity {
-    String tableName() ;
+    String tableName();
+
+    String[] columnsNames();
 }

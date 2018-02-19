@@ -3,19 +3,27 @@ package by.stn.callslogproject.ui;
 import by.stn.callslogproject.callslog.CallsLogEntry;
 
 import javax.swing.event.TableModelListener;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Set;
+
 
 /**
  * Created by EugenKrasotkin on 1/8/2018.
  */
-public class CallsLogTableModel implements TableModel {
+public class CallsLogTableModel extends DefaultTableModel implements TableModel {
+    public static final String[] COLUMN_NAMES = {"calltype", "callerid", "addresseeid", "startdate", "enddate", "id"};
+    private Set<TableModelListener> listeners = new HashSet<TableModelListener>();
+
+
     private static final int NUMBER_OF_COLUMNS = 6;
 
     private Set<CallsLogEntry> callsLog;
 
     public CallsLogTableModel(Set<CallsLogEntry> callsLog) {
+        super(COLUMN_NAMES, 0);
         this.callsLog = callsLog;
     }
 
@@ -82,13 +90,13 @@ public class CallsLogTableModel implements TableModel {
     }
 
     @Override
-    public void addTableModelListener(TableModelListener l) {
-
+    public void addTableModelListener(TableModelListener listener) {
+        listeners.add(listener);
     }
 
     @Override
-    public void removeTableModelListener(TableModelListener l) {
-
+    public void removeTableModelListener(TableModelListener listener) {
+        listeners.remove(listener);
     }
 
     @Override

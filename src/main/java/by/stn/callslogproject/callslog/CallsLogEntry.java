@@ -12,7 +12,7 @@ import java.util.Date;
  * Created by EugenKrasotkin on 11/29/2017.
  */
 
-@Entity(tableName ="callslog")
+@Entity(tableName = "callslog", columnsNames = {"calltype", "callerid", "addresseeid", "startdate", "enddate"})
 public class CallsLogEntry extends AbstractEntity {
     @Getter
     @Setter
@@ -39,7 +39,7 @@ public class CallsLogEntry extends AbstractEntity {
     }
 
 
-        public enum CallType {
+    public enum CallType {
         INCOMING(0), OUTGOING(1), CONFERENCE(2);
 
         @Getter

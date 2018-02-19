@@ -8,17 +8,8 @@ import java.sql.*;
  * Created by EugenKrasotkin on 12/12/2017.
  */
 public class PersonsDaoImpl extends AbstractEntityDao<PersonsInfo> implements PersonsDao {
-    private static final String PERSONINFO_TABLE_NAME = "person";
-    private static final String[] PERSONINFO_COLUMNS_NAMES = {"fullname", "organizationname", "phone", "email", "creationdate"};
-
-    @Override
-    protected String getTableName() {
-        return PERSONINFO_TABLE_NAME;
-    }
-
-    @Override
-    protected String[] getColumnsNames() {
-        return PERSONINFO_COLUMNS_NAMES;
+    public PersonsDaoImpl() throws ClassNotFoundException {
+        super((Class<PersonsInfo>) Class.forName(PersonsInfo.class.getName()));
     }
 
     @Override

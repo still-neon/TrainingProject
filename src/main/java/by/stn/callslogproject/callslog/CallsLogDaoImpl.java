@@ -11,19 +11,12 @@ import java.sql.*;
  */
 
 public class CallsLogDaoImpl extends AbstractEntityDao<CallsLogEntry> implements CallsLogDao {
-    private static final String CALLSLOGENTRY_TABLE_NAME="callslog";
-    private static final String[] CALLSLOGENTRY_COLUMNS_NAMES = {"calltype", "callerid", "addresseeid", "startdate", "enddate"};
-
-
-    public String getTableName() {
-        return CALLSLOGENTRY_TABLE_NAME;
-    }
-
-    public String[] getColumnsNames() {
-        return CALLSLOGENTRY_COLUMNS_NAMES;
-    }
     @Setter
     private PersonsDao personsDao;
+
+    public CallsLogDaoImpl() throws ClassNotFoundException {
+        super((Class<CallsLogEntry>) Class.forName(CallsLogEntry.class.getName()));
+    }
 
     @Override
     protected CallsLogEntry toEntity(ResultSet rs) throws Exception {

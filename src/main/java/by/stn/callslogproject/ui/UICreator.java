@@ -1,14 +1,19 @@
 package by.stn.callslogproject.ui;
 
 import by.stn.callslogproject.callslog.CallsLogDao;
+import by.stn.callslogproject.callslog.CallsLogEntry;
+import by.stn.callslogproject.personsinfo.PersonsInfo;
 import by.stn.callslogproject.ui.CallsLogTableModel;
 import lombok.Setter;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Date;
+import java.util.Vector;
 
 
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
@@ -24,11 +29,12 @@ public class UICreator {
     @Setter
     private CallsLogDao callsLogDao;
     private JTable table = new JTable();
-    private TableModel model;
+    private CallsLogTableModel model;
 
     public void create() {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
+
                 JFrame frame = new JFrame(APP_NAME);
                 frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
                 frame.setSize(700, 300);
@@ -45,9 +51,9 @@ public class UICreator {
                 JButton deleteButton = new JButton(DELETE_BUTTON_TEXT);
                 contents.add(deleteButton);
 
+                table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
                 contents.add(new JScrollPane(table));
                 configTable();
-
 
                 deleteButton.addActionListener(new ActionListener() {
                     @Override
@@ -58,7 +64,8 @@ public class UICreator {
                         try {
                             callsLogDao.delete((long) model.getValueAt(table.convertRowIndexToModel(table.getSelectedRow()), model.getColumnCount() - 1));
                             configTable();//изменять модель а не создавать новую, проверка на удаление
-                            table.repaint();//выяснить EDT или нет, если нет сделать
+                            table.updateUI();
+                            //table.repaint();//выяснить EDT или нет, если нет сделать
                         } catch (Exception e1) {
                             e1.printStackTrace();
                         }
@@ -68,15 +75,28 @@ public class UICreator {
                 addButton.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-
-
+                        model.addRow(new Vector());
+                        /*
+                        CallsLogEntry cl = new CallsLogEntry(null);
+                        cl.setAddressee(new PersonsInfo(2L));
+                        cl.setCaller(new PersonsInfo(1L));
+                        cl.setCallType(1);
+                        cl.setEndDate(new Date(System.currentTimeMillis()));
+                        cl.setEndDate(new Date(System.currentTimeMillis()));
+                        try {
+                            callsLogDao.saveOrUpdate(cl);
+                            configTable();
+                            table.updateUI();
+                        } catch (Exception e1) {
+                            e1.printStackTrace();
+                        }*/
                     }
                 });
 
                 editButton.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                //
+                        //
 
                     }
                 });

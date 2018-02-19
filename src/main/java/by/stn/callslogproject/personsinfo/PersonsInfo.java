@@ -10,7 +10,7 @@ import lombok.Setter;
 /**
  * Created by EugenKrasotkin on 11/29/2017.
  */
-@Entity(tableName ="person")
+@Entity(tableName = "person", columnsNames = {"fullname", "organizationname", "phone", "email", "creationdate"})
 public class PersonsInfo extends AbstractEntity {
     @Getter
     @Setter
