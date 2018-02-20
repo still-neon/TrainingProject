@@ -23,7 +23,7 @@ public class CallsLogTableModel extends DefaultTableModel implements TableModel 
     private Set<CallsLogEntry> callsLog;
 
     public CallsLogTableModel(Set<CallsLogEntry> callsLog) {
-        super(COLUMN_NAMES, 0);
+        //super(COLUMN_NAMES, 0);
         this.callsLog = callsLog;
     }
 

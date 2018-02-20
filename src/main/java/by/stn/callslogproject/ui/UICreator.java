@@ -76,7 +76,7 @@ public class UICreator {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         model.addRow(new Vector());
-                        /*
+
                         CallsLogEntry cl = new CallsLogEntry(null);
                         cl.setAddressee(new PersonsInfo(2L));
                         cl.setCaller(new PersonsInfo(1L));
@@ -89,7 +89,7 @@ public class UICreator {
                             table.updateUI();
                         } catch (Exception e1) {
                             e1.printStackTrace();
-                        }*/
+                        }
                     }
                 });
 

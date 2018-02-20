@@ -30,10 +30,6 @@ public abstract class AbstractEntityDao<T extends by.stn.callslogproject.entity.
 
     private final Class<T> type;
 
-    //TODO конструктор с типом, поле, пример из скайпа
-    //конструктор в дао, передавать тип в super
-    //в спринге переедовать в конструктор тип
-
     public AbstractEntityDao(Class<T> type) {
         this.type = type;
     }
@@ -79,13 +75,11 @@ public abstract class AbstractEntityDao<T extends by.stn.callslogproject.entity.
     }
 
     private String getTableName() {
-        Entity tn = type.getAnnotation(Entity.class);
-        return tn.tableName();
+        return type.getAnnotation(Entity.class).tableName();
     }
 
     private String[] getColumnsNames() {
-        Entity tn = type.getAnnotation(Entity.class);
-        return tn.columnsNames();
+        return type.getAnnotation(Entity.class).columnsNames();
     }
 
     private ResultSet getResultSet(String query, long... id) throws SQLException {
