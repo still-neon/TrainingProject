@@ -7,7 +7,7 @@
         <property name="personsDao" ref="personsDao"/>
     </bean>
     <bean id="personsDao" class="by.stn.callslogproject.personsinfo.PersonsDaoImpl"></bean>
-    <bean id="tableConfigurator" class="by.stn.callslogproject.ui.CallsLogTableManager">
+    <bean id="tableConfigurator" class="by.stn.callslogproject.callslog.CallsLogTableManager">
         <property name="callsLogDao" ref="callsLogDao"/>
     </bean>
     <bean id="uiCreator" class="by.stn.callslogproject.ui.UICreator">

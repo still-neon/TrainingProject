@@ -1,4 +1,4 @@
-package by.stn.callslogproject.ui;
+package by.stn.callslogproject.callslog;
 
 import by.stn.callslogproject.callslog.CallsLogDao;
 import by.stn.callslogproject.callslog.CallsLogEntry;

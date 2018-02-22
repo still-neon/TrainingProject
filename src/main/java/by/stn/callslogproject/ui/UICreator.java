@@ -1,5 +1,6 @@
 package by.stn.callslogproject.ui;
 
+import by.stn.callslogproject.callslog.CallsLogTableManager;
 import lombok.Setter;
 
 import javax.swing.*;
