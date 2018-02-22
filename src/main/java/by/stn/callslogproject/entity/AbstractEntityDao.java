@@ -4,8 +4,8 @@ import by.stn.callslogproject.Entity;
 import by.stn.callslogproject.connection.ConnectionFactory;
 
 import java.sql.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by EugenKrasotkin on 12/11/2017.
@@ -41,7 +41,7 @@ public abstract class AbstractEntityDao<T extends by.stn.callslogproject.entity.
     }
 
     @Override
-    public Set<T> getAll() throws Exception {
+    public List<T> getAll() throws Exception {
         return toEntities(getResultSet(GET_ALL_QUERY_FORMAT));
     }
 
@@ -95,8 +95,8 @@ public abstract class AbstractEntityDao<T extends by.stn.callslogproject.entity.
         return rs;
     }
 
-    private Set<T> toEntities(ResultSet rs) throws Exception {
-        Set<T> result = new HashSet<T>();
+    private List<T> toEntities(ResultSet rs) throws Exception {
+        List<T> result = new ArrayList<T>();
         while (rs.next()) {
             T ent = toEntity(rs);
             result.add(ent);
