@@ -12,28 +12,31 @@ import java.util.Arrays;
 /**
  * Created by EugenKrasotkin on 2/21/2018.
  */
-public class TableConfigurator {
+public class CallsLogTableManager {
     private static final String[] COLUMN_NAMES = {"CallType", "Caller", "Addressee", "StartDate", "EndDate", "ID"};
     private DefaultTableModel model;
     @Setter
     private CallsLogDao callsLogDao;
     private boolean editEnabled;
-    int r;
+    private JTable table;
+    //int r;
 
-    public void config(JTable table) {
+    public JTable createTable() {
         model = new DefaultTableModel(getTableData(), COLUMN_NAMES) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return editEnabled;
             }
         };
-
+        table = new JTable();
+        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         table.setModel(model);
         table.setAutoCreateRowSorter(true);
         table.getRowSorter().toggleSortOrder(Arrays.asList(COLUMN_NAMES).indexOf("ID"));
+        return table;
     }
 
-    public void deleteRow(JTable table) {
+    public void deleteRow() {
         try {
             callsLogDao.delete((long) model.getValueAt(table.convertRowIndexToModel(table.getSelectedRow()), model.getColumnCount() - 1));
             model.removeRow(table.convertRowIndexToModel(table.getSelectedRow()));
@@ -42,13 +45,13 @@ public class TableConfigurator {
         }
     }
 
-    public void addRow(JTable table) {
+    public void addRow() {
         String[] str = {};
         model.addRow(str);
         //model.moveRow(0,0,table.getSelectedRow()+1);
     }
 
-    public void editRow(JTable table) {
+    public void editRow() {
         int selrow = table.getSelectedRow();
         table.setRowSelectionInterval(2, 2);
         table.setRequestFocusEnabled(true);
@@ -65,29 +68,9 @@ public class TableConfigurator {
         }
         Object[][] tableData = new Object[calls.size()][COLUMN_NAMES.length];
 
-        for (int call = 0; call < calls.size(); call++) {
-            for (int value = 0; value < COLUMN_NAMES.length; value++) {
-                switch (COLUMN_NAMES[value]) {
-                    case "CallType":
-                        tableData[call][value] = calls.get(call).getCallType();
-                        break;
-                    case "Caller":
-                        tableData[call][value] = calls.get(call).getCaller().getFullName();
-                        break;
-                    case "Addressee":
-                        tableData[call][value] = calls.get(call).getAddressee().getFullName();
-                        break;
-                    case "StartDate":
-                        tableData[call][value] = calls.get(call).getStartDate();
-                        break;
-                    case "EndDate":
-                        tableData[call][value] = calls.get(call).getEndDate();
-                        break;
-                    case "ID":
-                        tableData[call][value] = calls.get(call).getId();
-                        break;
-                }
-            }
+        for (int i = 0; i< calls.size(); i++) {
+            CallsLogEntry entry = calls.get(i);
+            tableData[i] = new Object[] {entry.getCallType(), entry.getCaller().getFullName(), entry.getAddressee().getFullName(), entry.getStartDate(), entry.getEndDate(), entry.getId()};
         }
         return tableData;
     }

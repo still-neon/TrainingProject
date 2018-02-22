@@ -17,9 +17,8 @@ public class UICreator {
     private static final String ADD_BUTTON_TEXT = "Add Call";
     private static final String EDIT_BUTTON_TEXT = "Edit Call";
     private static final String DELETE_BUTTON_TEXT = "Delete Call";
-    private JTable table = new JTable();
     @Setter
-    private TableConfigurator tableConfigurator;
+    private CallsLogTableManager callsLogTableManager;
 
     public void create() {
         SwingUtilities.invokeLater(new Runnable() {
@@ -40,15 +39,13 @@ public class UICreator {
                 contents.add(editButton);
                 contents.add(deleteButton);
 
-                table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-                contents.add(new JScrollPane(table));
+                contents.add(new JScrollPane(callsLogTableManager.createTable()));
 
-                tableConfigurator.config(table);
                 deleteButton.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         try {
-                            tableConfigurator.deleteRow(table);
+                            callsLogTableManager.deleteRow();
                         } catch (Exception e1) {
                             e1.printStackTrace();
                         }
@@ -58,7 +55,7 @@ public class UICreator {
                 addButton.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        tableConfigurator.addRow(table);
+                        callsLogTableManager.addRow();
 
                     }
                 });
@@ -66,7 +63,7 @@ public class UICreator {
                 editButton.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        tableConfigurator.editRow(table);
+                        callsLogTableManager.editRow();
 
                     }
                 });
