@@ -1,11 +1,14 @@
 package by.stn.callslogproject.callslog;
 
-import by.stn.callslogproject.callslog.CallsLogDao;
-import by.stn.callslogproject.callslog.CallsLogEntry;
+import by.stn.callslogproject.personsinfo.PersonsDao;
+import by.stn.callslogproject.personsinfo.PersonsInfo;
+import by.stn.callslogproject.ui.DatePicker;
 import lombok.Setter;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -14,10 +17,13 @@ import java.util.Arrays;
  */
 public class CallsLogTableManager {
     private static final String[] COLUMN_NAMES = {"CallType", "Caller", "Addressee", "StartDate", "EndDate", "ID"};
+    private static final String[] callType = {CallsLogEntry.CallType.INCOMING.name(),CallsLogEntry.CallType.OUTGOING.name(),CallsLogEntry.CallType.CONFERENCE.name()};
     private DefaultTableModel model;
     @Setter
     private CallsLogDao callsLogDao;
-    private boolean editEnabled;
+    @Setter
+    private PersonsDao personsDao;
+    private boolean editEnabled = true;
     private JTable table;
     //int r;
 
@@ -33,6 +39,42 @@ public class CallsLogTableManager {
         table.setModel(model);
         table.setAutoCreateRowSorter(true);
         table.getRowSorter().toggleSortOrder(Arrays.asList(COLUMN_NAMES).indexOf("ID"));
+
+
+        TableColumn callTypeColumn = table.getColumnModel().getColumn(0);
+        TableColumn callerColumn = table.getColumnModel().getColumn(1);
+        TableColumn addresseeColumn = table.getColumnModel().getColumn(2);
+
+        TableColumn startDateColumn = table.getColumnModel().getColumn(3);
+        startDateColumn.setCellEditor(new DatePicker());
+
+
+        JComboBox comboBox = new JComboBox();
+        JComboBox comboBox1 = new JComboBox();
+        JComboBox comboBox2 = new JComboBox();
+        for(String call: callType) {
+
+            comboBox.addItem(call);
+        }
+
+        ArrayList<PersonsInfo> personsInfo = null;
+        try {
+            personsInfo = (ArrayList<PersonsInfo>) personsDao.getAll();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        for(PersonsInfo p:personsInfo) {
+            comboBox1.addItem(p.getFullName());
+        }
+
+        callTypeColumn.setCellEditor(new DefaultCellEditor(comboBox));
+        callerColumn.setCellEditor(new DefaultCellEditor(comboBox1));
+        addresseeColumn.setCellEditor(new DefaultCellEditor(comboBox1));
+
+        //startDateColumn.setCellEditor(new DatePicker());
+
+
+        
         return table;
     }
 
