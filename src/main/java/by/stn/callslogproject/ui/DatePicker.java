@@ -32,7 +32,7 @@ public class DatePicker extends AbstractCellEditor implements TableCellEditor {
     // Implement the one CellEditor method that AbstractCellEditor doesn't.
     public Object getCellEditorValue() {
         currentDate = ((SpinnerDateModel) spinner.getModel()).getDate();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        //SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         return currentDate;
     }
 
