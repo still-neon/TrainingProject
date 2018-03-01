@@ -44,8 +44,8 @@ public class CallsLogTableManager {
         TableColumn callTypeColumn = table.getColumnModel().getColumn(0);
         TableColumn callerColumn = table.getColumnModel().getColumn(1);
         TableColumn addresseeColumn = table.getColumnModel().getColumn(2);
-
         TableColumn startDateColumn = table.getColumnModel().getColumn(3);
+
         startDateColumn.setCellEditor(new DatePicker());
 
 
