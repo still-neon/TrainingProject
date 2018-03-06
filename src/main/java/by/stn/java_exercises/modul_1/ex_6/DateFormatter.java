@@ -1,17 +1,19 @@
-package java_exercises.modul_1.ex_6;
+package by.stn.java_exercises.modul_1.ex_6;
 
 import java.util.Arrays;
 
 /**
  * Created by EugenKrasotkin on 2/26/2018.
  */
-public class NextDayCalculator {
-    private static int dayValue = 1;
+public class DateFormatter {
+    private static int dayValue = 1;//входные параметры
     private static int monthValue = 1;
     private static int yearValue = 1;
     private static final int INITIAL_VALUE = 1;
-    private static final Integer[] MONTH_WITH_31_DAYS = {1, 3, 5, 7, 8, 10, 12};
-    private static final Integer[] MONTH_WITH_30_DAYS = {4, 6, 9, 11};
+    private static final Integer[] MONTH_WITH_31_DAYS = {1, 3, 5, 7, 8, 10, 12};//сделать сетами на 12, 46911 сет 2 и вычислять
+    private static final Integer[] MONTH_WITH_30_DAYS = {4, 6, 9, 11};//переделать алгоритм, чтобы он был более универсальный и более простой, учесть ввод невалидной даты
+    //метод календарь вычислет текущую дату, метод шифт переводит на какое-то чилсо вперед
+    //
     private static final int MONTH_WITH_28_29_DAYS = 2;
     private static final int DAYS_IN_MONTH_28 = 28;
     private static final int DAYS_IN_MONTH_29 = 29;

@@ -1,7 +1,7 @@
-package java_exercises.modul_1.ex_7;
+package by.stn.java_exercises.modul_1.ex_7;
 
-public class CapacityChecker {
-    private static final double A_SIZE = 1;
+public class PlacementChecker {
+    private static final double A_SIZE = 1;//входные параметры
     private static final double B_SIZE = 0.1;
     private static final double C_SIZE = 2;
     private static final double D_SIZE = 1;
@@ -13,7 +13,7 @@ public class CapacityChecker {
     }
 
     private static boolean check(double a, double b, double c, double d, double e, double f) {
-        a = Math.max(a, b);
+        a = Math.max(a, b);//сделать с условиями в одном классе, или в конструкторе, названия сторон, класс ректангл
         b = Math.min(a, b);
         c = Math.max(c, d);
         d = Math.min(c, d);

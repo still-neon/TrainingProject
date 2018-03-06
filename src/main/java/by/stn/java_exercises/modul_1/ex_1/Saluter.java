@@ -1,4 +1,4 @@
-package java_exercises.modul_1.ex_1;
+package by.stn.java_exercises.modul_1.ex_1;
 
 /**
  * Created by EugenKrasotkin on 2/26/2018.

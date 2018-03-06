@@ -1,7 +1,8 @@
-package java_exercises.modul_1.ex_2;
+package by.stn.java_exercises.modul_1.ex_2;
 
-class Timer {
-    private final static int SECONDS_TOTAL = 3700000;
+class TimeFormatter {
+    private final static int SECONDS_TOTAL = 3700000;//подправить константы с помощью доп константы 24, 7 входные параметры не должны быть константами
+    //передаются в метод паблик
     private final static int SECONDS_IN_WEEK = 604800;
     private final static int SECONDS_IN_DAY = 86400;
     private final static int SECONDS_IN_HOUR = 3600;
