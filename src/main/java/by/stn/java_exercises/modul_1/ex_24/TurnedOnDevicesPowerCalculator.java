@@ -1,9 +1,9 @@
-package java_exercises.modul_1.ex_24;
+package by.stn.java_exercises.modul_1.ex_24;
 
-import java_exercises.modul_1.ex_24.audio_devices.Dynamics;
-import java_exercises.modul_1.ex_24.audio_devices.Headphones;
-import java_exercises.modul_1.ex_24.video_devices.Camera;
-import java_exercises.modul_1.ex_24.video_devices.Display;
+import by.stn.java_exercises.modul_1.ex_24.audio_devices.Dynamics;
+import by.stn.java_exercises.modul_1.ex_24.audio_devices.Headphones;
+import by.stn.java_exercises.modul_1.ex_24.video_devices.Camera;
+import by.stn.java_exercises.modul_1.ex_24.video_devices.Display;
 
 import java.util.ArrayList;
 

@@ -8,6 +8,8 @@
 
 *.pdf
 
+*.txt
+
 classes/
 
 target/

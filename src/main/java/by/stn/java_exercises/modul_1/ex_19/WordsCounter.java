@@ -1,4 +1,4 @@
-package java_exercises.modul_1.ex_19;
+package by.stn.java_exercises.modul_1.ex_19;
 
 public class WordsCounter {
     private static final String TEXT = " what a hell, is going on? I don't  understand! ";
@@ -7,7 +7,7 @@ public class WordsCounter {
         System.out.println("This text contains " + count(TEXT) + " words");
     }
 
-    private static int count(String txt) {
+    public static int count(String txt) {
         int counter = 0;
         txt = txt.trim().toLowerCase();
 

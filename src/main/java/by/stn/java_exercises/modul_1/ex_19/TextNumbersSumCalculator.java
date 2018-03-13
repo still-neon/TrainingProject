@@ -1,4 +1,4 @@
-package java_exercises.modul_1.ex_19;
+package by.stn.java_exercises.modul_1.ex_19;
 
 public class TextNumbersSumCalculator {
     private static final String TEXT = " what a hell, 123 is going on? I 45 don't  understand 7! ";
