@@ -1,4 +1,4 @@
-package by.stn.java_exercises.modul_1.ex_6_fixed;
+package by.stn.java_exercises.modul_1.ex_6_need_fix;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -8,7 +8,7 @@ import java.util.Set;
  * Created by EugenKrasotkin on 3/6/2018.
  */
 public class NextDayDateCalculator {
-    private static final Set<Integer> MONTHS_WITH_31_DAYS = new HashSet<Integer>(Arrays.asList(1, 3, 5, 7, 8, 10));
+    private static final Set<Integer> MONTHS_WITH_31_DAYS = new HashSet<Integer>(Arrays.asList(1, 3, 5, 7, 8, 10));//HashMap вместо сетов, номер месяца - константа енума
     private static final Set<Integer> MONTHS_WITH_30_DAYS = new HashSet<Integer>(Arrays.asList(4, 6, 9, 11));
     private static final Set<Integer> MONTH_WITH_28_29_DAYS = new HashSet<Integer>(Arrays.asList(2));
     private static final Set<Integer> LAST_MONTH = new HashSet<Integer>(Arrays.asList(12));
@@ -17,7 +17,7 @@ public class NextDayDateCalculator {
     private static final int INITIAL_VALUE = 1;
     private static MonthGroup monthGroup;
 
-    public static int[] calculate(int day, int month, int year) {
+    public static int[] getNextDay(int day, int month, int year) {
         int[] date = null;
 
         monthGroup = MonthGroup.defineMonthGroup(day, month);
@@ -60,9 +60,9 @@ public class NextDayDateCalculator {
     }
 
     public static int[] shift(int day, int month, int year, int times) {
-        int[] date = {day, month, year};
+        int[] date = {day, month, year};//сделать полями другого класса Date(представление в системе 3-х интов), в getNextDay передавать объект
         for (int i = 0; i < times; i++) {
-            date = calculate(date[0], date[1], date[2]);
+            date = getNextDay(date[0], date[1], date[2]);
         }
         return date;
     }

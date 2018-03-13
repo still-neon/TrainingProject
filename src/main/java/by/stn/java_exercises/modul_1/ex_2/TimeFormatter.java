@@ -1,4 +1,4 @@
-package by.stn.java_exercises.modul_1.ex_2_fixed;
+package by.stn.java_exercises.modul_1.ex_2;
 
 class TimeFormatter {
     private final static int SECONDS_IN_MINUTE = 60;
@@ -8,9 +8,6 @@ class TimeFormatter {
     private final static int SECONDS_IN_DAY = SECONDS_IN_HOUR * HOURS_IN_DAY;
     private final static int DAYS_IN_WEEK = 7;
     private final static int SECONDS_IN_WEEK = SECONDS_IN_DAY * DAYS_IN_WEEK;
-
-    //подправить константы с помощью доп константы 24, 7 входные параметры не должны быть константами
-    //передаются в метод паблик
 
     public static String format(int secondsTotal) {
         int seconds = secondsTotal % SECONDS_IN_MINUTE;
