@@ -12,6 +12,6 @@ public class LastDigitChecker {
     }
 
     public static void main(String[] args) {
-        System.out.println("It's " + check(778,TARGET_DIGIT) + " that last number is 7");
+        System.out.println("It's " + check(778, TARGET_DIGIT) + " that last number is 7");
     }
 }
