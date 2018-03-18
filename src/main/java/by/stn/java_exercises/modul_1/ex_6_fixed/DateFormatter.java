@@ -10,13 +10,14 @@ public class DateFormatter {
     //метод календарь вычислет текущую дату, метод шифт переводит на какое-то чилсо вперед
 
 
-    public static String format(DateEditor dateEditor) {
+    public static String format(CustomDate dateEditor) {
         return dateEditor.getDay() + "/" + dateEditor.getMonth() + "/" + dateEditor.getYear();
     }
 
     public static void main(String[] args) {
-        DateEditor dateEditor = new DateEditor(30,13,1);
-        new NextDayDateCalculator().shift(dateEditor, 1);
-        System.out.println("The date is "+ format(dateEditor));
+        CustomDate dateEditor = new CustomDate(30,12,1);
+        NextDayDateCalculator nextDayDateCalculator = new NextDayDateCalculator(dateEditor);
+        nextDayDateCalculator.shift(1);
+        System.out.println("The date is "+ format(nextDayDateCalculator.getDateEditor()));
     }
 }
