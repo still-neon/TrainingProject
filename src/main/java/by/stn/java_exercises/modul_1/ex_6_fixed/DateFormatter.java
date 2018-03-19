@@ -9,7 +9,7 @@ public class DateFormatter {
     }
 
     public static void main(String[] args) {
-        DayShifter nextDayDateCalculator = new DayShifter(new CustomDate(30, 12, 1));
+        DateShifter nextDayDateCalculator = new DateShifter(new CustomDate(30, 12, 1));
         nextDayDateCalculator.shift(1);
         System.out.println("The date is " + format(nextDayDateCalculator.getDateEditor()));
     }

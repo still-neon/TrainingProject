@@ -5,11 +5,11 @@ import lombok.Getter;
 /**
  * Created by EugenKrasotkin on 3/6/2018.
  */
-public class DayShifter {
+public class DateShifter {
     @Getter
     private CustomDate dateEditor;
 
-    public DayShifter(CustomDate dateEditor) {
+    public DateShifter(CustomDate dateEditor) {
         this.dateEditor = dateEditor;
     }
 
