@@ -1,8 +1,8 @@
-package by.stn.java_exercises.modul_1.ex_13;
+package by.stn.java_exercises.modul_1.ex_13_need_fix;
 
 public class SimpleNumberDeterminant {
 	public static void main(String[] args) {
-		int num = 7;
+		int num = 7;//сколько простых ввести, выводит все простые
 		int d = 1;
 		int count = 0;
 				
