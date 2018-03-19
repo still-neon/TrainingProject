@@ -1,7 +1,7 @@
-package by.stn.java_exercises.modul_1.ex_7_fixed;
+package by.stn.java_exercises.modul_1.ex_7_need_fix;
 
 public class PlacementChecker {
-    //входные параметры
+
 
     public static void main(String[] args) {
         System.out.println("It's " + check(1, 0.1, 2, 0.9, 2, 1) + " that figures are fit");
@@ -10,7 +10,8 @@ public class PlacementChecker {
     public static boolean check(double aSide, double bSide, double cSide, double dSide, double eSide, double fSide) {
         SideDeterminant sc = new SideDeterminant(aSide, bSide, cSide, dSide, eSide, fSide);
 
-        //сделать с условиями в одном классе, или в конструкторе, названия сторон, класс ректангл
+        //класс представление прямоугольника, стороны а и в (мак, мин в конс трукторе), 3 объекта
+        //метод проверки, поворот фигур
 
         if ((sc.getFirstMin() + sc.getSecondMin()) <= sc.getRectMin() && Math.max(sc.getFirstMax(), sc.getSecondMax()) <= sc.getRectMax())
             return true;

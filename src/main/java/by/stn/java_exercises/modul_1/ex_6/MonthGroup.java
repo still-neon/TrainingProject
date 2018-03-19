@@ -1,4 +1,4 @@
-package by.stn.java_exercises.modul_1.ex_6_fixed;
+package by.stn.java_exercises.modul_1.ex_6;
 
 import lombok.Getter;
 
@@ -41,12 +41,8 @@ public enum MonthGroup {
         this.days = days;
     }
 
-    public int checkDaysNumber(boolean isLeapYear) {
-        return isLeapYear && isModifiedByLeapYear() ? days + 1 : days;
-    }
-
-    public boolean isNotLastDay(int day, boolean isLeapYear) {
-        return day < checkDaysNumber(isLeapYear);
+    public int getDaysInMonth(int year) {
+        return CustomDate.isLeapYear(year) && isModifiedByLeapYear() ? days + 1 : days;
     }
 
     public boolean isLastMonth(int month) {

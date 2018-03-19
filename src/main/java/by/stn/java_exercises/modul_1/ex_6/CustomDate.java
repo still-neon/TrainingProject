@@ -1,4 +1,4 @@
-package by.stn.java_exercises.modul_1.ex_6_fixed;
+package by.stn.java_exercises.modul_1.ex_6;
 
 import lombok.Getter;
 
@@ -21,10 +21,13 @@ public class CustomDate {
         this.month = month;
         this.year = year;
         this.monthGroup = MonthGroup.of(month);
+        if (month > MonthGroup.getLAST_MONTH_INDEX() || day > monthGroup.getDaysInMonth(year)) {
+            throw new IllegalStateException("The day " + day + " or month " + month + " is incorrect!");
+        }
     }
 
     public void nextDay() {
-        if (monthGroup.isNotLastDay(day, isLeapYear())) {
+        if (day < monthGroup.getDaysInMonth(year)) {
             day++;
         } else if (monthGroup.isLastMonth(month)) {
             resetDay();
@@ -36,7 +39,7 @@ public class CustomDate {
         }
     }
 
-    public boolean isLeapYear() {
+    public static boolean isLeapYear(int year) {
         return year % LEAP_YEAR_DIVISOR == 0;
     }
 

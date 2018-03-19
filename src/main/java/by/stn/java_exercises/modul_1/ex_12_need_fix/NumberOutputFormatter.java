@@ -1,8 +1,8 @@
-package java_exercises.modul_1.ex_12;
+package by.stn.java_exercises.modul_1.ex_12_need_fix;
 
 public class NumberOutputFormatter {
-    private static final long NUMBER = 2002314005;
-    private static final long MULTIPLIER = 1000;
+    private static final long NUMBER = 2002314005;//входные параметры, accountNumberFormatter String format(int number)
+    private static final long MULTIPLIER = 1000;//base 10, groupsize = 3, методы дополняющий нулями до 3
     private static long tempNumber = NUMBER;
     private static String outputValue;
 

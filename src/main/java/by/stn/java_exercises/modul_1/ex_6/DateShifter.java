@@ -1,4 +1,4 @@
-package by.stn.java_exercises.modul_1.ex_6_fixed;
+package by.stn.java_exercises.modul_1.ex_6;
 
 import lombok.Getter;
 
@@ -14,7 +14,6 @@ public class DateShifter {
     }
 
     public void shift(int times) {
-        DateValidator.validate(dateEditor);
         for (int i = 0; i < times; i++) {
             dateEditor.nextDay();
         }

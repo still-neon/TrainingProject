@@ -1,4 +1,4 @@
-package java_exercises.modul_1.ex_13;
+package by.stn.java_exercises.modul_1.ex_13;
 
 public class SimpleNumberDeterminant {
 	public static void main(String[] args) {

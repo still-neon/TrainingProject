@@ -1,11 +1,11 @@
-package java_exercises.modul_1.ex_9;
+package by.stn.java_exercises.modul_1.ex_9_need_fix;
 
 public class MaxValueCalculator {
     public static void main(String[] args) {
-        System.out.println("\n The max value is " + calculate());
+        System.out.println("\n The max value is " + calculate(20));
     }
 
-    private static int calculate() {
+    public static int calculate(int numbers) {//отделть генератор чисел
         int max = 0;
         System.out.print("Values are: ");
         int x = (int) (Math.random() * 20);

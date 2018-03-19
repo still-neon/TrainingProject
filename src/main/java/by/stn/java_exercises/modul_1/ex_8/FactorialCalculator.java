@@ -1,15 +1,13 @@
-package java_exercises.modul_1.ex_8;
+package by.stn.java_exercises.modul_1.ex_8;
 
 public class FactorialCalculator {
-    private static final int NUMBER = 15;
-
     public static void main(String[] args) {
-        System.out.println("The factorial of " + NUMBER + " is " + calculate());
+        System.out.println("The factorial of number is: " + calculate(15));
     }
 
-    private static int calculate() {
-        int fact = 1;
-        for(int i = 1; i <= NUMBER; i++) {
+    public static long calculate(long number) {
+        long fact = 1;
+        for (long i = 1; i <= number; i++) {
             fact *= i;
         }
         return fact;
