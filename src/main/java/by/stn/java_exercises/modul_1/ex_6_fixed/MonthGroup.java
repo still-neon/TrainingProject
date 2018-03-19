@@ -29,9 +29,11 @@ public enum MonthGroup {
             put(12, MONTH_GROUP_3);
         }
     };
+    @Getter
     private static final int LAST_MONTH_INDEX = MONTHS.size();
     @Getter
     private boolean modifiedByLeapYear;
+    @Getter
     private int days;
 
     MonthGroup(boolean leapYearInfluence, int days) {
@@ -39,11 +41,12 @@ public enum MonthGroup {
         this.days = days;
     }
 
+    public int checkDaysNumber(boolean isLeapYear) {
+        return isLeapYear && isModifiedByLeapYear() ? days + 1 : days;
+    }
+
     public boolean isNotLastDay(int day, boolean isLeapYear) {
-        if (isLeapYear && isModifiedByLeapYear()) {
-            return day < days + 1;
-        } else
-            return day < days;
+        return day < checkDaysNumber(isLeapYear);
     }
 
     public boolean isLastMonth(int month) {

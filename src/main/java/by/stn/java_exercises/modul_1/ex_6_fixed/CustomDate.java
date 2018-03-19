@@ -36,7 +36,7 @@ public class CustomDate {
         }
     }
 
-    private boolean isLeapYear() {
+    public boolean isLeapYear() {
         return year % LEAP_YEAR_DIVISOR == 0;
     }
 
