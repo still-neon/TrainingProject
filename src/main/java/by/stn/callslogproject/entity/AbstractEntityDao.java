@@ -22,7 +22,11 @@ public abstract class AbstractEntityDao<T extends by.stn.callslogproject.entity.
     private static final String PREPARED_QUERY_PARAMETER_PLACE = PREPARED_QUERY_PARAMETER_SIGN + PREPARED_QUERY_COLUMN_SEPARATOR_SIGN;
     private static final String PREPARED_QUERY_PARAMETER_FOR_UPDATE = PREPARED_QUERY_EQUAL_SIGN + PREPARED_QUERY_PARAMETER_PLACE;
 
-    protected abstract T toEntity(ResultSet rs) throws Exception;
+    protected abstract T resultSetToEntity(ResultSet rs) throws Exception;
+
+    //protected abstract T modelToEntity(ResultSet rs);
+
+    //protected abstract T resultSetToEntity(ResultSet rs) throws Exception;
 
     protected abstract void setUpdateQueryArguments(PreparedStatement query, T entity) throws SQLException;
 
@@ -37,12 +41,12 @@ public abstract class AbstractEntityDao<T extends by.stn.callslogproject.entity.
     @Override
     public T get(long id) throws Exception {
         ResultSet rs = getResultSet(GET_ENTITY_QUERY_FORMAT, id);
-        return rs.next() ? toEntity(rs) : null;
+        return rs.next() ? resultSetToEntity(rs) : null;
     }
 
     @Override
     public List<T> getAll() throws Exception {
-        return toEntities(getResultSet(GET_ALL_QUERY_FORMAT));
+        return resultSetToEntities(getResultSet(GET_ALL_QUERY_FORMAT));
     }
 
     @Override
@@ -95,10 +99,10 @@ public abstract class AbstractEntityDao<T extends by.stn.callslogproject.entity.
         return rs;
     }
 
-    private List<T> toEntities(ResultSet rs) throws Exception {
+    private List<T> resultSetToEntities(ResultSet rs) throws Exception {
         List<T> result = new ArrayList<T>();
         while (rs.next()) {
-            T ent = toEntity(rs);
+            T ent = resultSetToEntity(rs);
             result.add(ent);
         }
         return result;

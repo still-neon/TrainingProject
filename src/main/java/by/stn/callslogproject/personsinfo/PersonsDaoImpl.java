@@ -13,7 +13,7 @@ public class PersonsDaoImpl extends AbstractEntityDao<PersonsInfo> implements Pe
     }
 
     @Override
-    protected PersonsInfo toEntity(ResultSet rs) throws SQLException {
+    protected PersonsInfo resultSetToEntity(ResultSet rs) throws SQLException {
         PersonsInfo person = new PersonsInfo((long) rs.getInt("id"));
         person.setFullName(rs.getString("fullname"));
         person.setOrganizationName(rs.getString("organizationname"));

@@ -16,7 +16,7 @@ import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 public class UICreator {
     private static final String APP_NAME = "CallsLog";
     private static final String ADD_BUTTON_TEXT = "Add Call";
-    private static final String EDIT_BUTTON_TEXT = "Edit Call";
+    private static final String SAVE_BUTTON_TEXT = "Save";
     private static final String DELETE_BUTTON_TEXT = "Delete Call";
     @Setter
     private CallsLogTableManager callsLogTableManager;
@@ -29,18 +29,19 @@ public class UICreator {
                 frame.setSize(700, 600);
                 frame.setResizable(true);
                 frame.setVisible(true);
+                frame.setLayout(new BorderLayout());
 
                 JPanel contents = new JPanel(new FlowLayout(FlowLayout.LEFT));
-                frame.setContentPane(contents);
+                frame.add(contents, BorderLayout.NORTH);
 
                 JButton addButton = new JButton(ADD_BUTTON_TEXT);
-                JButton editButton = new JButton(EDIT_BUTTON_TEXT);
                 JButton deleteButton = new JButton(DELETE_BUTTON_TEXT);
+                JButton refreshButton = new JButton(SAVE_BUTTON_TEXT);
                 contents.add(addButton);
-                contents.add(editButton);
                 contents.add(deleteButton);
+                contents.add(refreshButton);
 
-                contents.add(new JScrollPane(callsLogTableManager.createTable()));
+                frame.add(new JScrollPane(callsLogTableManager.createTable()), BorderLayout.CENTER);
 
                 deleteButton.addActionListener(new ActionListener() {
                     @Override
@@ -61,11 +62,10 @@ public class UICreator {
                     }
                 });
 
-                editButton.addActionListener(new ActionListener() {
+                refreshButton.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        callsLogTableManager.editRow();
-
+                        callsLogTableManager.save();
                     }
                 });
             }

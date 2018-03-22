@@ -19,7 +19,7 @@ public class CallsLogDaoImpl extends AbstractEntityDao<CallsLogEntry> implements
     }
 
     @Override
-    protected CallsLogEntry toEntity(ResultSet rs) throws Exception {
+    protected CallsLogEntry resultSetToEntity(ResultSet rs) throws Exception {
         CallsLogEntry callsLog = new CallsLogEntry((long) rs.getInt("id"));
         callsLog.setCallType(rs.getInt("calltype"));
         callsLog.setCaller(personsDao.get(rs.getInt("callerid")));
