@@ -1,4 +1,4 @@
-package by.stn.java_exercises.modul_1.ex_12_fixed;
+package by.stn.java_exercises.modul_1.ex_12_need_fixed;
 
 public class AccountNumberFormatter {
     //входные параметры, accountNumberFormatter String format(int number)
@@ -10,7 +10,7 @@ public class AccountNumberFormatter {
 
     public static String format(long number) {
         StringBuffer accountNumber = new StringBuffer();
-        while (number > (BASE * BASE * BASE)) {
+        while (number > (BASE * BASE * BASE)) {//метод множит base * 3
             accountNumber.insert(0, complement(number % (BASE * BASE * BASE)));
             number /= (BASE * BASE * BASE);
         }
@@ -19,7 +19,7 @@ public class AccountNumberFormatter {
 
     private static String complement(long num) {
         String numberString = String.valueOf(num);
-        if (numberString.length() == GROUP_SIZE)
+        if (numberString.length() == GROUP_SIZE)//цикл, допиливание до нулей
             return SPACE_PREFIX + numberString;
 
         return numberString.length() == GROUP_SIZE - 1 ? SPACE_PREFIX + ZERO_PREFIX + numberString : SPACE_PREFIX + DOUBLE_ZERO_PREFIX + numberString;

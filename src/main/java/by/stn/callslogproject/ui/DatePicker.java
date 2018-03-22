@@ -23,7 +23,7 @@ public class DatePicker extends AbstractCellEditor implements TableCellEditor {
         SpinnerModel dateModel = new SpinnerDateModel(initDate, earliestDate, latestDate, Calendar.YEAR);
 
         spinner = new JSpinner(dateModel);
-        spinner.setEditor(new JSpinner.DateEditor(spinner, "dd/MMM/yyyy"));
+        spinner.setEditor(new JSpinner.DateEditor(spinner, "yyyy-MM-dd"));//главный пункт чтобы по в моделе был мой формат отображения даты, без конфертации
     }
 
     @Override

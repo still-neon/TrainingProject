@@ -1,10 +1,10 @@
-package by.stn.java_exercises.modul_1.ex_9_fixed;
+package by.stn.java_exercises.modul_1.ex_9;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class MaxValueCalculator {
-    public static int calculate(ArrayList<Integer> numbers) {//отделть генератор чисел
-        int maxNumber = 0;
+    public static int calculate(List<Integer> numbers) {
+        int maxNumber = -1;
         for (int i : numbers) {
             if (i > maxNumber) {
                 maxNumber = i;
@@ -14,7 +14,7 @@ public class MaxValueCalculator {
     }
 
     public static void main(String[] args) {
-        ArrayList<Integer> numbers = NumbersGenerator.generateNumbersList(20);
+        List<Integer> numbers = NumbersGenerator.generateNumbersList(20);
         System.out.println("The max value of numbers " + numbers + " is " + calculate(numbers));
     }
 }

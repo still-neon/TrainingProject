@@ -1,19 +1,19 @@
-package by.stn.java_exercises.modul_1.ex_13_fixed;
+package by.stn.java_exercises.modul_1.ex_13;
 
-import by.stn.java_exercises.modul_1.ex_11_fixed.SimpleNumberDeterminant;
+import by.stn.java_exercises.modul_1.ex_11_need_fix.SimpleNumberDeterminant;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SimpleNumbersDeterminant {
-    public static ArrayList<Integer> getSimpleNumbers(int limitNumber) {
+    public static List<Integer> getSimpleNumbers(int maxNumber) {
         List<Integer> simpleNumbers = new ArrayList<>();
-        for (int i = 1; i <= limitNumber; i++) {
+        for (int i = 1; i <= maxNumber; i++) {
             if (SimpleNumberDeterminant.determinate(i)) {
                 simpleNumbers.add(i);
             }
         }
-        return (ArrayList<Integer>) simpleNumbers;
+        return simpleNumbers;
     }
 
     public static void main(String[] args) {

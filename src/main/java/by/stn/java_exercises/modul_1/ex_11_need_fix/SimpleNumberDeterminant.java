@@ -1,7 +1,7 @@
-package by.stn.java_exercises.modul_1.ex_11_fixed;
+package by.stn.java_exercises.modul_1.ex_11_need_fix;
 
 public class SimpleNumberDeterminant {
-    public static boolean determinate(int number) {//модификация числа убрать, ошибка в алгоритме
+    public static boolean determinate(int number) {//добавить константу вместо 2
         int counter = 0;
 
         for (int i = 1; i <= number; i++) {

@@ -1,8 +1,8 @@
-package by.stn.java_exercises.modul_1.ex_10_fixed;
+package by.stn.java_exercises.modul_1.ex_10;
 
 public class NumeralsSumCalculator {
-    public static int calculate(int number) {//локальная переменная, не модифицировать число
-        int sum = 0;
+    public static int calculate(int number) {
+        int  sum = 0;
 
         while (number != 0) {
             sum += number % 10;
