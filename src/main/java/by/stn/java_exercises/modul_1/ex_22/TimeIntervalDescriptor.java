@@ -1,4 +1,4 @@
-package java_exercises.modul_1.ex_22;
+package by.stn.java_exercises.modul_1.ex_22;
 
 public class TimeIntervalDescriptor implements Comparable<TimeIntervalDescriptor> {
     private static final int SECONDS_IN_MINUTE = 60;
