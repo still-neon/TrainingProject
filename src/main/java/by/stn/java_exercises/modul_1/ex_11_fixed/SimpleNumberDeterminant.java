@@ -1,6 +1,7 @@
-package by.stn.java_exercises.modul_1.ex_11_need_fix;
+package by.stn.java_exercises.modul_1.ex_11_fixed;
 
 public class SimpleNumberDeterminant {
+    private static final int DIVIDERS_NUMBER = 2;
     public static boolean determinate(int number) {//добавить константу вместо 2
         int counter = 0;
 
@@ -9,7 +10,7 @@ public class SimpleNumberDeterminant {
                 counter++;
             }
         }
-        return counter <= 2;
+        return counter <= DIVIDERS_NUMBER;
     }
 
     public static void main(String[] args) {

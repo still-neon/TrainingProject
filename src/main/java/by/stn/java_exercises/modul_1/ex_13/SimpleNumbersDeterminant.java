@@ -1,6 +1,6 @@
 package by.stn.java_exercises.modul_1.ex_13;
 
-import by.stn.java_exercises.modul_1.ex_11_need_fix.SimpleNumberDeterminant;
+import by.stn.java_exercises.modul_1.ex_11_fixed.SimpleNumberDeterminant;
 
 import java.util.ArrayList;
 import java.util.List;

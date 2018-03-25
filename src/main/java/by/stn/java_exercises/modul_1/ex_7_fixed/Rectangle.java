@@ -1,4 +1,4 @@
-package by.stn.java_exercises.modul_1.ex_7_need_fix;
+package by.stn.java_exercises.modul_1.ex_7_fixed;
 
 import lombok.Getter;
 
@@ -16,8 +16,10 @@ public class Rectangle {
         this.sideB = Math.min(sideA, sideB);
     }
 
-    public void reverse(double sideA, double sideB) {
-        this.sideA = sideB;
-        this.sideB = sideA;
+    public Rectangle reverse() {
+        double tempSide = sideA;
+        sideA = sideB;
+        sideB = tempSide;
+        return this;
     }
 }
