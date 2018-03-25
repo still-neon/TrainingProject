@@ -1,4 +1,4 @@
-package by.stn.java_exercises.modul_1.ex_12_need_fixed;
+package by.stn.java_exercises.modul_1.ex_12_fixed;
 
 public class AccountNumberFormatter {
     private static final long BASE = 10;//base 10, groupsize = 3, методы дополняющий нулями до 3
