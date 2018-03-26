@@ -4,13 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PlacementChecker {
-    public static void main(String[] args) {
-        Rectangle shape1 = new Rectangle(1, 0.1);
-        Rectangle shape2 = new Rectangle(0.9, 2);
-        Rectangle shapeContainer = new Rectangle(2, 1);
-        System.out.println("It's " + check(shape1, shape2, shapeContainer) + " that figures do fit");
-    }
-
     public static boolean check(Rectangle shape1, Rectangle shape2, Rectangle shapeContainer) {
         //убрать копипасту в отдельный метод если можно
         if (fits(shape1, shapeContainer)) {
@@ -34,5 +27,12 @@ public class PlacementChecker {
         emptySpace.add(new Rectangle(rectangle.getSideA() - shape.getSideA(), rectangle.getSideB()));
         emptySpace.add(new Rectangle(rectangle.getSideB() - shape.getSideB(), rectangle.getSideA()));
         return emptySpace;
+    }
+
+    public static void main(String[] args) {
+        Rectangle shape1 = new Rectangle(1, 0.1);
+        Rectangle shape2 = new Rectangle(0.9, 2);
+        Rectangle shapeContainer = new Rectangle(2, 1);
+        System.out.println("It's " + check(shape1, shape2, shapeContainer) + " that figures do fit");
     }
 }

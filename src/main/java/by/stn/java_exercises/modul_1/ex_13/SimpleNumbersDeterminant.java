@@ -9,7 +9,7 @@ public class SimpleNumbersDeterminant {
     public static List<Integer> getSimpleNumbers(int maxNumber) {
         List<Integer> simpleNumbers = new ArrayList<>();
         for (int i = 1; i <= maxNumber; i++) {
-            if (SimpleNumberDeterminant.determinate(i)) {
+            if (SimpleNumberDeterminant.determine(i)) {
                 simpleNumbers.add(i);
             }
         }
