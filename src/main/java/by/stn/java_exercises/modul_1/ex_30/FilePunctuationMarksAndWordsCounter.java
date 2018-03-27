@@ -1,7 +1,6 @@
 package by.stn.java_exercises.modul_1.ex_30;
 
-import by.stn.java_exercises.modul_1.ex_18_fixed.PunctuationMarksCounter;
-import by.stn.java_exercises.modul_1.ex_19_fixed.WordsCounter;
+import by.stn.java_exercises.modul_1.ex_19_need_fix.WordsCounter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,7 +18,7 @@ public class FilePunctuationMarksAndWordsCounter {
     public static HashMap<String, Integer> count(String filePath) {
         Character[] marks = {'.','!','?','-',':',';','(',')'};
         Map<String,Integer> countValues = new HashMap<>();
-        countValues.put(FIRST_COUNTER,PunctuationMarksCounter.count(FileManager.readFile(filePath).toString(),marks));
+        //countValues.put(FIRST_COUNTER,PunctuationMarksCounter.count(FileManager.readFile(filePath).toString(),marks));
         countValues.put(SECOND_COUNTER,WordsCounter.count(FileManager.readFile(filePath).toString()));
         return (HashMap<String, Integer>) countValues;
     }
