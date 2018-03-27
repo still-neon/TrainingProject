@@ -1,29 +1,30 @@
 package by.stn.java_exercises.modul_1.ex_19_need_fix;
 
 public class WordsCounter {
-    private static final String TEXT = " what a hell, is going on? I don't  understand! ";//входные параметры
+    //входные параметры
 
-    public static void main(String[] args) {
-        System.out.println("This text contains " + count(TEXT) + " words");
-    }
-
-    public static int count(String txt) {
+    public static int count(String text) {
         int counter = 0;
-        txt = txt.trim().toLowerCase();
+        text = text.trim().toLowerCase();
+        char[] symbols = text.toCharArray();
 
-        for (int i = 0; i < txt.length(); i++) {//toCharArray, методы isLetter, while больше подходит
-            if (txt.charAt(i) >= 'a' && txt.charAt(i) <= 'z') {
+        for(int i = 0; i < symbols.length; i++) {
+            if(isLetter(symbols[i])) {
                 counter++;
-                for (int n = i; n < txt.length(); n++) {
-                    if (txt.charAt(n) < 'a' || txt.charAt(n) > 'z') {
-                        i = n;
-                        break;
-                    } else if (n == txt.length() - 1) {
-                        return counter;
-                    }
+                while(isLetter(symbols[i])) {
+                    i++;
                 }
             }
         }
         return counter;
+    }
+
+    private static boolean isLetter(char symbol) {
+        return symbol >= 'a' && symbol <= 'z';
+    }
+
+    public static void main(String[] args) {
+        String text = " what a hell, is going on? I dont  understand! ";
+        System.out.println("This text contains " + count(text) + " words");
     }
 }
