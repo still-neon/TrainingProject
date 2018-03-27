@@ -1,4 +1,4 @@
-package by.stn.java_exercises.modul_1.ex_19_need_fix;
+package by.stn.java_exercises.modul_1.ex_19_fixed;
 
 public class WordsCounter {
     //входные параметры

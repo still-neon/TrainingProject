@@ -1,7 +1,7 @@
 package by.stn.java_exercises.modul_1.ex_30;
 
 import by.stn.java_exercises.modul_1.ex_18_fixed.PunctuationMarksCounter;
-import by.stn.java_exercises.modul_1.ex_19_need_fix.WordsCounter;
+import by.stn.java_exercises.modul_1.ex_19_fixed.WordsCounter;
 import java.util.HashMap;
 import java.util.Map;
 
