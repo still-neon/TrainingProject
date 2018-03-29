@@ -1,26 +1,22 @@
-package by.stn.java_exercises.modul_1.ex_20_fixed;
+package by.stn.java_exercises.modul_1.ex_20;
 
-import by.stn.java_exercises.modul_1.ex_19_fixed.WordsCounter;
+import by.stn.java_exercises.modul_1.ex_19.WordsCounter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class LastSymbolTextCreator {
-    //входные параметры
-
-    public static List<Character> create(String text) {
+public class LastSymbolTextFinder {
+    public static List<Character> find(String text) {
         text = text.trim().toLowerCase();
         char[] symbols = text.toCharArray();
         List<Character> lastLetters = new ArrayList<>();
 
-        for (int i = 0; i < symbols.length; i++) {//теже замечания
+        for (int i = 0; i < symbols.length; i++) {
             if (WordsCounter.isLetter(symbols[i])) {
                 while(WordsCounter.isLetter(symbols[i])) {
-                    if(i == symbols.length - 1) {
-                        i++;
+                    if(i++ == symbols.length - 1) {
                         break;
                     }
-                    i++;
                 }
                 lastLetters.add(symbols[i-1]);
             }
@@ -30,6 +26,6 @@ public class LastSymbolTextCreator {
 
     public static void main(String[] args) {
         String text = " what a hell, is going on? I dont  understan d";
-        System.out.print("The text created of words last letters is " + create(text));
+        System.out.print("The text created of words last letters is " + find(text));
     }
 }

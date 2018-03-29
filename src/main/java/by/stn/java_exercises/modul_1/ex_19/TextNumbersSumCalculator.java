@@ -1,13 +1,12 @@
-package by.stn.java_exercises.modul_1.ex_19_fixed;
+package by.stn.java_exercises.modul_1.ex_19;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class TextNumbersSumCalculator {
-    //входные
     public static int calculate(String text) {
-        int numStart;//numStart, замечания прошлого задания, найти все числа и сложить(отделение)
-        int numFinish;
+        int start;
+        int finish;
 
         List<Integer> numbers = new ArrayList<>();
 
@@ -16,17 +15,14 @@ public class TextNumbersSumCalculator {
 
         for (int i = 0; i < symbols.length; i++) {
             if (isNumber(symbols[i])) {
-                numStart = i;
-                //i++;
+                start = i;
                 while (isNumber(symbols[i])) {
-                    if (i == symbols.length - 1) {
-                        i++;
+                    if (i++ == symbols.length - 1) {
                         break;
                     }
-                    i++;
                 }
-                numFinish = i;
-                numbers.add(Integer.valueOf(text.substring(numStart, numFinish)));
+                finish = i;
+                numbers.add(Integer.valueOf(text.substring(start, finish)));
             }
         }
         return getSum(numbers);

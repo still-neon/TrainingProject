@@ -1,6 +1,6 @@
 package by.stn.java_exercises.modul_1.ex_30;
 
-import by.stn.java_exercises.modul_1.ex_19_fixed.WordsCounter;
+import by.stn.java_exercises.modul_1.ex_19.WordsCounter;
 import java.util.HashMap;
 import java.util.Map;
 

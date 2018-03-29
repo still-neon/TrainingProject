@@ -1,12 +1,11 @@
-package by.stn.java_exercises.modul_1.ex_21_fixed;
+package by.stn.java_exercises.modul_1.ex_21_need_fix;
 
 public class StringVersusStringBuilderComparator {
-    //входные параметры
     private static final String STRING = "";
 
     private static double getStringAddingTime(String string, long additionsNumber) {
         TimeInterval timeInterval = new TimeInterval();
-        //отделение времени от операции, возможно другой класс
+        //отделение времени от операции, возможно другой класс c методом который принимает интерфейсы классов с методами сложения строк
         for (long i = 0; i < additionsNumber; i++) {
             string += string;
         }

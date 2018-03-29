@@ -1,4 +1,4 @@
-package by.stn.java_exercises.modul_1.ex_19_fixed;
+package by.stn.java_exercises.modul_1.ex_19;
 
 public class WordsCounter {
     public static int count(String text) {
@@ -9,8 +9,6 @@ public class WordsCounter {
         for (int i = 0; i < symbols.length; i++) {
             if (isLetter(symbols[i])) {
                 counter++;
-                //i++;
-                //разобраться с ошибкой
                 while (isLetter(symbols[i])) {
                     if(i == symbols.length - 1)
                         break;

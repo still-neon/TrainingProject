@@ -1,11 +1,10 @@
-package by.stn.java_exercises.modul_1.ex_18_fixed;
+package by.stn.java_exercises.modul_1.ex_18;
 
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
 public class PunctuationMarksCounter {
-    //Set contains
     public static int count(String text, Set<Character> punctuationMarks) {
         int counter = 0;
 
