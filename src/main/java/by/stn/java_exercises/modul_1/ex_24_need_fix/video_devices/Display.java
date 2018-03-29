@@ -2,15 +2,15 @@ package by.stn.java_exercises.modul_1.ex_24_need_fix.video_devices;
 
 import lombok.Getter;
 
-public class Display extends AbstractVideoDevice {
+public class Display /*extends AbstractVideoDevice*/ {
 	@Getter
 	private int refreshRate;
 
 	public Display(int power, String manufacturer, String color, boolean turnedOn, int displaySize, int contrastLevel, int refreshRate) {
-		super(power, manufacturer, color, turnedOn, displaySize, contrastLevel);
+		//super(power, manufacturer, color, turnedOn, displaySize, contrastLevel);
 		this.refreshRate = refreshRate;
 	}
-
+/*
 	public void turnOn() {
 		setTurnedOn(true);
 	}
@@ -25,5 +25,5 @@ public class Display extends AbstractVideoDevice {
 
 	public void decreaseContrast() {
 		setContrastLevel(getContrastLevel()-1);
-	}
+	}*/
 }

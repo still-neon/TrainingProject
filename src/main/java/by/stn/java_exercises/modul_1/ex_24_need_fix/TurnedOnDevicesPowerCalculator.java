@@ -9,10 +9,10 @@ import java.util.ArrayList;
 
 class TurnedOnDevicesPowerCalculator {
     public static void main(String args[]) {
-        System.out.println("The summ power of turned on devices is " + calculate(createDevices()) + " Wt");
+        //System.out.println("The summ power of turned on devices is " + calculate(createDevices()) + " Wt");
     }
 
-    private static ArrayList<AbstractDevice> createDevices() {
+/*    private static ArrayList<AbstractDevice> createDevices() {
         ArrayList<AbstractDevice> devices = new ArrayList<AbstractDevice>();
 
         devices.add(new Headphones(10, "Sony", "black", true, 100, 0, "gamer"));
@@ -30,5 +30,5 @@ class TurnedOnDevicesPowerCalculator {
             }
         }
         return powerSum;
-    }
+    }*/
 }

@@ -40,6 +40,6 @@ public class TimeIntervalDescriptor implements Comparable<TimeIntervalDescriptor
         TimeIntervalDescriptor timeIntervalDescriptor2 = new TimeIntervalDescriptor(10, 0, 0);
 
         System.out.println(timeIntervalDescriptor1.compareTo(timeIntervalDescriptor2));
-        System.out.println("Time interval of the first object is " + timeIntervalDescriptor1.outputTimeInterval() + " of the second object is " + timeIntervalDescriptor2.outputTimeInterval());
+        System.out.println("TimeInterval interval of the first object is " + timeIntervalDescriptor1.outputTimeInterval() + " of the second object is " + timeIntervalDescriptor2.outputTimeInterval());
     }
 }

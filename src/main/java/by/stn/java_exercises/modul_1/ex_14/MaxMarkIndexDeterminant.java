@@ -1,13 +1,13 @@
 package by.stn.java_exercises.modul_1.ex_14;
 
-import by.stn.java_exercises.modul_1.ex_9.MaxValueCalculator;
+import by.stn.java_exercises.modul_1.ex_9.MinMaxValueCalculator;
 import by.stn.java_exercises.modul_1.ex_9.NumbersGenerator;
 
 import java.util.List;
 
 public class MaxMarkIndexDeterminant {
     public static int determine(List<Integer> marks) {
-        return marks.indexOf(MaxValueCalculator.calculate(marks));
+        return marks.indexOf(MinMaxValueCalculator.calculateMax(marks));
     }
 
     public static void main(String[] args) {
