@@ -1,4 +1,4 @@
-package by.stn.java_exercises.modul_1.ex_15_need_fix;
+package by.stn.java_exercises.modul_1.ex_15;
 
 import by.stn.java_exercises.modul_1.ex_9.MinMaxValueCalculator;
 import by.stn.java_exercises.modul_1.ex_9.NumbersGenerator;
@@ -33,7 +33,7 @@ public class MinMaxIntervalFinder {
     private static Interval getInterval(List<Integer> number1Indices, List<Integer> number2Indices) {
         Interval interval1 = new Interval(getFirstIndex(number1Indices), getLastIndex(number2Indices));
         Interval interval2 = new Interval(getFirstIndex(number2Indices), getLastIndex(number1Indices));
-        return Interval.max(interval1,interval2);
+        return Interval.max(interval1, interval2);
     }
 
     private static int getLastIndex(List<Integer> indexes) {
@@ -45,7 +45,7 @@ public class MinMaxIntervalFinder {
     }
 
     public static void main(String[] args) {
-        List<Integer> numbers = NumbersGenerator.generateNumbersList(8);//добавить массив [6, 5, 3, 3, 6, 2, 1, 0] is 20 баг
+        List<Integer> numbers = NumbersGenerator.generateNumbersList(8);
         System.out.print("The sum of elements between min and max of " + numbers + " is " + find(numbers));
     }
 }

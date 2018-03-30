@@ -1,14 +1,14 @@
-package by.stn.java_exercises.modul_1.ex_24_need_fix.video_devices;
+package by.stn.java_exercises.modul_1.ex_24_fixed.video_devices;
 
 import lombok.Getter;
 
-public class Camera /*extends AbstractVideoDevice */{
+public class Display /*extends AbstractVideoDevice*/ {
 	@Getter
-	private String batteryType;
+	private int refreshRate;
 
-	public Camera(int power, String manufacturer, String color, boolean turnedOn, int displaySize, int contrastLevel, String batteryType) {
+	public Display(int power, String manufacturer, String color, boolean turnedOn, int displaySize, int contrastLevel, int refreshRate) {
 		//super(power, manufacturer, color, turnedOn, displaySize, contrastLevel);
-		this.batteryType = batteryType;
+		this.refreshRate = refreshRate;
 	}
 /*
 	public void turnOn() {

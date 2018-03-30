@@ -1,11 +1,4 @@
-package by.stn.java_exercises.modul_1.ex_24_need_fix;
-
-import by.stn.java_exercises.modul_1.ex_24_need_fix.audio_devices.Dynamics;
-import by.stn.java_exercises.modul_1.ex_24_need_fix.audio_devices.Headphones;
-import by.stn.java_exercises.modul_1.ex_24_need_fix.video_devices.Camera;
-import by.stn.java_exercises.modul_1.ex_24_need_fix.video_devices.Display;
-
-import java.util.ArrayList;
+package by.stn.java_exercises.modul_1.ex_24_fixed;
 
 class TurnedOnDevicesPowerCalculator {
     public static void main(String args[]) {

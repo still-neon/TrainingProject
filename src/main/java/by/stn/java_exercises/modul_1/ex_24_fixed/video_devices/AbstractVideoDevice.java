@@ -1,6 +1,6 @@
-package by.stn.java_exercises.modul_1.ex_24_need_fix.video_devices;
+package by.stn.java_exercises.modul_1.ex_24_fixed.video_devices;
 
-import by.stn.java_exercises.modul_1.ex_24_need_fix.AbstractDevice;
+import by.stn.java_exercises.modul_1.ex_24_fixed.AbstractDevice;
 import lombok.Getter;
 import lombok.Setter;
 

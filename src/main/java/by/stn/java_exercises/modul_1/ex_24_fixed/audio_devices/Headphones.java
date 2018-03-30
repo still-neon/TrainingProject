@@ -1,4 +1,4 @@
-package by.stn.java_exercises.modul_1.ex_24_need_fix.audio_devices;
+package by.stn.java_exercises.modul_1.ex_24_fixed.audio_devices;
 
 
 import lombok.Getter;
