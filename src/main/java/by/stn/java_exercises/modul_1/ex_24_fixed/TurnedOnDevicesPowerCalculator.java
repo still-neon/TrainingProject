@@ -5,8 +5,8 @@ class TurnedOnDevicesPowerCalculator {
         //System.out.println("The summ power of turned on devices is " + calculate(createDevices()) + " Wt");
     }
 
-/*    private static ArrayList<AbstractDevice> createDevices() {
-        ArrayList<AbstractDevice> devices = new ArrayList<AbstractDevice>();
+/*    private static ArrayList<AbstractElectronicDevice> createDevices() {
+        ArrayList<AbstractElectronicDevice> devices = new ArrayList<AbstractElectronicDevice>();
 
         devices.add(new Headphones(10, "Sony", "black", true, 100, 0, "gamer"));
         devices.add(new Dynamics(1000, "Sony", "black", false, 100, 0, "wood"));
@@ -15,9 +15,9 @@ class TurnedOnDevicesPowerCalculator {
         return devices;
     }
 
-    private static int calculate(ArrayList<AbstractDevice> devices) {
+    private static int calculate(ArrayList<AbstractElectronicDevice> devices) {
         int powerSum = 0;
-        for(AbstractDevice device: devices) {
+        for(AbstractElectronicDevice device: devices) {
             if(device.isTurnedOn()) {
                 powerSum += device.getPower();
             }

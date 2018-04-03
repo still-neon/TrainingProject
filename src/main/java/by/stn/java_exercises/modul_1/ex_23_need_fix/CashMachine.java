@@ -1,4 +1,4 @@
-package by.stn.java_exercises.modul_1.ex_23_fixed;
+package by.stn.java_exercises.modul_1.ex_23_need_fix;
 
 import java.util.Collections;
 import java.util.Map;
@@ -18,7 +18,7 @@ public class CashMachine {//деньги отдельным классом пр�
 
     private boolean getCash(int moneyToGet) {
         cashed = new Money(0, 0, 0);
-        Map<Integer, Integer> bankNotes = new TreeMap<Integer, Integer>(Collections.reverseOrder()) {//косяк
+        Map<Integer, Integer> bankNotes = new TreeMap<Integer, Integer>(Collections.reverseOrder()) {//косяк сравнивать возможность с загрузкой банкомата
             {
                 put(total.getBANKNOTE_NOMINAL_1(), total.getBankNotes1Number());
                 put(total.getBANKNOTE_NOMINAL_2(), total.getBankNotes2Number());

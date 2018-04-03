@@ -2,7 +2,7 @@ package by.stn.java_exercises.modul_1.ex_24_fixed.audio_devices;
 
 import lombok.Getter;
 
-public class Dynamics /*extends AbstractAudioDevice*/ {
+public class Dynamics /*extends AbstractAudioElectronicDevice*/ {
 	@Getter
 	private String corpusMaterial;
 

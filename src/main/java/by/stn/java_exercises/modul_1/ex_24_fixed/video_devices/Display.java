@@ -2,7 +2,7 @@ package by.stn.java_exercises.modul_1.ex_24_fixed.video_devices;
 
 import lombok.Getter;
 
-public class Display /*extends AbstractVideoDevice*/ {
+public class Display /*extends AbstractVideoElectronicDevice*/ {
 	@Getter
 	private int refreshRate;
 

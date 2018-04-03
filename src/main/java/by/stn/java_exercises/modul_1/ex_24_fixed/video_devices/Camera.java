@@ -2,7 +2,7 @@ package by.stn.java_exercises.modul_1.ex_24_fixed.video_devices;
 
 import lombok.Getter;
 
-public class Camera /*extends AbstractVideoDevice */{
+public class Camera /*extends AbstractVideoElectronicDevice */{
 	@Getter
 	private String batteryType;
 

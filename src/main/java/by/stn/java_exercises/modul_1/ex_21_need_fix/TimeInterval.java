@@ -1,4 +1,4 @@
-package by.stn.java_exercises.modul_1.ex_21_fixed;
+package by.stn.java_exercises.modul_1.ex_21_need_fix;
 
 /**
  * Created by EugenKrasotkin on 3/27/2018.
@@ -6,7 +6,7 @@ package by.stn.java_exercises.modul_1.ex_21_fixed;
 public class TimeInterval {
     private static double startTime;
 
-    public static double getInterval(AdditionPerformig adder, String string, long additionsNumber) {
+    public static double getInterval(AdditionPerforming adder, String string, long additionsNumber) {
         startTime = System.currentTimeMillis();
         adder.add(string,additionsNumber);
         return System.currentTimeMillis() - startTime;

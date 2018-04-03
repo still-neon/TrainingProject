@@ -3,7 +3,7 @@ package by.stn.java_exercises.modul_1.ex_24_fixed.audio_devices;
 
 import lombok.Getter;
 
-public class Headphones /*extends AbstractAudioDevice*/ {
+public class Headphones /*extends AbstractAudioElectronicDevice*/ {
     @Getter
     private String type;
 

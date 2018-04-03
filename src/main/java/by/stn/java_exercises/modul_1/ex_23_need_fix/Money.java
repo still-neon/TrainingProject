@@ -1,4 +1,4 @@
-package by.stn.java_exercises.modul_1.ex_23_fixed;
+package by.stn.java_exercises.modul_1.ex_23_need_fix;
 
 import lombok.Getter;
 
@@ -36,13 +36,13 @@ public class Money {
         bankNotes3Number += money.getBankNotes3Number();
     }
 
-    public void get(Money money) {
+    public void remove(Money money) {
         bankNotes1Number -= money.getBankNotes1Number();
         bankNotes2Number -= money.getBankNotes2Number();
         bankNotes3Number -= money.getBankNotes3Number();
     }
 
-    public void add(int bankNote) {
+    public void add(int bankNote) {//enum не секьюрно
         switch (bankNote) {
             case BANKNOTE_NOMINAL_1:
                 bankNotes1Number++;

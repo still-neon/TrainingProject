@@ -3,7 +3,7 @@ package by.stn.java_exercises.modul_1.ex_24_fixed;
 import lombok.Getter;
 import lombok.Setter;
 
-public abstract class AbstractDevice implements Device {
+public abstract class AbstractElectronicDevice implements ElectronicDevice {
     @Getter
     private int power;
     @Getter
@@ -15,7 +15,7 @@ public abstract class AbstractDevice implements Device {
     @Setter
     private String manufacturer;
 
-    public AbstractDevice(int power, String manufacturer, String color, boolean turnedOn) {
+    public AbstractElectronicDevice(int power, String manufacturer, String color, boolean turnedOn) {
         this.power = power;
         this.manufacturer = manufacturer;
         this.color = color;
