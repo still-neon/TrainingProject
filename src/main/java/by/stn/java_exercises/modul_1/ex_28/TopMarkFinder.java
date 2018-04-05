@@ -4,12 +4,11 @@ import java.util.*;
 
 public class TopMarkFinder {
     public static int find(List<Integer> marksList) {
-        ListIterator marksListIterator = marksList.listIterator();
+        Iterator<Integer> marksIterator = marksList.iterator();
         int maxMark = marksList.get(0);
-        int currentMark;
 
-        while (marksListIterator.hasNext()) {
-            currentMark = (Integer) marksListIterator.next();
+        while (marksIterator.hasNext() && maxMark < MarksListCreator.MAX_MARK) {
+            int currentMark = marksIterator.next();
             if (currentMark > maxMark) {
                 maxMark = currentMark;
             }
@@ -18,6 +17,6 @@ public class TopMarkFinder {
     }
 
     public static void main(String[] args) {
-        System.out.print("The top marks is " + find(MarksListCreator.create(3)));
+        System.out.print("The top marks is " + find(MarksListCreator.create(10)));
     }
 }

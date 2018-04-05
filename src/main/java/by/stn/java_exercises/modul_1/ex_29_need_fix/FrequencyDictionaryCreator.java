@@ -1,4 +1,4 @@
-package by.stn.java_exercises.modul_1.ex_29;
+package by.stn.java_exercises.modul_1.ex_29_need_fix;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,11 +6,11 @@ import java.util.List;
 import java.util.Map;
 
 public class FrequencyDictionaryCreator {
-    public static HashMap<String, Integer> create(String text) {
+    public static Map<String, Integer> create(String text) {
         Map<String, Integer> frequencyDictionary = new HashMap<String, Integer>();
 
         for (String word : createWordsList(text))
-            if (!frequencyDictionary.containsKey(word)) {
+            if (!frequencyDictionary.containsKey(word)) {//сделать красивее тернарный оператор
                 frequencyDictionary.put(word, 1);
             } else {
                 frequencyDictionary.put(word, frequencyDictionary.get(word) + 1);
@@ -18,8 +18,8 @@ public class FrequencyDictionaryCreator {
         return (HashMap<String, Integer>) frequencyDictionary;
     }
 
-    private static ArrayList<String> createWordsList(String text) {
-        List<String> wordsList = new ArrayList<String>();
+    private static List<String> createWordsList(String text) {
+        List<String> wordsList = new ArrayList<String>();//оптимизировать по примерам ранее
         int wordStartIndex;
         int wordFinishIndex;
 

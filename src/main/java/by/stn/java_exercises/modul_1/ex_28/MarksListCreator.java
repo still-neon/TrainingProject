@@ -7,13 +7,13 @@ import java.util.List;
  * Created by EugenKrasotkin on 3/12/2018.
  */
 public class MarksListCreator {
-    private static final int MAX_MARK = 5;
+    public static final int MAX_MARK = 5;
 
-    public static ArrayList<Integer> create(int sudentsNumber) {
+    public static List<Integer> create(int students) {
         List<Integer> marks = new ArrayList<Integer>();
-        for (int i = 0; i < sudentsNumber; i++) {
+        for (int i = 0; i < students; i++) {
             marks.add((int) (Math.random() * MAX_MARK + 1));
         }
-        return (ArrayList<Integer>) marks;
+        return marks;
     }
 }

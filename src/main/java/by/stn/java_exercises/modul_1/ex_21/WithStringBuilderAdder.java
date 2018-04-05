@@ -1,4 +1,4 @@
-package by.stn.java_exercises.modul_1.ex_21_fixed;
+package by.stn.java_exercises.modul_1.ex_21;
 
 /**
  * Created by EugenKrasotkin on 3/30/2018.
@@ -11,7 +11,7 @@ public class WithStringBuilderAdder extends AbstractAdder implements AdditionPer
 
     @Override
     public void add() {
-        StringBuilder stringBuilder = new StringBuilder();
+        StringBuilder stringBuilder = new StringBuilder(getString());
         for (long i = 0; i < getAdditions(); i++) {
             stringBuilder.append(getString());
         }
