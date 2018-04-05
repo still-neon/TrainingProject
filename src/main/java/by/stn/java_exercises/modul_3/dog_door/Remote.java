@@ -5,5 +5,6 @@ package by.stn.java_exercises.modul_3.dog_door;
  */
 public class Remote {
     public Remote(DogDoor door) {
+
     }
 }

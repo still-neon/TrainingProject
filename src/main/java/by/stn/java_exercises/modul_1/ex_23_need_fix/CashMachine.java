@@ -4,66 +4,63 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class CashMachine {//деньги отдельным классом представление//не поля класса
-    private Money total;
-    private Money cashed;
+public class CashMachine {
+    private static final String FAIL_STATUS1 = "There is no enough money in cash machine";
+    private static final String FAIL_STATUS2 = "Impossible to cash out this sum with accessible banknotes";
+    private static Money total;
+    private static Money preparedMoney;
+
+    private static String operationResult = "1";
 
     public CashMachine(Money money) {
         total = money;
+    }
+
+    public boolean cashOut(int money) {
+        if (!Checker.isMoneyEnough(total, money)) {
+            operationResult = FAIL_STATUS1;
+            return false;
+        }
+        if (Checker.invalidValue(money)) {
+            operationResult = FAIL_STATUS2;
+            return false;
+        }
+
+        prepare(money);
+
+        if (preparedMoney.getNominal1Number() <= total.getNominal1Number() && preparedMoney.getNominal2Number() <= total.getNominal2Number() &&
+                preparedMoney.getNominal3Number() <= total.getNominal3Number()) {
+            return true;
+        } else
+            return false;
+    }
+
+    private void prepare(int money) {
+        Map<Money.BankNotes, Integer> bankNotesToBase = Checker.getBankNotesToBase(money);
+        preparedMoney = new Money(bankNotesToBase.get(Money.BankNotes.BANKNOTE1), bankNotesToBase.get(Money.BankNotes.BANKNOTE2), bankNotesToBase.get(Money.BankNotes.BANKNOTE3));
+        Money temp = new Money(total.getNominal1Number(),total.getNominal2Number(),total.getNominal3Number());
+        temp.remove(preparedMoney);
+
+        Map<Money.BankNotes, Integer> bankNotes = Checker.getBankNotes(temp, money - preparedMoney.getBalance());
+        System.out.println(bankNotes);
+        preparedMoney.add(new Money(bankNotes.get(Money.BankNotes.BANKNOTE1), bankNotes.get(Money.BankNotes.BANKNOTE2), bankNotes.get(Money.BankNotes.BANKNOTE3)));
     }
 
     public void addMoney(Money money) {
         total.add(money);
     }
 
-    private boolean getCash(int moneyToGet) {
-        cashed = new Money(0, 0, 0);
-        Map<Integer, Integer> bankNotes = new TreeMap<Integer, Integer>(Collections.reverseOrder()) {//косяк сравнивать возможность с загрузкой банкомата
-            {
-                put(total.getBANKNOTE_NOMINAL_1(), total.getBankNotes1Number());
-                put(total.getBANKNOTE_NOMINAL_2(), total.getBankNotes2Number());
-                put(total.getBANKNOTE_NOMINAL_3(), total.getBankNotes3Number());
-            }
-        };
-
-        do {
-            for (Map.Entry<Integer, Integer> bankNote : bankNotes.entrySet()) {
-                if (isPossibleToGet(moneyToGet, bankNote.getKey(), bankNote.getValue())) {
-                    cashed.add(bankNote.getKey());
-                    moneyToGet -= bankNote.getKey();
-                    System.out.println(moneyToGet + " - " + bankNote.getKey());
-                }
-            }
-        } while (moneyToGet >= total.getBANKNOTE_NOMINAL_1());
-        return moneyToGet == 0;
-    }
-
-    private boolean isPossibleToGet(int money, int bankNote, int bankNoteNumber) {
-        return money >= bankNote && bankNoteNumber > 0;
-    }
-
-    private boolean notEnoughMoney(int money) {
-        return money > total.getBalance();
-    }
-
-    public boolean cashOut(int money) {
-        if (notEnoughMoney(money)) {
-            System.out.println("There is no enough money in cash machine");
-            return false;
-        }
-
-        if (getCash(money)) {
-            System.out.println("The total sum " + cashed.getBalance() + " was cashed with " + cashed.getBankNotes3Number() + " of " + cashed.getBANKNOTE_NOMINAL_3() +
-                    ", " + cashed.getBankNotes2Number() + " of " + cashed.getBANKNOTE_NOMINAL_2() + ", " + cashed.getBankNotes1Number() + " of " + cashed.getBANKNOTE_NOMINAL_1());
-            return true;
+    private static void printOperationResult(boolean result) {
+        if (result) {
+            System.out.println("The total sum " + preparedMoney.getBalance() + " was preparedMoney with " + preparedMoney.getNominal3Number() + " of " + Money.BankNotes.BANKNOTE3.getNominal() +
+                    ", " + preparedMoney.getNominal2Number() + " of " + Money.BankNotes.BANKNOTE2.getNominal() + ", " + preparedMoney.getNominal1Number() + " of " + Money.BankNotes.BANKNOTE1.getNominal());
         } else {
-            System.out.println("Check another sum");
-            return false;
+            System.out.println(operationResult);
         }
     }
 
     public static void main(String[] args) {
         CashMachine cashMachine = new CashMachine(new Money(6, 5, 5));
-        cashMachine.cashOut(150);
+        printOperationResult(cashMachine.cashOut(100));
     }
 }

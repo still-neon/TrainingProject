@@ -1,4 +1,4 @@
-package by.stn.java_exercises.modul_1.ex_24_fixed;
+package by.stn.java_exercises.modul_1.ex_24_need_fix;
 
 class TurnedOnDevicesPowerCalculator {
     public static void main(String args[]) {
