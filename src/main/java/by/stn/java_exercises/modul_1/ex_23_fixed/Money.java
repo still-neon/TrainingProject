@@ -1,14 +1,15 @@
-package by.stn.java_exercises.modul_1.ex_23_need_fix;
+package by.stn.java_exercises.modul_1.ex_23_fixed;
 
 import lombok.Getter;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by EugenKrasotkin on 3/27/2018.
  */
 public class Money {
+    @Getter
+    private static final int INVALID_VALUE1 = 10;
+    @Getter
+    private static final int INVALID_VALUE2 = 30;
     @Getter
     private static final int NOMINAL1 = 20;
     @Getter
@@ -16,19 +17,17 @@ public class Money {
     @Getter
     private static final int NOMINAL3 = 100;
     @Getter
+    private static final int BASE = 10;
+    @Getter
     private int nominal1Number;
     @Getter
     private int nominal2Number;
     @Getter
     private int nominal3Number;
-    @Getter
-    private Map<BankNotes, Integer> bankNotesForBase = new HashMap<BankNotes, Integer>() {
-        {
-            put(BankNotes.BANKNOTE1, nominal1Number / 5);
-            put(BankNotes.BANKNOTE2, nominal2Number / 2);
-            put(BankNotes.BANKNOTE3, nominal3Number);
-        }
-    };
+
+
+    public Money() {
+    }
 
     public Money(int nominal1Number, int nominal2Number, int nominal3Number) {
         this.nominal1Number = nominal1Number;
@@ -46,41 +45,47 @@ public class Money {
         nominal3Number += money.getNominal3Number();
     }
 
+    public void add(BankNotes bankNote, int number) {
+        switch (bankNote) {
+            case BANKNOTE1:
+                nominal1Number += number;
+                break;
+            case BANKNOTE2:
+                nominal2Number += number;
+                break;
+            case BANKNOTE3:
+                nominal3Number += number;
+                break;
+        }
+    }
+
     public void remove(Money money) {
         nominal1Number -= money.getNominal1Number();
         nominal2Number -= money.getNominal2Number();
         nominal3Number -= money.getNominal3Number();
     }
 
-    public void remove(BankNotes bankNote, int number) {//enum не секьюрно
+    public void remove(BankNotes bankNote, int number) {
         switch (bankNote) {
             case BANKNOTE1:
-                nominal1Number -= 5;
+                nominal1Number -= number;
                 break;
             case BANKNOTE2:
-                nominal2Number -= 2;
+                nominal2Number -= number;
                 break;
             case BANKNOTE3:
-                nominal3Number --;
+                nominal3Number -= number;
                 break;
         }
     }
 
-    public void add(BankNotes bankNote) {//enum не секьюрно
-        switch (bankNote) {
-            case BANKNOTE1:
-                nominal1Number++;
-                break;
-            case BANKNOTE2:
-                nominal2Number++;
-                break;
-            case BANKNOTE3:
-                nominal3Number++;
-                break;
-        }
+    public Money clone() {
+        Money money = new Money();
+        money.add(this);
+        return money;
     }
 
-    enum BankNotes {
+    public enum BankNotes {
         BANKNOTE1(NOMINAL1), BANKNOTE2(NOMINAL2), BANKNOTE3(NOMINAL3);
         @Getter
         private int nominal;
