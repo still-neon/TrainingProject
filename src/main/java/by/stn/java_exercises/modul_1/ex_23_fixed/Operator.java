@@ -9,101 +9,104 @@ import static by.stn.java_exercises.modul_1.ex_23_fixed.Money.BankNotes.*;
  * Created by EugenKrasotkin on 4/5/2018.
  */
 public class Operator {
-    private static final int BASE = 100;
-    private static Money preparedMoney = new Money();
+    private static final int HUNDRED = 100;
+    private Money prepared;
 
-    public static void getCash(Money total) {
-        total.remove(preparedMoney);
+    public Operator() {
+        prepared = new Money();
     }
 
-    public static boolean prepare(int sum) {
-        prepareMoneyToRoundToBase(sum);
-
-        prepareBaseMoney(sum - preparedMoney.getBalance());
-
-        if (!Checker.isBankNotesEnough(preparedMoney))
-            return false;
-        else
-            return true;
+    public void addMoney(CashMachine cashMachine, Money money) {
+        cashMachine.getTotal().add(money);
     }
 
-    private static Result get() {
-        CashMachine.getTotal().remove(preparedMoney);
-        result = Result.SUCCESS;
+    public Checker.Result cashOut(CashMachine cashMachine, int sum) {
+        Checker.Result result = Checker.getPreparationResult(cashMachine, prepared, sum);
+
+        if (result.isSuccess()) {
+            cashMachine.getTotal().remove(prepared);
+        }
+
         return result;
     }
 
-    private static String getSuccessMessage() {
-        return "The total sum " + preparedMoney.getBalance() + " was cashed out with " + preparedMoney.getNominal3Number() + " of " +
-                BANKNOTE3.getNominal() + ", " + preparedMoney.getNominal2Number() + " of " + BANKNOTE2.getNominal() + ", " + preparedMoney.getNominal1Number() + " of " + BANKNOTE1.getNominal();
+    public static boolean isPrepared(Money totalCopy, Money prepared, int sum) {
+        prepareMoneyToRoundToBase(prepared, sum);
+
+        prepareBaseMoney(totalCopy, prepared, sum - prepared.getBalance());
+
+        return Checker.isBankNotesEnough(totalCopy);
     }
 
-    private static void prepareMoneyToRoundToBase(int sum) {
-        switch (sum % BASE) {
+    public String getOperationDetails(Checker.Result result) {
+        return result.isSuccess() ? "The total sum " + prepared.getBalance() + " was cashed out with " + prepared.getNominal3Number() + " of " +
+                BANKNOTE3.getNominal() + ", " + prepared.getNominal2Number() + " of " + BANKNOTE2.getNominal() + ", " + prepared.getNominal1Number() + " of " + BANKNOTE1.getNominal() : result.getMessage();
+    }
+
+    private static void prepareMoneyToRoundToBase(Money prepared, int sum) {
+        switch (sum % HUNDRED) {
             case 10:
-                preparedMoney.add(BANKNOTE1, 3);
-                preparedMoney.add(BANKNOTE2, 1);
+                prepared.add(BANKNOTE1, 3);
+                prepared.add(BANKNOTE2, 1);
                 break;
             case 20:
-                preparedMoney.add(BANKNOTE1, 1);
+                prepared.add(BANKNOTE1, 1);
                 break;
             case 30:
-                preparedMoney.add(BANKNOTE1, 4);
-                preparedMoney.add(BANKNOTE2, 1);
+                prepared.add(BANKNOTE1, 4);
+                prepared.add(BANKNOTE2, 1);
                 break;
             case 40:
-                preparedMoney.add(BANKNOTE1, 2);
+                prepared.add(BANKNOTE1, 2);
                 break;
             case 50:
-                preparedMoney.add(BANKNOTE2, 1);
+                prepared.add(BANKNOTE2, 1);
                 break;
             case 60:
-                preparedMoney.add(BANKNOTE1, 3);
+                prepared.add(BANKNOTE1, 3);
                 break;
             case 70:
-                preparedMoney.add(BANKNOTE1, 1);
-                preparedMoney.add(BANKNOTE2, 1);
+                prepared.add(BANKNOTE1, 1);
+                prepared.add(BANKNOTE2, 1);
                 break;
             case 80:
-                preparedMoney.add(BANKNOTE1, 4);
+                prepared.add(BANKNOTE1, 4);
                 break;
             case 90:
-                preparedMoney.add(BANKNOTE1, 2);
-                preparedMoney.add(BANKNOTE2, 1);
+                prepared.add(BANKNOTE1, 2);
+                prepared.add(BANKNOTE2, 1);
                 break;
         }
     }
 
-    private static void prepareBaseMoney(int sum) {
-        Money tempTotalCopy = new Money();
-        tempTotalCopy.add(CashMachine.getTotal());
-        tempTotalCopy.remove(preparedMoney);
+    private static void prepareBaseMoney(Money totalCopy, Money prepared, int sum) {
+        totalCopy.remove(prepared);
 
         while (sum > 0) {
-            switch (checkBankNote(tempTotalCopy)) {
+            switch (checkBankNote(totalCopy)) {
                 case BANKNOTE1:
-                    preparedMoney.add(BANKNOTE1, 5);
-                    tempTotalCopy.remove(BANKNOTE1, 5);
+                    prepared.add(BANKNOTE1, 5);
+                    totalCopy.remove(BANKNOTE1, 5);
                     break;
                 case BANKNOTE2:
-                    preparedMoney.add(BANKNOTE2, 2);
-                    tempTotalCopy.remove(BANKNOTE2, 2);
+                    prepared.add(BANKNOTE2, 2);
+                    totalCopy.remove(BANKNOTE2, 2);
                     break;
                 case BANKNOTE3:
-                    preparedMoney.add(BANKNOTE3, 1);
-                    tempTotalCopy.remove(BANKNOTE3, 1);
+                    prepared.add(BANKNOTE3, 1);
+                    totalCopy.remove(BANKNOTE3, 1);
                     break;
             }
-            sum -= BASE;
+            sum -= HUNDRED;
         }
     }
 
     private static Money.BankNotes checkBankNote(Money money) {
         Map<Money.BankNotes, Integer> bankNotesForBase = new HashMap<Money.BankNotes, Integer>() {
             {
-                put(BANKNOTE1, money.getNominal1Number() / (BASE / BANKNOTE1.getNominal()));
-                put(BANKNOTE2, money.getNominal2Number() / (BASE / BANKNOTE2.getNominal()));
-                put(BANKNOTE3, money.getNominal3Number() / (BASE / BANKNOTE3.getNominal()));
+                put(BANKNOTE1, money.getNominal1Number());
+                put(BANKNOTE2, money.getNominal2Number());
+                put(BANKNOTE3, money.getNominal3Number());
             }
         };
 
