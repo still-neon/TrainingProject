@@ -1,27 +1,52 @@
 package by.stn.java_exercises.modul_1.ex_23_fixed;
 
+import lombok.Getter;
+
 import java.util.HashMap;
 import java.util.Map;
 
-import static by.stn.java_exercises.modul_1.ex_23_fixed.Money.BankNotes.*;
+import static by.stn.java_exercises.modul_1.ex_23_fixed.Money.BankNotes.BANKNOTE1;
+import static by.stn.java_exercises.modul_1.ex_23_fixed.Money.BankNotes.BANKNOTE2;
+import static by.stn.java_exercises.modul_1.ex_23_fixed.Money.BankNotes.BANKNOTE3;
 
 /**
- * Created by EugenKrasotkin on 4/5/2018.
+ * Created by EugenKrasotkin on 4/3/2018.
  */
-public class Operator {
+public class Validator {
+    @Getter
+    private static final String MONEY_CASHED_OUT = "Ok";
+    @Getter
+    private static final String NOT_ENOUGH_BANKNOTES = "Impossible to cash out this sum with accessible banknotes.";
+    @Getter
+    private static final String NOT_ENOUGH_MONEY = "There is no enough money in cash machine.";
+    @Getter
+    private static final String INVALID_SUM = "The sum is invalid. Try another value.";
+
     private static final int HUNDRED = 100;
     private Money prepared;
+    private Money available;
 
-    public Operator() {
+    public Validator(Money available) {
         prepared = new Money();
+        this.available = available;
     }
 
-    public void addMoney(CashMachine cashMachine, Money money) {
-        cashMachine.getTotal().add(money);
+    public Result tryCashOut(Money available, Money prepared, int sum) {
+        Result result = Result.SUCCESS;
+        if (!isMoneyEnough(available, sum)) {
+            result = Result.NOT_ENOUGH_MONEY_FAIL;
+        }
+        if (!isSumValid(sum)) {
+            result = Result.INVALID_SUM_FAIL;
+        }
+        if (!isSumPrepared(available, prepared, sum)) {
+            result = Result.NOT_ENOUGH_BANKNOTES_FAIL;
+        }
+        return result;
     }
 
-    public Checker.Result cashOut(CashMachine cashMachine, int sum) {
-        Checker.Result result = Checker.getPreparationResult(cashMachine, prepared, sum);
+    public Validator.Result cashOut(int sum) {
+        Validator.Result result = Validator.tryCashOut(available, prepared, sum);
 
         if (result.isSuccess()) {
             cashMachine.getTotal().remove(prepared);
@@ -35,10 +60,10 @@ public class Operator {
 
         prepareBaseMoney(totalCopy, prepared, sum - prepared.getBalance());
 
-        return Checker.isBankNotesEnough(totalCopy);
+        return Validator.isBankNotesEnough(totalCopy);
     }
 
-    public String getOperationDetails(Checker.Result result) {
+    public String getOperationDetails(Validator.Result result) {
         return result.isSuccess() ? "The total sum " + prepared.getBalance() + " was cashed out with " + prepared.getNominal3Number() + " of " +
                 BANKNOTE3.getNominal() + ", " + prepared.getNominal2Number() + " of " + BANKNOTE2.getNominal() + ", " + prepared.getNominal1Number() + " of " + BANKNOTE1.getNominal() : result.getMessage();
     }
@@ -120,5 +145,35 @@ public class Operator {
             }
         }
         return bankNote;
+    }
+
+
+    public static boolean isBankNotesEnough(Money money) {
+        return money.getNominal1Number() >= 0 && money.getNominal2Number() >= 0 && money.getNominal3Number() >= 0;
+    }
+
+    private static boolean isSumPrepared(Money totalCopy, Money prepared, int sum) {
+        return Operator.isPrepared(totalCopy, prepared, sum);
+    }
+
+    private static boolean isMoneyEnough(Money money, int sum) {
+        return money.getBalance() > sum;
+    }
+
+    private static boolean isSumValid(int sum) {
+        return sum % Money.getBASE() == 0 && sum != Money.getINVALID_VALUE1() && sum != Money.getINVALID_VALUE2();
+    }
+
+    public enum Result {
+        SUCCESS(MONEY_CASHED_OUT, true), NOT_ENOUGH_MONEY_FAIL(NOT_ENOUGH_MONEY, false), INVALID_SUM_FAIL(INVALID_SUM, false), NOT_ENOUGH_BANKNOTES_FAIL(NOT_ENOUGH_BANKNOTES, false);
+        @Getter
+        private String message;
+        @Getter
+        private boolean isSuccess;
+
+        Result(String message, boolean isSuccess) {
+            this.message = message;
+            this.isSuccess = isSuccess;
+        }
     }
 }
