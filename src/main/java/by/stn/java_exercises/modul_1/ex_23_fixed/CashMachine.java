@@ -11,18 +11,18 @@ public class CashMachine {
         total.add(money);
     }
 
-    public boolean cashOut(int sum) {
-        Validator validator = new Validator(total.clone());
-        validator.tryCashOut(sum);
+    public Result cashOut(int sum) {
+        Result result = new Validator(total.clone()).tryCashOut(sum);
 
-        validator.cashOut(sum);
-        return true;
+        if (result.getValidationResult().isSuccess()) {
+            total.remove(new Money());
+        }
+        return result;
     }
 
     public static void main(String[] args) {
         CashMachine cashMachine = new CashMachine();
-        cashMachine.addMoney(new Money(4, 2, 1));
-        cashMachine.cashOut(150);
-        System.out.println(validator.getOperationDetails(validator.cashOut(150)));
+        cashMachine.addMoney(new Money(40, 2, 1));
+        System.out.println(cashMachine.cashOut(150).getOperationDetails());
     }
 }
