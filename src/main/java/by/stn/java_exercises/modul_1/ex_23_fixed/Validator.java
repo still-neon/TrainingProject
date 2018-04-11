@@ -1,5 +1,7 @@
 package by.stn.java_exercises.modul_1.ex_23_fixed;
 
+import lombok.Getter;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,6 +11,14 @@ import static by.stn.java_exercises.modul_1.ex_23_fixed.Money.BankNotes.*;
  * Created by EugenKrasotkin on 4/3/2018.
  */
 public class Validator {
+    @Getter
+    private static final String MONEY_CASHED_OUT = "Ok";
+    @Getter
+    private static final String NOT_ENOUGH_BANKNOTES = "Impossible to cash out this sum with accessible banknotes.";
+    @Getter
+    private static final String NOT_ENOUGH_MONEY = "There is no enough money in cash machine.";
+    @Getter
+    private static final String INVALID_SUM = "The sum is invalid. Try another value.";
     private static final int HUNDRED = 100;
     private Money prepared;
     private Money available;
@@ -18,21 +28,20 @@ public class Validator {
         this.available = available;
     }
 
-    public Result tryCashOut(int sum) {
-        Result result = new Result();
-
-        result.setValidationResult(Result.ValidationResult.SUCCESS);
+    public CashOutResult tryCashOut(int sum) {
+        CashOutResult result = new CashOutResult(Result.SUCCESS);
 
         if (!isMoneyEnough(sum)) {
-            result.setValidationResult(Result.ValidationResult.NOT_ENOUGH_MONEY_FAIL);
+            result.setResult(Result.NOT_ENOUGH_MONEY_FAIL);
+        } else if (!isSumValid(sum)) {
+            result.setResult(Result.INVALID_SUM_FAIL);
+        } else if (!isPrepared(sum)) {
+            result.setResult(Result.NOT_ENOUGH_BANKNOTES_FAIL);
+        } else {
+            result.setNominal1Number(prepared.getNominal1Number());
+            result.setNominal2Number(prepared.getNominal2Number());
+            result.setNominal3Number(prepared.getNominal3Number());
         }
-        if (!isSumValid(sum)) {
-            result.setValidationResult(Result.ValidationResult.INVALID_SUM_FAIL);
-        }
-        if (!isPrepared(sum)) {
-            result.setValidationResult(Result.ValidationResult.NOT_ENOUGH_BANKNOTES_FAIL);
-        }
-        result.setPreparedNumbers(prepared);
         return result;
     }
 
@@ -133,5 +142,18 @@ public class Validator {
 
     private boolean isSumValid(int sum) {
         return sum % Money.getBASE() == 0 && sum != Money.getINVALID_VALUE1() && sum != Money.getINVALID_VALUE2();
+    }
+
+    public enum Result {
+        SUCCESS(MONEY_CASHED_OUT, true), NOT_ENOUGH_MONEY_FAIL(NOT_ENOUGH_MONEY, false), INVALID_SUM_FAIL(INVALID_SUM, false), NOT_ENOUGH_BANKNOTES_FAIL(NOT_ENOUGH_BANKNOTES, false);
+        @Getter
+        private String message;
+        @Getter
+        private boolean isSuccess;
+
+        Result(String message, boolean isSuccess) {
+            this.message = message;
+            this.isSuccess = isSuccess;
+        }
     }
 }
