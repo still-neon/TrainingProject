@@ -1,25 +1,21 @@
-package by.stn.java_exercises.modul_1.ex_23_fixed;
+package by.stn.java_exercises.modul_1.ex_23;
 
 import lombok.Getter;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static by.stn.java_exercises.modul_1.ex_23_fixed.Money.BankNotes.*;
+import static by.stn.java_exercises.modul_1.ex_23.Money.BankNotes.*;
 
 /**
  * Created by EugenKrasotkin on 4/3/2018.
  */
 public class Validator {
-    @Getter
-    private static final String MONEY_CASHED_OUT = "Ok";
-    @Getter
-    private static final String NOT_ENOUGH_BANKNOTES = "Impossible to cash out this sum with accessible banknotes.";
-    @Getter
-    private static final String NOT_ENOUGH_MONEY = "There is no enough money in cash machine.";
-    @Getter
-    private static final String INVALID_SUM = "The sum is invalid. Try another value.";
     private static final int HUNDRED = 100;
+    private static final String MONEY_CASHED_OUT = "Ok";
+    private static final String NOT_ENOUGH_MONEY = "There is no enough money in cash machine.";
+    private static final String INVALID_SUM = "The sum is invalid. Try another value.";
+    private static final String NOT_ENOUGH_BANKNOTES = "Impossible to cash out this sum with accessible banknotes.";
     private Money prepared;
     private Money available;
 
@@ -89,16 +85,16 @@ public class Validator {
         while (sum > 0) {
             switch (checkBankNote(totalCopy)) {
                 case BANKNOTE1:
-                    prepared.add(BANKNOTE1, 5);
-                    totalCopy.remove(BANKNOTE1, 5);
+                    prepared.add(BANKNOTE1, HUNDRED / BANKNOTE1.getNominal());
+                    totalCopy.remove(BANKNOTE1, HUNDRED / BANKNOTE1.getNominal());
                     break;
                 case BANKNOTE2:
-                    prepared.add(BANKNOTE2, 2);
-                    totalCopy.remove(BANKNOTE2, 2);
+                    prepared.add(BANKNOTE2, HUNDRED / BANKNOTE2.getNominal());
+                    totalCopy.remove(BANKNOTE2, HUNDRED / BANKNOTE3.getNominal());
                     break;
                 case BANKNOTE3:
-                    prepared.add(BANKNOTE3, 1);
-                    totalCopy.remove(BANKNOTE3, 1);
+                    prepared.add(BANKNOTE3, HUNDRED / BANKNOTE3.getNominal());
+                    totalCopy.remove(BANKNOTE3, HUNDRED / BANKNOTE3.getNominal());
                     break;
             }
             sum -= HUNDRED;
@@ -108,9 +104,9 @@ public class Validator {
     private static Money.BankNotes checkBankNote(Money money) {
         Map<Money.BankNotes, Integer> bankNotesForBase = new HashMap<Money.BankNotes, Integer>() {
             {
-                put(BANKNOTE1, money.getNominal1Number() / 5);
-                put(BANKNOTE2, money.getNominal2Number() / 2);
-                put(BANKNOTE3, money.getNominal3Number());
+                put(BANKNOTE1, money.getNominal1Number() / (HUNDRED / BANKNOTE1.getNominal()));
+                put(BANKNOTE2, money.getNominal2Number() / (HUNDRED / BANKNOTE2.getNominal()));
+                put(BANKNOTE3, money.getNominal3Number() / (HUNDRED / BANKNOTE3.getNominal()));
             }
         };
 

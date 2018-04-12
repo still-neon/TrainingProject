@@ -1,4 +1,4 @@
-package by.stn.java_exercises.modul_1.ex_23_fixed;
+package by.stn.java_exercises.modul_1.ex_23;
 
 public class CashMachine {
     private Money total;
@@ -14,7 +14,7 @@ public class CashMachine {
     public OperationResult cashOut(int sum) {
         OperationResult operationResult = new Validator(total.clone()).tryCashOut(sum);
 
-        if (operationResult.getResult().isSuccess()) {//is sucess у опретаион резалт
+        if (operationResult.isSuccess()) {
             total.remove(operationResult.getMoney());
         }
         return operationResult;
@@ -23,6 +23,6 @@ public class CashMachine {
     public static void main(String[] args) {
         CashMachine cashMachine = new CashMachine();
         cashMachine.addMoney(new Money(4, 2, 1));
-        System.out.println(cashMachine.cashOut(150).getOperationDetails());
+        System.out.println(cashMachine.cashOut(170).getOperationDetails());
     }
 }
