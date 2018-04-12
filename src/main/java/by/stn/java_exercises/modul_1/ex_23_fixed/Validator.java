@@ -28,21 +28,15 @@ public class Validator {
         this.available = available;
     }
 
-    public CashOutResult tryCashOut(int sum) {
-        CashOutResult result = new CashOutResult(Result.SUCCESS);
-
-        if (!isMoneyEnough(sum)) {
-            result.setResult(Result.NOT_ENOUGH_MONEY_FAIL);
-        } else if (!isSumValid(sum)) {
-            result.setResult(Result.INVALID_SUM_FAIL);
-        } else if (!isPrepared(sum)) {
-            result.setResult(Result.NOT_ENOUGH_BANKNOTES_FAIL);
-        } else {
-            result.setNominal1Number(prepared.getNominal1Number());
-            result.setNominal2Number(prepared.getNominal2Number());
-            result.setNominal3Number(prepared.getNominal3Number());
-        }
-        return result;
+    public OperationResult tryCashOut(int sum) {
+        if (!isMoneyEnough(sum))
+            return new OperationResult(Result.NOT_ENOUGH_MONEY_FAIL);
+        else if (!isSumValid(sum))
+            return new OperationResult(Result.INVALID_SUM_FAIL);
+        else if (!isPrepared(sum))
+            return new OperationResult(Result.NOT_ENOUGH_BANKNOTES_FAIL);
+        else
+            return new OperationResult(Result.SUCCESS, prepared);
     }
 
     private boolean isPrepared(int sum) {
@@ -114,8 +108,8 @@ public class Validator {
     private static Money.BankNotes checkBankNote(Money money) {
         Map<Money.BankNotes, Integer> bankNotesForBase = new HashMap<Money.BankNotes, Integer>() {
             {
-                put(BANKNOTE1, money.getNominal1Number());
-                put(BANKNOTE2, money.getNominal2Number());
+                put(BANKNOTE1, money.getNominal1Number() / 5);
+                put(BANKNOTE2, money.getNominal2Number() / 2);
                 put(BANKNOTE3, money.getNominal3Number());
             }
         };
