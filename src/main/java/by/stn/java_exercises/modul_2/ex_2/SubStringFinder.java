@@ -8,12 +8,10 @@ import java.util.regex.Pattern;
 /**
  * Created by EugenKrasotkin on 4/23/2018.
  */
-public class HexadecimalFinder {
-    public static List<String> find(String text) {
+public class SubStringFinder {
+    public static List<String> find(String text, String regex) {
         List<String> hexadecimals = new ArrayList<>();
-        String pattern = "-?0[xX][A-Fa-f\\d]{1,5}";
-        //String pattern = "0xhhhh";
-        Pattern p = Pattern.compile(pattern);
+        Pattern p = Pattern.compile(regex);
         Matcher m = p.matcher(text);
         while (m.find()) {
             hexadecimals.add(text.substring(m.start(), m.end()));
@@ -23,6 +21,7 @@ public class HexadecimalFinder {
 
     public static void main(String args[]) {
         String text = "-0x7FFF <p id=p1> 0X7AAF <p id=p1> kkkk  khg gkhjg";
-        System.out.println(find(text));
+        String regex = "-?0[xX][A-Fa-f\\d]*";
+        System.out.println(find(text, regex));
     }
 }
