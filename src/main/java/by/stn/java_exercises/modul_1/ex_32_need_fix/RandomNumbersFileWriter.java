@@ -1,6 +1,6 @@
-package by.stn.java_exercises.modul_1.ex_32;
+package by.stn.java_exercises.modul_1.ex_32_need_fix;
 
-import by.stn.java_exercises.modul_1.ex_30.FileManager;
+import by.stn.java_exercises.modul_1.ex_30_need_fix.FileManager;
 
 /**
  * Created by EugenKrasotkin on 3/13/2018.

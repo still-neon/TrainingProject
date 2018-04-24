@@ -1,6 +1,6 @@
-package by.stn.java_exercises.modul_1.ex_31;
+package by.stn.java_exercises.modul_1.ex_31_need_fix;
 
-import by.stn.java_exercises.modul_1.ex_30.FileManager;
+import by.stn.java_exercises.modul_1.ex_30_need_fix.FileManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created by EugenKrasotkin on 3/13/2018.
  */
-public class FileNumbersSearcher {
+public class FileNumbersSearcher {//оптимизация
     public static final String FILE_NAME = "text.txt";
     private static final String PATH = System.getProperty("user.dir");
     private static final String FS = System.getProperty("file.separator");

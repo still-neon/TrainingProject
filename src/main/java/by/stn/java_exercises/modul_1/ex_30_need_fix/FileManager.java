@@ -1,4 +1,4 @@
-package by.stn.java_exercises.modul_1.ex_30;
+package by.stn.java_exercises.modul_1.ex_30_need_fix;
 
 import java.io.*;
 
@@ -8,7 +8,7 @@ import java.io.*;
 public class FileManager {
     private static File file;
 
-    public static void createFile(String filePath, String text) {
+    public static void createFile(String filePath, String text) {//вывести эксепшен на высокий уровень
         file = new File(filePath);
         try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file))) {
             bufferedWriter.write(text);

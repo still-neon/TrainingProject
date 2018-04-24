@@ -1,6 +1,6 @@
-package by.stn.java_exercises.modul_1.ex_24_fixed;
+package by.stn.java_exercises.modul_1.ex_24;
 
-import by.stn.java_exercises.modul_1.ex_24_fixed.audio_devices.*;
+import by.stn.java_exercises.modul_1.ex_24.audio_devices.*;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package by.stn.java_exercises.modul_1.ex_33;
+package by.stn.java_exercises.modul_1.ex_33_need_fix;
 
 import java.io.File;
 import java.io.IOException;

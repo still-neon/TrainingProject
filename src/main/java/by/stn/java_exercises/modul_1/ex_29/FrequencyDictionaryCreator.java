@@ -1,4 +1,4 @@
-package by.stn.java_exercises.modul_1.ex_29_fixed;
+package by.stn.java_exercises.modul_1.ex_29;
 
 import by.stn.java_exercises.modul_1.ex_19.WordsCounter;
 
@@ -11,7 +11,7 @@ public class FrequencyDictionaryCreator {
     public static Map<String, Integer> create(String text) {
         Map<String, Integer> frequencyDictionary = new HashMap<>();
 
-        for (String word : createWordsList(text)) {//сделать тернарным
+        for (String word : createWordsList(text)) {
             frequencyDictionary.put(word, frequencyDictionary.containsKey(word) ? frequencyDictionary.get(word) + 1 : 1);
         }
         return frequencyDictionary;
@@ -21,7 +21,7 @@ public class FrequencyDictionaryCreator {
         int start;
         int finish;
 
-        List<String> wordsList = new ArrayList<>();//оптимизировать по примерам ранее
+        List<String> wordsList = new ArrayList<>();
 
         text = text.trim().toLowerCase();
         char[] symbols = text.toCharArray();

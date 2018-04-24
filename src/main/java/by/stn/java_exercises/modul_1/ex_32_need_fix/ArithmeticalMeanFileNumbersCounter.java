@@ -1,6 +1,6 @@
-package by.stn.java_exercises.modul_1.ex_32;
+package by.stn.java_exercises.modul_1.ex_32_need_fix;
 
-import by.stn.java_exercises.modul_1.ex_31.FileNumbersSearcher;
+import by.stn.java_exercises.modul_1.ex_31_need_fix.FileNumbersSearcher;
 
 import java.util.List;
 
