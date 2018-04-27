@@ -38,6 +38,10 @@ public class CallsLogEntry extends AbstractEntity {
         callType = CallType.byId(stateNum);
     }
 
+    public void setCallType(CallType callType) {
+        this.callType = callType;
+    }
+
 
     public enum CallType {
         INCOMING(0), OUTGOING(1), CONFERENCE(2);

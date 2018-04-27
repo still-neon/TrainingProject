@@ -1,12 +1,12 @@
 package by.stn.java_exercises.modul_1.ex_24;
 
 public abstract class AbstractElectronicDevice implements ElectronicDevice {
-    private int powerValue;
+    private int power;
     private boolean isOn;
 
     public AbstractElectronicDevice(int power) {
         this.isOn = false;
-        this.powerValue = power;
+        this.power = power;
     }
 
     @Override
@@ -15,12 +15,12 @@ public abstract class AbstractElectronicDevice implements ElectronicDevice {
     }
 
     @Override
-    public boolean isTurnedOn() {
+    public boolean isOn() {
         return isOn;
     }
 
     @Override
     public int getPower() {
-        return powerValue;
+        return power;
     }
 }

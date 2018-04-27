@@ -3,8 +3,8 @@ package by.stn.java_exercises.modul_1.ex_24;
 /**
  * Created by EugenKrasotkin on 3/2/2018.
  */
-public interface ElectronicDevice {//решить только для этой задачи, с помощью классов
+public interface ElectronicDevice {
     void turnOn();
-    boolean isTurnedOn();
+    boolean isOn();
     int getPower();
 }

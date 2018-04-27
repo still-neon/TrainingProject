@@ -20,7 +20,7 @@ class TurnedOnDevicesPowerCalculator {
     private static int calculate(List<ElectronicDevice> devices) {
         int powerSum = 0;
         for(ElectronicDevice device: devices) {
-            if(device.isTurnedOn()) {
+            if(device.isOn()) {
                 powerSum += device.getPower();
             }
         }

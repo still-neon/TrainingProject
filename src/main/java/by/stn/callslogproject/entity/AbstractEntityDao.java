@@ -24,10 +24,6 @@ public abstract class AbstractEntityDao<T extends by.stn.callslogproject.entity.
 
     protected abstract T resultSetToEntity(ResultSet rs) throws Exception;
 
-    //protected abstract T modelToEntity(ResultSet rs);
-
-    //protected abstract T resultSetToEntity(ResultSet rs) throws Exception;
-
     protected abstract void setUpdateQueryArguments(PreparedStatement query, T entity) throws SQLException;
 
     protected abstract void setInsertQueryArguments(PreparedStatement query, T entity) throws SQLException;

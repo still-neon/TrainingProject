@@ -1,6 +1,4 @@
-package by.stn.java_exercises.modul_1.ex_32_need_fix;
-
-import by.stn.java_exercises.modul_1.ex_30_need_fix.FileManager;
+package by.stn.java_exercises.modul_1.ex_32_fixed;
 
 /**
  * Created by EugenKrasotkin on 3/13/2018.
@@ -17,12 +15,12 @@ public class RandomNumbersFileWriter {
         for (int i = 0; i < numbersAmount; i++) {
             text.append((int) (Math.random() * 15)).append(SEPARATOR);
         }
-        FileManager.createFile(filePath, text.toString());
+        //FileManager.create(filePath, text.toString());
     }
 
     public static void main(String[] args) {
         write(FILE_PATH, 5);
-        System.out.println("The collection of numbers is " + FileManager.readFile(FILE_PATH));
-        System.out.println("The arithmetical mean of file numbers is " + ArithmeticalMeanFileNumbersCounter.count(FILE_PATH));
+        //System.out.println("The collection of numbers is " + FileManager.read(FILE_PATH));
+        //System.out.println("The arithmetical mean of file numbers is " + ArithmeticalMeanFileNumbersCounter.count(FILE_PATH));
     }
 }

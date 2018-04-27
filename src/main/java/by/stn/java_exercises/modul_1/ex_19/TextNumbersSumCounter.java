@@ -3,8 +3,12 @@ package by.stn.java_exercises.modul_1.ex_19;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TextNumbersSumCalculator {
-    public static int calculate(String text) {
+public class TextNumbersSumCounter {
+    public static int count(String text) {
+        return getSum(getNumbers(text));
+    }
+
+    public static List<Integer> getNumbers(String text) {
         int start;
         int finish;
 
@@ -25,7 +29,7 @@ public class TextNumbersSumCalculator {
                 numbers.add(Integer.valueOf(text.substring(start, finish)));
             }
         }
-        return getSum(numbers);
+        return numbers;
     }
 
     private static int getSum(List<Integer> numbers) {
@@ -42,6 +46,6 @@ public class TextNumbersSumCalculator {
 
     public static void main(String[] args) {
         String text = " what a hell, 123 is going on? I 45 don't  understand 7";
-        System.out.println("The sum of numbers this text contains is " + calculate(text));
+        System.out.println("The sum of numbers this text contains is " + count(text));
     }
 }

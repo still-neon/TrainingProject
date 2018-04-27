@@ -10,8 +10,13 @@
     <bean id="tableConfigurator" class="by.stn.callslogproject.callslog.CallsLogTableManager">
         <property name="callsLogDao" ref="callsLogDao"/>
         <property name="personsDao" ref="personsDao"/>
+        <property name="service" ref="service"/>
     </bean>
     <bean id="uiCreator" class="by.stn.callslogproject.ui.UICreator">
         <property name="callsLogTableManager" ref="tableConfigurator"/>
+    </bean>
+    <bean id="service" class="by.stn.callslogproject.Service">
+        <property name="callsLogDao" ref="callsLogDao"/>
+        <property name="personsDao" ref="personsDao"/>
     </bean>
 </beans>
