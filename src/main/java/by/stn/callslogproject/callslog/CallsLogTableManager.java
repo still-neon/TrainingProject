@@ -1,6 +1,6 @@
 package by.stn.callslogproject.callslog;
 
-import by.stn.callslogproject.Service;
+import by.stn.callslogproject.CallsLogService;
 import by.stn.callslogproject.personsinfo.PersonsDao;
 import by.stn.callslogproject.personsinfo.PersonsInfo;
 import by.stn.callslogproject.ui.DatePicker;
@@ -25,7 +25,7 @@ public class CallsLogTableManager {
     private static final String[] CALL_TYPES = {CallsLogEntry.CallType.INCOMING.name(), CallsLogEntry.CallType.OUTGOING.name(), CallsLogEntry.CallType.CONFERENCE.name()};
     private DefaultTableModel tableModel;
     @Setter
-    private Service service;
+    private CallsLogService service;
     @Setter
     private CallsLogDao callsLogDao;
     @Setter
@@ -115,7 +115,7 @@ public class CallsLogTableManager {
     }
 
     public void save() {
-        service.saveInDB(getModelData());
+        //service.saveInDB(getModelData());
 
     }
 

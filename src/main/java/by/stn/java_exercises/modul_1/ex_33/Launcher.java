@@ -1,4 +1,4 @@
-package by.stn.java_exercises.modul_1.ex_33_fixed;
+package by.stn.java_exercises.modul_1.ex_33;
 
 /**
  * Created by EugenKrasotkin on 4/25/2018.

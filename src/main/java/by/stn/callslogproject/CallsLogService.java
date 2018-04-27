@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Created by EugenKrasotkin on 4/25/2018.
  */
-public class Service <T extends by.stn.callslogproject.callslog.CallsLogDao> {
+public class CallsLogService<T extends by.stn.callslogproject.callslog.CallsLogDao> {
     @Setter
     private CallsLogDao callsLogDao;
     @Setter
@@ -29,8 +29,8 @@ public class Service <T extends by.stn.callslogproject.callslog.CallsLogDao> {
         }
     }
 
-    private List<CallsLogEntry> toEntities(Object[][] data) {
-        List<CallsLogEntry> entities = new ArrayList<>();
+    private List<CallsLogEntry> toEntities(Object[][] data) {//фасад конвертит
+        List<CallsLogEntry> entities = new ArrayList<>();//сравнить то что в модели с тем что в базе
 
         for(Object[] entityData: data) {
             CallsLogEntry cl = new CallsLogEntry((Long) entityData[5]);

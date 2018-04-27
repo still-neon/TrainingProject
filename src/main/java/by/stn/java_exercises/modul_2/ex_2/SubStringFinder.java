@@ -10,13 +10,13 @@ import java.util.regex.Pattern;
  */
 public class SubStringFinder {
     public static List<String> find(String text, String regex) {
-        List<String> hexadecimals = new ArrayList<>();
+        List<String> subs = new ArrayList<>();
         Pattern p = Pattern.compile(regex);
         Matcher m = p.matcher(text);
         while (m.find()) {
-            hexadecimals.add(text.substring(m.start(), m.end()));
+            subs.add(text.substring(m.start(), m.end()));
         }
-        return hexadecimals;
+        return subs;
     }
 
     public static void main(String args[]) {

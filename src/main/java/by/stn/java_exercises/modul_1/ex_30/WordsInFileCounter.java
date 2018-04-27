@@ -1,4 +1,4 @@
-package by.stn.java_exercises.modul_1.ex_30_fixed;
+package by.stn.java_exercises.modul_1.ex_30;
 
 import by.stn.java_exercises.modul_1.ex_19.WordsCounter;
 

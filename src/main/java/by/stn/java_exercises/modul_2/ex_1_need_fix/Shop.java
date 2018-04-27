@@ -1,4 +1,4 @@
-package by.stn.java_exercises.modul_2.ex_1_fixed;
+package by.stn.java_exercises.modul_2.ex_1_need_fix;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +9,7 @@ import java.util.List;
 public class Shop {
     private static final int CASH_DESKS = 6;
     private static final int MAX_CUSTOMERS_NUMBER = 10;
-    private List<Customer> customers;
+    private List<Customer> customers;//кастомеры это потоки, ломятся в кассы, лочат кассу, Lock синхронизация
 
     public Shop() {
         customers = new ArrayList<>();

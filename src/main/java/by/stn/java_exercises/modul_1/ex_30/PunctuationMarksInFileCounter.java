@@ -1,4 +1,4 @@
-package by.stn.java_exercises.modul_1.ex_30_fixed;
+package by.stn.java_exercises.modul_1.ex_30;
 
 import by.stn.java_exercises.modul_1.ex_18.PunctuationMarksCounter;
 
@@ -10,6 +10,6 @@ import java.util.Set;
  */
 public class PunctuationMarksInFileCounter {
     public static int count(String filePath, Set<Character> punctuationMarks) throws IOException {
-        return PunctuationMarksCounter.count(filePath, punctuationMarks);
+        return PunctuationMarksCounter.count(String.valueOf(FileManager.read(filePath)), punctuationMarks);
     }
 }

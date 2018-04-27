@@ -7,10 +7,10 @@ import java.util.Locale;
  * Created by EugenKrasotkin on 4/24/2018.
  */
 public class MoneyFormatter {
-    public static String format(double number, String language, String country) {
+    public static String format(double money, String language, String country) {
         Locale loc = new Locale(language, country);
-        NumberFormat rubFormat = NumberFormat.getCurrencyInstance(loc);
-        return rubFormat.format(number);
+        NumberFormat format = NumberFormat.getCurrencyInstance(loc);
+        return format.format(money);
     }
 
 

@@ -1,4 +1,4 @@
-package by.stn.java_exercises.modul_1.ex_30_fixed;
+package by.stn.java_exercises.modul_1.ex_30;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -19,7 +19,8 @@ public class Launcher {
         Set<Character> punctuationMarks = new HashSet<>(Arrays.asList('.','!','?','-',':',';','(',')','/'));
 
         try {
-            FileWithDataCreator.create(FILE_PATH,text);
+            FileManager.create(FILE_PATH);
+            FileManager.write(FILE_PATH,text);
             System.out.println("In the file there are " + WordsInFileCounter.count(FILE_PATH) + " words and " + PunctuationMarksInFileCounter.count(FILE_PATH, punctuationMarks) + " punctuation marks");
         } catch (IOException e) {
             e.printStackTrace();

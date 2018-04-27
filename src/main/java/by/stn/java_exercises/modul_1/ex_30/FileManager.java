@@ -1,4 +1,4 @@
-package by.stn.java_exercises.modul_1.ex_30_fixed;
+package by.stn.java_exercises.modul_1.ex_30;
 
 import java.io.*;
 
@@ -19,7 +19,7 @@ public class FileManager {
         bufferedWriter.close();
     }
 
-    public static StringBuffer read(String filePath) throws IOException {
+    public static String read(String filePath) throws IOException {
         StringBuffer fileText = new StringBuffer();
         String fileString;
 
@@ -28,6 +28,7 @@ public class FileManager {
         while ((fileString = bufferedReader.readLine()) != null) {
             fileText.append(fileString);
         }
-        return fileText;
+        bufferedReader.close();
+        return fileText.toString();
     }
 }
