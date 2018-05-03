@@ -15,8 +15,11 @@
     <bean id="uiCreator" class="by.stn.callslogproject.ui.UICreator">
         <property name="callsLogTableManager" ref="tableConfigurator"/>
     </bean>
-    <bean id="service" class="by.stn.callslogproject.CallsLogService">
-        <property name="callsLogDao" ref="callsLogDao"/>
+    <bean id="facade" class="by.stn.callslogproject.callslog.CallsLogFacade">
         <property name="personsDao" ref="personsDao"/>
+    </bean>
+    <bean id="service" class="by.stn.callslogproject.callslog.CallsLogService">
+        <property name="facade" ref="facade"/>
+        <property name="callsLogDao" ref="callsLogDao"/>
     </bean>
 </beans>

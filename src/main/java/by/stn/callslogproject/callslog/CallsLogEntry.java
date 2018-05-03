@@ -34,6 +34,32 @@ public class CallsLogEntry extends AbstractEntity {
         super(id);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == this)
+            return true;
+        if (!(o instanceof CallsLogEntry)) {
+            return false;
+        }
+
+        CallsLogEntry callsLogEntry = (CallsLogEntry) o;
+
+        return callsLogEntry.getId() == getId() && callsLogEntry.getCallType().equals(getCallType()) && callsLogEntry.getCaller().getId() == getCaller().getId() &&
+                callsLogEntry.getAddressee().getId() == getAddressee().getId() && callsLogEntry.getStartDate().equals(getStartDate()) && callsLogEntry.getEndDate().equals(getEndDate());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 17;
+        result = (int) (31 * result + getId());
+        result = 31 * result + getCallType().hashCode();
+        result = 31 * result + getCaller().hashCode();
+        result = 31 * result + getAddressee().hashCode();
+        result = 31 * result + getStartDate().hashCode();
+        result = 31 * result + getEndDate().hashCode();
+        return result;
+    }
+
     public void setCallType(int stateNum) {
         callType = CallType.byId(stateNum);
     }

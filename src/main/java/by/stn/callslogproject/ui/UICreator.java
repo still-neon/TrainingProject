@@ -36,12 +36,12 @@ public class UICreator {
 
                 JButton addButton = new JButton(ADD_BUTTON_TEXT);
                 JButton deleteButton = new JButton(DELETE_BUTTON_TEXT);
-                JButton refreshButton = new JButton(SAVE_BUTTON_TEXT);
+                JButton saveButton = new JButton(SAVE_BUTTON_TEXT);
                 contents.add(addButton);
                 contents.add(deleteButton);
-                contents.add(refreshButton);
+                contents.add(saveButton);
 
-                frame.add(new JScrollPane(callsLogTableManager.createTable()), BorderLayout.CENTER);
+                frame.add(new JScrollPane(callsLogTableManager.getTable()), BorderLayout.CENTER);
 
                 deleteButton.addActionListener(new ActionListener() {
                     @Override
@@ -62,7 +62,7 @@ public class UICreator {
                     }
                 });
 
-                refreshButton.addActionListener(new ActionListener() {
+                saveButton.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         callsLogTableManager.save();
