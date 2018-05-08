@@ -15,37 +15,49 @@ public class CallsLogService {
     private CallsLogDao callsLogDao;
 
     public void saveInDB(Object[][] data) {
-        try {
-            for (CallsLogEntry callsLogEntry : getDataToSave(data)) {
-                callsLogDao.saveOrUpdate(callsLogEntry);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private List<CallsLogEntry> getDataToSave(Object[][] data) throws Exception {
         List<CallsLogEntry> newData = facade.convert(data);
 
-        for(CallsLogEntry callsLogEntry: callsLogDao.getAll()) {
-            if(newData.contains(callsLogEntry)) {
-                newData.remove(callsLogEntry);
-            }
-        }
-        return newData;
-    }
-
-    private List<CallsLogEntry> getDataToDelete (List<CallsLogEntry> data) {
-        List<CallsLogEntry> dataToDelete = new ArrayList<>();
         try {
-            List<CallsLogEntry> old = callsLogDao.getAll();
+            List<CallsLogEntry> dbData = callsLogDao.getAll();
+
+            for (CallsLogEntry callsLogEntry : getUpdatedData(newData, dbData)) {
+                callsLogDao.saveOrUpdate(callsLogEntry);
+            }
+            for (CallsLogEntry callsLogEntry : getDeletedData(newData, dbData)) {
+                callsLogDao.delete(callsLogEntry.getId());
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
 
-        for(CallsLogEntry callsLogEntry: data) {
+    private List<CallsLogEntry> getUpdatedData(List<CallsLogEntry> newData, List<CallsLogEntry> dbData) {
+        List<CallsLogEntry> updatedData = new ArrayList<>(newData);
 
+        for (CallsLogEntry callsLogEntry : dbData) {
+            if (updatedData.contains(callsLogEntry)) {
+                updatedData.remove(callsLogEntry);
+            }
         }
-        return dataToDelete;
+        return updatedData;
+    }
+
+    private List<CallsLogEntry> getDeletedData(List<CallsLogEntry> newData, List<CallsLogEntry> dbData) {
+        List<CallsLogEntry> deletedData = new ArrayList<>();
+
+        for (CallsLogEntry callsLogEntry : dbData) {
+            if (isNotPresent(newData, callsLogEntry.getId())) {
+                deletedData.add(callsLogEntry);
+            }
+        }
+        return deletedData;
+    }
+
+    private boolean isNotPresent(List<CallsLogEntry> newData, long id) {
+        for (CallsLogEntry callsLogEntry : newData) {
+            if (callsLogEntry.getId() == id)
+                return false;
+        }
+        return true;
     }
 }

@@ -22,12 +22,18 @@ public class DatePicker extends AbstractCellEditor implements TableCellEditor {
         spinner.setEditor(new JSpinner.DateEditor(spinner, "dd/MM/yyyy"));
     }
 
+    @Override
     public Object getCellEditorValue() {
         return ((SpinnerDateModel) spinner.getModel()).getDate();
     }
 
+    @Override
     public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
-        spinner.setValue(value);
+        if(value != null) {
+            spinner.setValue(value);
+        } else {
+            spinner.setValue(new Date());
+        }
         return spinner;
     }
 }

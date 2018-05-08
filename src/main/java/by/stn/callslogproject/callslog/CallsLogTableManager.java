@@ -1,15 +1,11 @@
 package by.stn.callslogproject.callslog;
 
-import by.stn.callslogproject.personsinfo.PersonsDao;
-import by.stn.callslogproject.personsinfo.PersonsInfo;
+import by.stn.callslogproject.personsinfo.*;
 import by.stn.callslogproject.ui.DatePicker;
 import lombok.Setter;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumn;
+import javax.swing.table.*;
 import java.awt.*;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -36,7 +32,32 @@ public class CallsLogTableManager {
         table = new JTable();
     }
 
+    public void addRow() {
+        String[] str = {};
+        tableModel.addRow(str);
+        //tableModel.moveRow(0,0,table.getSelectedRow()+1);
+    }
+
+    public void deleteRow() {
+        tableModel.removeRow(table.convertRowIndexToModel(table.getSelectedRow()));
+    }
+
+    public void save() {
+        service.saveInDB(getModelData());
+    }
+
+    public void refresh() {
+        getTable();
+    }
+
     public JTable getTable() {
+        configureTable();
+        configureModel();
+        setRender();
+        return table;
+    }
+
+    private void configureTable() {
         tableModel = new DefaultTableModel(getTableData(), COLUMN_NAMES) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -47,10 +68,6 @@ public class CallsLogTableManager {
         table.setModel(tableModel);
         table.setAutoCreateRowSorter(true);
         table.getRowSorter().toggleSortOrder(Arrays.asList(COLUMN_NAMES).indexOf("ID"));
-
-        configureModel();
-        setRender();
-        return table;
     }
 
     private void configureModel() {
@@ -69,7 +86,7 @@ public class CallsLogTableManager {
         }
 
         for (PersonsInfo personInfo : personsInfo) {
-            personSelect.addItem(personInfo.getFullName());
+            personSelect.addItem(personInfo.getId());
         }
 
         TableColumn callTypeColumn = table.getColumnModel().getColumn(0);
@@ -105,27 +122,6 @@ public class CallsLogTableManager {
         table.getColumnModel().getColumn(4).setCellRenderer(tableCellRenderer);
     }
 
-    public void deleteRow() {
-        System.out.println(table.convertRowIndexToModel(table.getSelectedRow()));
-        tableModel.removeRow(table.convertRowIndexToModel(table.getSelectedRow()));
-        try {
-            //callsLogDao.delete((long) tableModel.getValueAt(table.convertRowIndexToModel(table.getSelectedRow()), tableModel.getColumnCount() - 1));
-            //tableModel.removeRow(table.convertRowIndexToModel(table.getSelectedRow()));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void addRow() {
-        String[] str = {};
-        tableModel.addRow(str);
-        //tableModel.moveRow(0,0,table.getSelectedRow()+1);
-    }
-
-    public void save() {
-        service.saveInDB(getModelData());
-    }
-
     private Object[][] getTableData() {
         List<CallsLogEntry> callsLogEntries = null;
         try {
@@ -149,7 +145,6 @@ public class CallsLogTableManager {
                 modelData[i][j] = tableModel.getValueAt(i,j);
 
             }
-            System.out.println(modelData[i][5]);
         }
         return modelData;
     }

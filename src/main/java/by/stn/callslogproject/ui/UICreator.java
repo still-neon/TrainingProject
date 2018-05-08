@@ -17,6 +17,7 @@ public class UICreator {
     private static final String APP_NAME = "CallsLog";
     private static final String ADD_BUTTON_TEXT = "Add Call";
     private static final String SAVE_BUTTON_TEXT = "Save";
+    private static final String REFRESH_BUTTON_TEXT = "Refresh";
     private static final String DELETE_BUTTON_TEXT = "Delete Call";
     @Setter
     private CallsLogTableManager callsLogTableManager;
@@ -37,22 +38,13 @@ public class UICreator {
                 JButton addButton = new JButton(ADD_BUTTON_TEXT);
                 JButton deleteButton = new JButton(DELETE_BUTTON_TEXT);
                 JButton saveButton = new JButton(SAVE_BUTTON_TEXT);
+                JButton refreshButton = new JButton(REFRESH_BUTTON_TEXT);
                 contents.add(addButton);
                 contents.add(deleteButton);
                 contents.add(saveButton);
+                contents.add(refreshButton);
 
                 frame.add(new JScrollPane(callsLogTableManager.getTable()), BorderLayout.CENTER);
-
-                deleteButton.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        try {
-                            callsLogTableManager.deleteRow();
-                        } catch (Exception e1) {
-                            e1.printStackTrace();
-                        }
-                    }
-                });
 
                 addButton.addActionListener(new ActionListener() {
                     @Override
@@ -62,10 +54,24 @@ public class UICreator {
                     }
                 });
 
+                deleteButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        callsLogTableManager.deleteRow();
+                    }
+                });
+
                 saveButton.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         callsLogTableManager.save();
+                    }
+                });
+
+                refreshButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        callsLogTableManager.refresh();
                     }
                 });
             }
