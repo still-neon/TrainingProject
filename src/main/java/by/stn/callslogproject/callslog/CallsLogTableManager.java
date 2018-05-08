@@ -43,7 +43,8 @@ public class CallsLogTableManager {
     }
 
     public void save() {
-        service.saveInDB(getModelData());
+
+        service.save(getModelData());
     }
 
     public void refresh() {
@@ -51,7 +52,7 @@ public class CallsLogTableManager {
     }
 
     public JTable getTable() {
-        configureTable();
+        configureTable();//возможно нужно передавать table и тд тк непонятно что за методы
         configureModel();
         setRender();
         return table;
