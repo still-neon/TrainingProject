@@ -44,7 +44,7 @@ public class UICreator {
                 contents.add(saveButton);
                 contents.add(refreshButton);
 
-                frame.add(new JScrollPane(callsLogTableManager.getTable()), BorderLayout.CENTER);
+                frame.add(new JScrollPane(callsLogTableManager.getTable()), BorderLayout.CENTER);//создавать таблицу здесь и передавать
 
                 addButton.addActionListener(new ActionListener() {
                     @Override

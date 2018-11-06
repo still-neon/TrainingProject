@@ -14,7 +14,7 @@ public class CallsLogFacade {
     @Setter
     private PersonsDao personsDao;
 
-    public List<CallsLogEntry> convert(Object[][] data) {
+    public List<CallsLogEntry> convert(Object[][] data) {//сохранять в фасаде и перекидыва ть в сервис список
         List<CallsLogEntry> entities = new ArrayList<>();
 
         for(Object[] entity: data) {

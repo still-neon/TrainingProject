@@ -14,18 +14,20 @@ public class CallsLogService {
     @Setter
     private CallsLogDao callsLogDao;
 
-    public void saveInDB(Object[][] data) {
+    public void save(Object[][] data) {
         List<CallsLogEntry> newData = facade.convert(data);
 
         try {
-            List<CallsLogEntry> dbData = callsLogDao.getAll();
+            List<CallsLogEntry> oldData = callsLogDao.getAll();
 
-            for (CallsLogEntry callsLogEntry : getUpdatedData(newData, dbData)) {
-                callsLogDao.saveOrUpdate(callsLogEntry);
-            }
-            for (CallsLogEntry callsLogEntry : getDeletedData(newData, dbData)) {
+            for (CallsLogEntry callsLogEntry : getDeletedData(newData, oldData)) {
                 callsLogDao.delete(callsLogEntry.getId());
             }
+
+            for (CallsLogEntry callsLogEntry : getUpdatedData(newData, oldData)) {
+                callsLogDao.saveOrUpdate(callsLogEntry);
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
