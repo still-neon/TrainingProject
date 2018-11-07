@@ -5,7 +5,7 @@ import lombok.Getter;
 public class CashBox {
 	@Getter
 	private boolean free;
-	private int number = (int) (Math.random() * 9999); //чисто для проверки какая касса обслуживает, потом удалю
+	private int number = (int) (Math.random() * 9999); /*//чисто для проверки какая касса обслуживает, потом удалю*/
 
 	public CashBox() {
 		unlock();

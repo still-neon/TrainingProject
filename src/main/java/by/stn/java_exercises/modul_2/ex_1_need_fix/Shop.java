@@ -1,7 +1,5 @@
 package by.stn.java_exercises.modul_2.ex_1_need_fix;
 
-import by.stn.trainingproject.archiver.Generator;
-
 import java.util.List;
 
 public class Shop {

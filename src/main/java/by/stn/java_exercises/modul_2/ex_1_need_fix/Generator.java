@@ -1,8 +1,4 @@
-package by.stn.trainingproject.archiver;
-
-import by.stn.java_exercises.modul_2.ex_1_need_fix.CashBox;
-import by.stn.java_exercises.modul_2.ex_1_need_fix.Customer;
-import by.stn.java_exercises.modul_2.ex_1_need_fix.Goods;
+package by.stn.java_exercises.modul_2.ex_1_need_fix;
 
 import java.util.ArrayList;
 import java.util.List;
