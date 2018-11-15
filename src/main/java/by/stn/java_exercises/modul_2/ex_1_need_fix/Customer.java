@@ -9,21 +9,19 @@ public class Customer implements Runnable {
 	private List<Goods> goods;
 	@Getter
 	private boolean served;
+	private Manager manager;
 
-	public Customer(List<Goods> goods) {
+	public Customer(List<Goods> goods, Manager manager) {
 		this.goods = goods;
+		this.manager = manager;
 	}
 
 	@Override
 	public void run() {
-		buy();
+		manager.manage(this);
 	}
 
-	private void buy() {
-		Shop.getInstance().serve(this);
-	}
-
-	public void makeServed() {
+	public void becomeServed() {
 		served = true;
 	}
 }

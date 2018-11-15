@@ -5,20 +5,23 @@ import lombok.Getter;
 public class CashBox {
 	@Getter
 	private boolean free;
-	private int number = (int) (Math.random() * 9999); /*//чисто для проверки какая касса обслуживает, потом удалю*/
+	private int number;
 
-	public CashBox() {
+	public CashBox(int number) {
+		this.number = number;
 		unlock();
 	}
 
 	public synchronized void serve(Customer customer) {
-		//lock(); пока не доделал реализацию
-		System.out.println("CashBox number " + number + " Customers goods are:");
-		for (Goods good : customer.getGoods()) {
-			System.out.println(good.getName());
+		lock();
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
-		customer.makeServed();
-		//unlock();
+		Printer.print(customer.getGoods(), number);
+		customer.becomeServed();
+		unlock();
 	}
 
 	private void lock() {
