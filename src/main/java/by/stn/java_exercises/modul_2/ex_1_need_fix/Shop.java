@@ -7,7 +7,7 @@ public class Shop {
 	private static final int CUSTOMERS_LIMIT = 30;
 	private static final int CASH_BOXES = 4;
 	private List<CashBox> cashBoxes;
-	private List<Thread> customers;
+	private List<Thread> customers;//TODO: rename thread
 	private Manager manager;
 
 	public Shop() {
