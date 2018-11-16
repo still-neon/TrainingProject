@@ -19,7 +19,7 @@ public class Manager {
 		}
 	}
 
-	private synchronized CashBox getFreeCashBox() {
+	public synchronized CashBox getFreeCashBox() {
 		for (CashBox cashBox : cashBoxes) {
 			if (cashBox.isFree()) {
 				return cashBox;

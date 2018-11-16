@@ -18,7 +18,11 @@ public class Customer implements Runnable {
 
 	@Override
 	public void run() {
-		manager.manage(this);
+		if (manager.getFreeCashBox() != null) {
+			manager.getFreeCashBox().serve(this);
+		} else
+
+			manager.manage(this);
 	}
 
 	public void becomeServed() {
