@@ -20,8 +20,8 @@ public class CashBox {
 			e.printStackTrace();
 		}
 		Printer.print(customer.getGoods(), number);
-		customer.becomeServed();
 		unlock();
+		notifyAll();
 	}
 
 	private void lock() {

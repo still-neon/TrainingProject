@@ -7,8 +7,6 @@ import java.util.List;
 public class Customer implements Runnable {
 	@Getter
 	private List<Goods> goods;
-	@Getter
-	private boolean served;
 	private Manager manager;
 
 	public Customer(List<Goods> goods, Manager manager) {
@@ -18,14 +16,13 @@ public class Customer implements Runnable {
 
 	@Override
 	public void run() {
-		if (manager.getFreeCashBox() != null) {
-			manager.getFreeCashBox().serve(this);
-		} else
-
-			manager.manage(this);
-	}
-
-	public void becomeServed() {
-		served = true;
+		while (manager.getFreeCashBox() == null) {
+			try {
+				wait();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		manager.getFreeCashBox().serve(this);
 	}
 }

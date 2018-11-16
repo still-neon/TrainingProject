@@ -10,15 +10,6 @@ public class Manager {
 		this.cashBoxes = cashBoxes;
 	}
 
-	public void manage(Customer customer) {//TODO: move to customer, монитор, wait notify
-		while (!customer.isServed()) {
-			freeCashBox = getFreeCashBox();
-			if (freeCashBox != null) {
-				freeCashBox.serve(customer);
-			}
-		}
-	}
-
 	public synchronized CashBox getFreeCashBox() {
 		for (CashBox cashBox : cashBoxes) {
 			if (cashBox.isFree()) {
