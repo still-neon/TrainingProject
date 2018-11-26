@@ -12,13 +12,12 @@ public class CashBox {
 		unlock();
 	}
 
-	public synchronized void serve(Customer customer) {
-		lock();
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+	public synchronized void serve(Customer customer) throws InterruptedException {
+		while (!isFree()) {
+			customer.wait();
 		}
+		lock();
+		Thread.sleep(1000);
 		Printer.print(customer.getGoods(), number);
 		unlock();
 		notifyAll();

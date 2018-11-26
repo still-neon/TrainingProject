@@ -16,13 +16,6 @@ public class Customer implements Runnable {
 
 	@Override
 	public void run() {
-		while (manager.getFreeCashBox() == null) {
-			try {
-				wait();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-		manager.getFreeCashBox().serve(this);
+		manager.manage(this);
 	}
 }

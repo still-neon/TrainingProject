@@ -10,7 +10,19 @@ public class Manager {
 		this.cashBoxes = cashBoxes;
 	}
 
-	public synchronized CashBox getFreeCashBox() {
+	public void manage(Customer customer) {
+		synchronized (this) {
+			while (getFreeCashBox() == null) {
+			}
+		}
+		try {
+			getFreeCashBox().serve(customer);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private synchronized CashBox getFreeCashBox() {
 		for (CashBox cashBox : cashBoxes) {
 			if (cashBox.isFree()) {
 				return cashBox;
