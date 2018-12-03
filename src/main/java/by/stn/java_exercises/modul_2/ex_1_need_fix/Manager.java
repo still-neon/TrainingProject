@@ -11,15 +11,17 @@ public class Manager {
 	}
 
 	public void manage(Customer customer) throws InterruptedException {
-//		synchronized (this) {
-//			if (getFreeCashBox() == null) {
-//				customer.wait();
-//			}
-//		}
-		getFreeCashBox().serve(customer);
+		synchronized (this) {
+			freeCashBox = getFreeCashBox();
+		}
+		if (freeCashBox == null) {
+			customer.wait();
+			manage(customer);
+		}
+		freeCashBox.serve(customer);
 	}
 
-	private synchronized CashBox getFreeCashBox() {
+	private CashBox getFreeCashBox() {
 		for (CashBox cashBox : cashBoxes) {
 			if (cashBox.isFree()) {
 				return cashBox;

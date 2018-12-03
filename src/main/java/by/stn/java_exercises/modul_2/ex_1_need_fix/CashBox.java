@@ -6,25 +6,26 @@ public class CashBox {
 	@Getter
 	private boolean free;
 	private int number;
+	private Manager manager;
 
-	public CashBox(int number) {
+	public CashBox(int number, Manager manager) {
 		this.number = number;
+		this.manager = manager;
 		unlock();
 	}
 
-	public synchronized void serve(Customer customer) throws InterruptedException {
-		lock();
+	public void serve(Customer customer) throws InterruptedException {
 		Thread.sleep(1000);
 		Printer.print(customer.getGoods(), number);
 		unlock();
-		//notifyAll();
+		manager.notify();
 	}
 
-	private void lock() {
+	public void lock() {
 		free = false;
 	}
 
-	private void unlock() {
+	public void unlock() {
 		free = true;
 	}
 }

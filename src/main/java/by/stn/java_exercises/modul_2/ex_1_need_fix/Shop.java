@@ -18,7 +18,7 @@ public class Shop {
 
 	public void start() {
 		for (int i = 1; i < CASH_BOXES; i++) {
-			cashBoxes.add(new CashBox(i));
+			cashBoxes.add(new CashBox(i, manager));
 		}
 
 		for (int i = 0; i < Math.random() * CUSTOMERS_LIMIT; i++) {
