@@ -8,12 +8,12 @@ public class Shop {
 	private static final int CASH_BOXES = 4;
 	private List<CashBox> cashBoxes;
 	private List<Thread> threads;//TODO: rename thread
-	private Manager manager;
+	private CashBoxesManager manager;
 
 	public Shop() {
 		cashBoxes = new ArrayList<>();
 		threads = new ArrayList<>();
-		manager = new Manager(cashBoxes);
+		manager = new CashBoxesManager(cashBoxes);
 	}
 
 	public void start() {

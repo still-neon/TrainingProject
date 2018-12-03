@@ -7,16 +7,28 @@ import java.util.List;
 public class Customer implements Runnable {
 	@Getter
 	private List<Goods> goods;
-	private Manager manager;
+	private CashBoxesManager manager;
+	private CashBox freeCashBox;
 
-	public Customer(List<Goods> goods, Manager manager) {
+	public Customer(List<Goods> goods, CashBoxesManager manager) {
 		this.goods = goods;
 		this.manager = manager;
 	}
 
 	@Override
 	public void run() {
-		manager.manage(this);
-
+		freeCashBox = manager.getFreeCashBox();
+		try {
+			while (freeCashBox == null) {
+				freeCashBox = manager.getFreeCashBox();
+				synchronized (manager) {
+					manager.wait();
+				}
+			}
+			Thread.sleep(1000);
+			freeCashBox.serve(this);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 }
