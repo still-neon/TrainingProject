@@ -10,16 +10,13 @@ public class Manager {
 		this.cashBoxes = cashBoxes;
 	}
 
-	public void manage(Customer customer) {
-		synchronized (this) {
-			while (getFreeCashBox() == null) {
-			}
-		}
-		try {
-			getFreeCashBox().serve(customer);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+	public void manage(Customer customer) throws InterruptedException {
+//		synchronized (this) {
+//			if (getFreeCashBox() == null) {
+//				customer.wait();
+//			}
+//		}
+		getFreeCashBox().serve(customer);
 	}
 
 	private synchronized CashBox getFreeCashBox() {

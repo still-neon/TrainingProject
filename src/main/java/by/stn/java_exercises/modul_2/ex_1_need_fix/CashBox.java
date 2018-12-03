@@ -13,14 +13,11 @@ public class CashBox {
 	}
 
 	public synchronized void serve(Customer customer) throws InterruptedException {
-		while (!isFree()) {
-			customer.wait();
-		}
 		lock();
 		Thread.sleep(1000);
 		Printer.print(customer.getGoods(), number);
 		unlock();
-		notifyAll();
+		//notifyAll();
 	}
 
 	private void lock() {

@@ -16,6 +16,10 @@ public class Customer implements Runnable {
 
 	@Override
 	public void run() {
-		manager.manage(this);
+		try {
+			manager.manage(this);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 }
