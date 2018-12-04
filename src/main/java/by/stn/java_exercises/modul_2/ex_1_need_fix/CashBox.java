@@ -15,13 +15,9 @@ public class CashBox {
 	}
 
 	public void serve(Customer customer) throws InterruptedException {
-		synchronized (manager) {
-			lock();
-			Thread.sleep(1000);
-			Printer.print(customer.getGoods(), number);
-			unlock();
-			manager.notifyAll();
-		}
+		Thread.sleep(1000);
+		Printer.print(customer.getGoods(), number);
+		manager.notifyCustomers(this);
 	}
 
 	public void lock() {

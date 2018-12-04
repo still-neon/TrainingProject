@@ -20,12 +20,11 @@ public class Customer implements Runnable {
 		freeCashBox = manager.getFreeCashBox();
 		try {
 			while (freeCashBox == null) {
-				freeCashBox = manager.getFreeCashBox();
 				synchronized (manager) {
 					manager.wait();
 				}
+				freeCashBox = manager.getFreeCashBox();
 			}
-			Thread.sleep(1000);
 			freeCashBox.serve(this);
 		} catch (InterruptedException e) {
 			e.printStackTrace();

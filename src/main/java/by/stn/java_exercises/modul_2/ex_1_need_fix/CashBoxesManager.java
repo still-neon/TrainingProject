@@ -18,4 +18,11 @@ public class CashBoxesManager {
 		}
 		return null;
 	}
+
+	public void notifyCustomers(CashBox cashBox) {
+		cashBox.unlock();
+		synchronized (this) {
+			this.notifyAll();
+		}
+	}
 }
