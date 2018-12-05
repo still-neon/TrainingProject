@@ -19,10 +19,12 @@ public class CashBoxesManager {
 		return null;
 	}
 
-	public void notifyCustomers(CashBox cashBox) {
+	public void openCashBox(CashBox cashBox) {
 		cashBox.unlock();
-		synchronized (this) {
-			this.notifyAll();
-		}
+		notifyCustomers();
+	}
+
+	private synchronized void notifyCustomers() {
+		notifyAll();
 	}
 }

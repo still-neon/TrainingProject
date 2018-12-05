@@ -8,6 +8,6 @@ public class Printer {
 		for (Goods good : goods) {
 			goodsList.append(" ".concat(good.getName()));
 		}
-		System.out.println("CashBox number " + number + " Customer goods are:" + goodsList);
+		System.out.println("CashBox " + number + " serve goods:" + goodsList);
 	}
 }

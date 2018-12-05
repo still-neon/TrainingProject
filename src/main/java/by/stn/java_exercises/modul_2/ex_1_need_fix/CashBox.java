@@ -17,9 +17,9 @@ public class CashBox {
 	}
 
 	public void serve(List<Goods> goods) throws InterruptedException {
-		Thread.sleep(1000);
+		Thread.sleep((long) (Math.random() * 2000));
 		Printer.print(goods, number);
-		manager.notifyCustomers(this);
+		manager.openCashBox(this);
 	}
 
 	public void lock() {
