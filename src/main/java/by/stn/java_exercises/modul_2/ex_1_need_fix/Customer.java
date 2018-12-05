@@ -8,7 +8,6 @@ public class Customer implements Runnable {
 	@Getter
 	private List<Goods> goods;
 	private CashBoxesManager manager;
-	private CashBox freeCashBox;
 
 	public Customer(List<Goods> goods, CashBoxesManager manager) {
 		this.goods = goods;
@@ -17,7 +16,7 @@ public class Customer implements Runnable {
 
 	@Override
 	public void run() {
-		freeCashBox = manager.getFreeCashBox();
+		CashBox freeCashBox = manager.getFreeCashBox();
 		try {
 			while (freeCashBox == null) {
 				synchronized (manager) {
@@ -25,7 +24,7 @@ public class Customer implements Runnable {
 				}
 				freeCashBox = manager.getFreeCashBox();
 			}
-			freeCashBox.serve(this);
+			freeCashBox.serve(this.goods);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}

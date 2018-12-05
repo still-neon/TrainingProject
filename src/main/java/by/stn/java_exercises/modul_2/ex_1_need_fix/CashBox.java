@@ -2,6 +2,8 @@ package by.stn.java_exercises.modul_2.ex_1_need_fix;
 
 import lombok.Getter;
 
+import java.util.List;
+
 public class CashBox {
 	@Getter
 	private boolean free;
@@ -14,9 +16,9 @@ public class CashBox {
 		unlock();
 	}
 
-	public void serve(Customer customer) throws InterruptedException {
+	public void serve(List<Goods> goods) throws InterruptedException {
 		Thread.sleep(1000);
-		Printer.print(customer.getGoods(), number);
+		Printer.print(goods, number);
 		manager.notifyCustomers(this);
 	}
 
