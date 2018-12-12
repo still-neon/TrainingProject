@@ -7,15 +7,14 @@ import java.util.List;
 public class Customer implements Runnable {
 	@Getter
 	private List<Goods> goods;
-	private CashBoxesManager manager;
 
-	public Customer(List<Goods> goods, CashBoxesManager manager) {
+	public Customer(List<Goods> goods) {
 		this.goods = goods;
-		this.manager = manager;
 	}
 
 	@Override
 	public void run() {
+		CashBoxesManager manager = CashBoxesManager.getInstance();
 		CashBox freeCashBox = manager.getFreeCashBox();
 		try {
 			while (freeCashBox == null) {

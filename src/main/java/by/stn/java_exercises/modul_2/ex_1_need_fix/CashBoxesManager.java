@@ -1,26 +1,31 @@
 package by.stn.java_exercises.modul_2.ex_1_need_fix;
 
-import java.util.List;
+import lombok.Getter;
+
+import java.util.Queue;
 
 public class CashBoxesManager {
-	private List<CashBox> cashBoxes;
+	@Getter
+	private static CashBoxesManager instance;
+	private Queue<CashBox> cashBoxes;
 
-	public CashBoxesManager(List<CashBox> cashBoxes) {
+	private CashBoxesManager(Queue<CashBox> cashBoxes) {
 		this.cashBoxes = cashBoxes;
 	}
 
-	public synchronized CashBox getFreeCashBox() {
-		for (CashBox cashBox : cashBoxes) {
-			if (cashBox.isFree()) {
-				cashBox.lock();
-				return cashBox;
-			}
+	public static synchronized CashBoxesManager getInstance(Queue<CashBox> cashBoxes) {
+		if (instance == null) {
+			instance = new CashBoxesManager(cashBoxes);
 		}
-		return null;
+		return instance;
 	}
 
-	public void openCashBox(CashBox cashBox) {
-		cashBox.unlock();
+	public synchronized CashBox getFreeCashBox() {
+		return cashBoxes.poll();
+	}
+
+	public void considerCashBox(CashBox cashBox) {
+		cashBoxes.offer(cashBox);
 		notifyCustomers();
 	}
 

@@ -6,19 +6,22 @@ import java.util.ResourceBundle;
 public class Saluter {
 	public static final String RESOURCE_NAME = "Greeting";
 	public static final String SALUTE_ID = "greetings";
-	public static final String DEFAULT_LANGUAGE = "en";
-	public static final String DEFAULT_COUNTRY = "US";
+	private Locale locale;
 
-	private static String getSalute(String language, String country) {
-		return ResourceBundle.getBundle(RESOURCE_NAME, new Locale(language, country)).getString(SALUTE_ID);
+	public Saluter(String language, String country) {
+		locale = new Locale(language, country);
 	}
 
-	private static String getSalute() {
-		return ResourceBundle.getBundle(RESOURCE_NAME, new Locale(DEFAULT_LANGUAGE, DEFAULT_COUNTRY)).getString(SALUTE_ID);
+	public Saluter() {
+		locale = Locale.ENGLISH;
 	}
 
 	public static void main(String args[]) {
-		System.out.println(getSalute("ru", "RU"));
-		System.out.println(getSalute());
+		System.out.println(new Saluter("ru", "RU").getSalute());
+		System.out.println(new Saluter().getSalute());
+	}
+
+	private String getSalute() {
+		return ResourceBundle.getBundle(RESOURCE_NAME, locale).getString(SALUTE_ID);
 	}
 }
