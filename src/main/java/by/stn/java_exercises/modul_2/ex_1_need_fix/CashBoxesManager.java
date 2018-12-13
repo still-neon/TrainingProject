@@ -1,11 +1,8 @@
 package by.stn.java_exercises.modul_2.ex_1_need_fix;
 
-import lombok.Getter;
-
 import java.util.Queue;
 
 public class CashBoxesManager {
-	@Getter
 	private static CashBoxesManager instance;
 	private Queue<CashBox> cashBoxes;
 

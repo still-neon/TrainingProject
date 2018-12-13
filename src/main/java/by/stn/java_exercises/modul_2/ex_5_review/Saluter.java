@@ -6,14 +6,14 @@ import java.util.ResourceBundle;
 public class Saluter {
 	public static final String RESOURCE_NAME = "Greeting";
 	public static final String SALUTE_ID = "greetings";
-	private Locale locale;
+	private ResourceBundle rs;
 
 	public Saluter(String language, String country) {
-		locale = new Locale(language, country);
+		rs = getResourceBundle(new Locale(language, country));
 	}
 
 	public Saluter() {
-		locale = Locale.ENGLISH;
+		rs = getResourceBundle(Locale.ENGLISH);
 	}
 
 	public static void main(String args[]) {
@@ -21,7 +21,11 @@ public class Saluter {
 		System.out.println(new Saluter().getSalute());
 	}
 
+	private ResourceBundle getResourceBundle(Locale locale) {
+		return ResourceBundle.getBundle(RESOURCE_NAME, locale);
+	}
+
 	private String getSalute() {
-		return ResourceBundle.getBundle(RESOURCE_NAME, locale).getString(SALUTE_ID);
+		return rs.getString(SALUTE_ID);
 	}
 }

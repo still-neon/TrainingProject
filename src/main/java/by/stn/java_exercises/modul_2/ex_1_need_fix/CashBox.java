@@ -10,9 +10,8 @@ public class CashBox {
 	}
 
 	public void serve(List<Goods> goods) throws InterruptedException {
-		CashBoxesManager manager = CashBoxesManager.getInstance();
 		Thread.sleep((long) (Math.random() * 2000));
 		Printer.print(goods, number);
-		manager.considerCashBox(this);
+		CashBoxesManager.getInstance().considerCashBox(this);
 	}
 }
