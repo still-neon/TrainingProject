@@ -1,4 +1,4 @@
-package by.stn.java_exercises.modul_2.ex_5_review;
+package by.stn.java_exercises.modul_2.ex_5;
 
 import java.util.Locale;
 import java.util.ResourceBundle;

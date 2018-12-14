@@ -1,4 +1,4 @@
-package by.stn.java_exercises.modul_2.ex_1_need_fix;
+package by.stn.java_exercises.modul_2.ex_1;
 
 import lombok.Getter;
 
