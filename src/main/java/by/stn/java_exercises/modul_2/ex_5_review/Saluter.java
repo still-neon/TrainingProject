@@ -9,23 +9,23 @@ public class Saluter {
 	private ResourceBundle rs;
 
 	public Saluter(String language, String country) {
-		rs = getResourceBundle(new Locale(language, country));
+		init(new Locale(language, country));
 	}
 
 	public Saluter() {
-		rs = getResourceBundle(Locale.ENGLISH);
+		init(Locale.ENGLISH);
+	}
+
+	private void init(Locale locale) {
+		rs = ResourceBundle.getBundle(RESOURCE_NAME, locale);
+	}
+
+	private String getSalute() {
+		return rs.getString(SALUTE_ID);
 	}
 
 	public static void main(String args[]) {
 		System.out.println(new Saluter("ru", "RU").getSalute());
 		System.out.println(new Saluter().getSalute());
-	}
-
-	private ResourceBundle getResourceBundle(Locale locale) {
-		return ResourceBundle.getBundle(RESOURCE_NAME, locale);
-	}
-
-	private String getSalute() {
-		return rs.getString(SALUTE_ID);
 	}
 }
