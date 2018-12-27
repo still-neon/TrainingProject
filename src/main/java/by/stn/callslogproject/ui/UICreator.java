@@ -10,9 +10,6 @@ import java.awt.event.ActionListener;
 
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
-/**
- * Created by EugenKrasotkin on 1/8/2018.
- */
 public class UICreator {
     private static final String APP_NAME = "CallsLog";
     private static final String ADD_BUTTON_TEXT = "Add Call";

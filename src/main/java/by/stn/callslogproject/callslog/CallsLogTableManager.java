@@ -1,20 +1,21 @@
 package by.stn.callslogproject.callslog;
 
-import by.stn.callslogproject.personsinfo.*;
+import by.stn.callslogproject.personsinfo.PersonsDao;
+import by.stn.callslogproject.personsinfo.PersonsInfo;
 import by.stn.callslogproject.ui.DatePicker;
 import lombok.Setter;
 
 import javax.swing.*;
-import javax.swing.table.*;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
 import java.awt.*;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-/**
- * Created by EugenKrasotkin on 2/21/2018.
- */
 public class CallsLogTableManager {
     private static final String[] COLUMN_NAMES = {"CallType", "Caller", "Addressee", "StartDate", "EndDate", "ID"};
     private static final CallsLogEntry.CallType[] CALL_TYPES = {CallsLogEntry.CallType.INCOMING, CallsLogEntry.CallType.OUTGOING, CallsLogEntry.CallType.CONFERENCE};
@@ -43,7 +44,6 @@ public class CallsLogTableManager {
     }
 
     public void save() {
-
         service.save(getModelData());
     }
 
