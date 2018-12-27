@@ -6,9 +6,19 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 
 public class Logger {
+	private static final String FILE_NAME = "logger.txt";
 	private static Logger instance;
+	private FileWriter fw;
+	private BufferedWriter bufferWriter;
 
 	private Logger() {
+		try {
+			fw = new FileWriter(FILE_NAME, true);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		bufferWriter = new BufferedWriter(fw);
+
 	}
 
 	public static synchronized Logger getInstance() {
@@ -19,12 +29,12 @@ public class Logger {
 	}
 
 	public void write(String text) throws IOException {
-		try (FileWriter fw = new FileWriter("logger.txt", true)) {//file name constant
-			BufferedWriter bufferWriter = new BufferedWriter(fw);//сделать полями класса
-			bufferWriter.write("\n");
-			bufferWriter.write(text + LocalDateTime.now());
-			bufferWriter.flush();
-			bufferWriter.close();
-		}
+		bufferWriter.write(text + LocalDateTime.now());
+		bufferWriter.newLine();
+		bufferWriter.flush();
+	}
+
+	public void finish() throws IOException {
+		bufferWriter.close();
 	}
 }
