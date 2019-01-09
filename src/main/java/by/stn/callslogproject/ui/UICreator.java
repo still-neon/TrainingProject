@@ -49,7 +49,6 @@ public class UICreator {
 				frame.add(new JScrollPane(callsLogTableManager.getTable()), BorderLayout.CENTER);//создавать таблицу здесь и передавать
 			}
 
-
 			private void addListeners() {
 				addButton.addActionListener(new ActionListener() {
 					@Override
