@@ -11,67 +11,75 @@ import java.awt.event.ActionListener;
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
 public class UICreator {
-    private static final String APP_NAME = "CallsLog";
-    private static final String ADD_BUTTON_TEXT = "Add Call";
-    private static final String SAVE_BUTTON_TEXT = "Save";
-    private static final String REFRESH_BUTTON_TEXT = "Refresh";
-    private static final String DELETE_BUTTON_TEXT = "Delete Call";
-    @Setter
-    private CallsLogTableManager callsLogTableManager;
+	private static final String APP_NAME = "CallsLog";
+	private static final String ADD_BUTTON_TEXT = "Add Call";
+	private static final String SAVE_BUTTON_TEXT = "Save";
+	private static final String REFRESH_BUTTON_TEXT = "Refresh";
+	private static final String DELETE_BUTTON_TEXT = "Delete Call";
+	@Setter
+	private CallsLogTableManager callsLogTableManager;
 
-    public void create() {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                JFrame frame = new JFrame(APP_NAME);
-                frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
-                frame.setSize(700, 600);
-                frame.setResizable(true);
-                frame.setVisible(true);
-                frame.setLayout(new BorderLayout());
+	public void create() {
+		SwingUtilities.invokeLater(new Runnable() {
+			private JButton addButton = new JButton(ADD_BUTTON_TEXT);
+			private JButton deleteButton = new JButton(DELETE_BUTTON_TEXT);
+			private JButton saveButton = new JButton(SAVE_BUTTON_TEXT);
+			private JButton refreshButton = new JButton(REFRESH_BUTTON_TEXT);
+			private JPanel contents = new JPanel(new FlowLayout(FlowLayout.LEFT));
+			private JFrame frame = new JFrame(APP_NAME);
 
-                JPanel contents = new JPanel(new FlowLayout(FlowLayout.LEFT));
-                frame.add(contents, BorderLayout.NORTH);
+			public void run() {
+				configure();
+				addListeners();
+			}
 
-                JButton addButton = new JButton(ADD_BUTTON_TEXT);
-                JButton deleteButton = new JButton(DELETE_BUTTON_TEXT);
-                JButton saveButton = new JButton(SAVE_BUTTON_TEXT);
-                JButton refreshButton = new JButton(REFRESH_BUTTON_TEXT);
-                contents.add(addButton);
-                contents.add(deleteButton);
-                contents.add(saveButton);
-                contents.add(refreshButton);
+			private void configure() {
+				frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+				frame.setSize(700, 600);
+				frame.setResizable(true);
+				frame.setVisible(true);
+				frame.setLayout(new BorderLayout());
+				frame.add(contents, BorderLayout.NORTH);
 
-                frame.add(new JScrollPane(callsLogTableManager.getTable()), BorderLayout.CENTER);//создавать таблицу здесь и передавать
+				contents.add(addButton);
+				contents.add(deleteButton);
+				contents.add(saveButton);
+				contents.add(refreshButton);
 
-                addButton.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        callsLogTableManager.addRow();
+				frame.add(new JScrollPane(callsLogTableManager.getTable()), BorderLayout.CENTER);//создавать таблицу здесь и передавать
+			}
 
-                    }
-                });
 
-                deleteButton.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        callsLogTableManager.deleteRow();
-                    }
-                });
+			private void addListeners() {
+				addButton.addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						callsLogTableManager.addRow();
 
-                saveButton.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        callsLogTableManager.save();
-                    }
-                });
+					}
+				});
 
-                refreshButton.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        callsLogTableManager.refresh();
-                    }
-                });
-            }
-        });
-    }
+				deleteButton.addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						callsLogTableManager.deleteRow();
+					}
+				});
+
+				saveButton.addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						callsLogTableManager.save();
+					}
+				});
+
+				refreshButton.addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						callsLogTableManager.refresh();
+					}
+				});
+			}
+		});
+	}
 }
