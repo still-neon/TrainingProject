@@ -24,7 +24,7 @@ public class UICreator {
 
 			public void run() {
 				frame = createFrame();
-				frame.add(createContents(), BorderLayout.NORTH);
+				frame.add(createPanel(), BorderLayout.NORTH);
 				frame.add(createScrollPane(), BorderLayout.CENTER);
 			}
 
@@ -38,13 +38,13 @@ public class UICreator {
 				return frame;
 			}
 
-			private JPanel createContents() {
-				JPanel contents = new JPanel(new FlowLayout(FlowLayout.LEFT));
-				contents.add(createButton(ADD_BUTTON_LABEL, e -> callsLogTableManager.addRow()));
-				contents.add(createButton(DELETE_BUTTON_LABEL, e -> callsLogTableManager.deleteRow()));
-				contents.add(createButton(SAVE_BUTTON_LABEL, e -> callsLogTableManager.save()));
-				contents.add(createButton(REFRESH_BUTTON_LABEL, e -> callsLogTableManager.refresh()));
-				return contents;
+			private JPanel createPanel() {
+				JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+				panel.add(createButton(ADD_BUTTON_LABEL, e -> callsLogTableManager.addRow()));
+				panel.add(createButton(DELETE_BUTTON_LABEL, e -> callsLogTableManager.deleteRow()));
+				panel.add(createButton(SAVE_BUTTON_LABEL, e -> callsLogTableManager.save()));
+				panel.add(createButton(REFRESH_BUTTON_LABEL, e -> callsLogTableManager.refresh()));
+				return panel;
 			}
 
 			private JButton createButton(String label, ActionListener e) {
