@@ -11,10 +11,10 @@ import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
 public class UICreator {
 	private static final String APP_NAME = "CallsLog";
-	private static final String ADD_BUTTON_LABEL = "Add Call";
-	private static final String SAVE_BUTTON_LABEL = "Save";
-	private static final String REFRESH_BUTTON_LABEL = "Refresh";
-	private static final String DELETE_BUTTON_LABEL = "Delete Call";
+	private static final String ADD_BUTTON_LABEL = "ADD";
+	private static final String SAVE_BUTTON_LABEL = "SAVE";
+	private static final String REFRESH_BUTTON_LABEL = "REFRESH";
+	private static final String DELETE_BUTTON_LABEL = "DELETE";
 	@Setter
 	private CallsLogTableManager callsLogTableManager;
 
