@@ -20,7 +20,7 @@ public class UICreator {
 
 	public void create() {
 		SwingUtilities.invokeLater(new Runnable() {
-			JFrame frame;
+			private JFrame frame;
 
 			public void run() {
 				frame = createFrame();
@@ -54,7 +54,17 @@ public class UICreator {
 			}
 
 			private JScrollPane createScrollPane() {
-				return new JScrollPane(callsLogTableManager.getTable());
+				return new JScrollPane(createTable());
+			}
+
+			private JTable createTable() {
+				JTable table = new JTable();
+				table.setModel(callsLogTableManager.createTableModel());
+				callsLogTableManager.setUpTableModel(table);
+				table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+				table.setAutoCreateRowSorter(true);
+				table.getRowSorter().toggleSortOrder(1);
+				return table;
 			}
 		});
 	}
