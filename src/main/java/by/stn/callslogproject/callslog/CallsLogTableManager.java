@@ -49,7 +49,7 @@ public class CallsLogTableManager {
 	}
 
 	public void refresh() {
-//        fillTable();
+		// fillTable();
 	}
 
 	public DefaultTableModel createTableModel() {
@@ -76,7 +76,7 @@ public class CallsLogTableManager {
 		setUpTableColumnCellRenderer(4, getRenderer());
 	}
 
-	private JComboBox[] createComboBoxes() {
+	private JComboBox[] createComboBoxes() {//TODO: как с батанами метод
 		JComboBox callTypeSelect = new JComboBox();
 		JComboBox personSelect = new JComboBox();
 		JComboBox[] comboBoxes = {callTypeSelect, personSelect};
