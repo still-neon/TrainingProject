@@ -17,18 +17,17 @@ public class UICreator {
 	private static final String DELETE_BUTTON_LABEL = "DELETE";
 	@Setter
 	private CallsLogTableManager callsLogTableManager;
-	private JFrame frame;
 
 	public void create() {
 		SwingUtilities.invokeLater(() -> {
-			frame = createFrame();
+			JFrame frame = createFrame();
 			frame.add(createPanel(), BorderLayout.NORTH);
 			frame.add(createScrollPane(), BorderLayout.CENTER);
 		});
 	}
 
 	private JFrame createFrame() {
-		frame = new JFrame(APP_NAME);
+		JFrame frame = new JFrame(APP_NAME);
 		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		frame.setSize(700, 600);
 		frame.setResizable(true);

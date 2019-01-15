@@ -1,7 +1,6 @@
 package by.stn.callslogproject.callslog;
 
-import by.stn.callslogproject.personsinfo.PersonsDao;
-import by.stn.callslogproject.personsinfo.PersonsInfo;
+import by.stn.callslogproject.personsinfo.PersonsFacade;
 import by.stn.callslogproject.ui.DatePicker;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,26 +12,20 @@ import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 public class CallsLogTableManager {
-	private static final String[] COLUMN_NAMES = {"CallType", "Caller", "Addressee", "StartDate", "EndDate", "ID"};
 	@Getter
-	private static final CallsLogEntry.CallType[] CALL_TYPES = {CallsLogEntry.CallType.INCOMING, CallsLogEntry.CallType.OUTGOING, CallsLogEntry.CallType.CONFERENCE};
+	private static final String[] COLUMN_NAMES = {"CallType", "Caller", "Addressee", "StartDate", "EndDate", "ID"};
 	private DefaultTableModel tableModel;
 	@Setter
-	private CallsLogService service;
+	private CallsLogFacade callsLogFacade;
 	@Setter
-	private CallsLogDao callsLogDao;
-	@Setter
-	private PersonsDao personsDao;
+	private PersonsFacade personsFacade;
 	private JTable table;
 	private boolean editEnabled = true;
-
-	public CallsLogTableManager() {
-
-	}
 
 	public void addRow() {
 		String[] str = {};
@@ -45,7 +38,7 @@ public class CallsLogTableManager {
 	}
 
 	public void save() {
-		service.save(getModelData());
+		callsLogFacade.save(getModelData());
 	}
 
 	public void refresh() {
@@ -53,7 +46,7 @@ public class CallsLogTableManager {
 	}
 
 	public DefaultTableModel createTableModel() {
-		tableModel = new DefaultTableModel(getTableData(), COLUMN_NAMES) {
+		tableModel = new DefaultTableModel(callsLogFacade.getTableData(), COLUMN_NAMES) {
 			@Override
 			public boolean isCellEditable(int row, int column) {
 				return editEnabled;
@@ -64,11 +57,10 @@ public class CallsLogTableManager {
 
 	public void setUpTableModel(JTable table) {
 		this.table = table;
-		JComboBox[] comboBoxes = createComboBoxes();
 
-		setUpTableColumnCellEditor(0, new DefaultCellEditor(comboBoxes[0]));
-		setUpTableColumnCellEditor(1, new DefaultCellEditor(comboBoxes[1]));
-		setUpTableColumnCellEditor(2, new DefaultCellEditor(comboBoxes[1]));
+		setUpTableColumnCellEditor(0, new DefaultCellEditor(createComboBox(Collections.singletonList(callsLogFacade.getCallTypes()))));
+		setUpTableColumnCellEditor(1, new DefaultCellEditor(createComboBox(Collections.singletonList(personsFacade.getPersonsNames()))));
+		setUpTableColumnCellEditor(2, new DefaultCellEditor(createComboBox(Collections.singletonList(personsFacade.getPersonsNames()))));
 		setUpTableColumnCellEditor(3, new DatePicker());
 		setUpTableColumnCellEditor(4, new DatePicker());
 
@@ -76,19 +68,12 @@ public class CallsLogTableManager {
 		setUpTableColumnCellRenderer(4, getRenderer());
 	}
 
-	private JComboBox[] createComboBoxes() {//TODO: как с батанами метод
-		JComboBox callTypeSelect = new JComboBox();
-		JComboBox personSelect = new JComboBox();
-		JComboBox[] comboBoxes = {callTypeSelect, personSelect};
-
-		for (CallsLogEntry.CallType callType : CallsLogTableManager.getCALL_TYPES()) {
-			callTypeSelect.addItem(callType);
+	private JComboBox createComboBox(List<Object> options) {
+		JComboBox comboBox = new JComboBox();
+		for (Object option : options) {
+			comboBox.addItem(option);
 		}
-
-		for (PersonsInfo personInfo : getPersonsData()) {
-			personSelect.addItem(personInfo.getId());
-		}
-		return comboBoxes;
+		return comboBox;
 	}
 
 	private TableCellRenderer getRenderer() {
@@ -117,41 +102,11 @@ public class CallsLogTableManager {
 		table.getColumnModel().getColumn(columnIndex).setCellRenderer(tableCellRenderer);
 	}
 
-	//TODO: methods below move to Service?
-
-	private List<PersonsInfo> getPersonsData() {
-		List<PersonsInfo> personsInfo = null;
-		try {
-			personsInfo = personsDao.getAll();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return personsInfo;
-	}
-
-
-	private Object[][] getTableData() {
-		List<CallsLogEntry> callsLogEntries = null;
-		try {
-			callsLogEntries = callsLogDao.getAll();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		Object[][] tableData = new Object[callsLogEntries.size()][COLUMN_NAMES.length];
-
-		for (int i = 0; i < callsLogEntries.size(); i++) {
-			CallsLogEntry entry = callsLogEntries.get(i);
-			tableData[i] = new Object[]{entry.getCallType(), entry.getCaller().getId(), entry.getAddressee().getId(), entry.getStartDate(), entry.getEndDate(), entry.getId()};
-		}
-		return tableData;
-	}
-
 	private Object[][] getModelData() {
 		Object[][] modelData = new Object[tableModel.getRowCount()][tableModel.getColumnCount()];
 		for (int i = 0; i < modelData.length; i++) {
 			for (int j = 0; j < tableModel.getColumnCount(); j++) {
 				modelData[i][j] = tableModel.getValueAt(i, j);
-
 			}
 		}
 		return modelData;
