@@ -7,13 +7,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CallsLogService {
-
 	@Getter
 	private static final CallsLogEntry.CallType[] CALL_TYPES = {CallsLogEntry.CallType.INCOMING, CallsLogEntry.CallType.OUTGOING, CallsLogEntry.CallType.CONFERENCE};
 	@Setter
-	private CallsLogFacade facade;
-	@Setter
 	private CallsLogDao callsLogDao;
+
+	public List<CallsLogEntry> getCallsLogEntries() {
+		List<CallsLogEntry> callsLogEntries = null;
+		try {
+			callsLogEntries = callsLogDao.getAll();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return callsLogEntries;
+	}
 
 	public void save(List<CallsLogEntry> newData) {
 
@@ -61,16 +68,5 @@ public class CallsLogService {
 				return false;
 		}
 		return true;
-	}
-
-
-	public List<CallsLogEntry> getCallsLogEntries() {
-		List<CallsLogEntry> callsLogEntries = null;
-		try {
-			callsLogEntries = callsLogDao.getAll();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return callsLogEntries;
 	}
 }

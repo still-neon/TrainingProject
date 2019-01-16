@@ -1,6 +1,6 @@
 package by.stn.callslogproject.callslog;
 
-import by.stn.callslogproject.personsinfo.PersonsFacade;
+import by.stn.callslogproject.facade.Facade;
 import by.stn.callslogproject.ui.DatePicker;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,12 +18,10 @@ import java.util.List;
 
 public class CallsLogTableManager {
 	@Getter
-	private static final String[] COLUMN_NAMES = {"CallType", "Caller", "Addressee", "StartDate", "EndDate", "ID"};
+	private static final String[] COLUMN_NAMES = {"CallType", "Caller", "CallerID", "Addressee", "AddresseeID", "StartDate", "EndDate", "ID"};
+	@Setter
+	private Facade facade;
 	private DefaultTableModel tableModel;
-	@Setter
-	private CallsLogFacade callsLogFacade;
-	@Setter
-	private PersonsFacade personsFacade;
 	private JTable table;
 	private boolean editEnabled = true;
 
@@ -38,7 +36,7 @@ public class CallsLogTableManager {
 	}
 
 	public void save() {
-		callsLogFacade.save(getModelData());
+		facade.save(getModelData());
 	}
 
 	public void refresh() {
@@ -46,7 +44,7 @@ public class CallsLogTableManager {
 	}
 
 	public DefaultTableModel createTableModel() {
-		tableModel = new DefaultTableModel(callsLogFacade.getTableData(), COLUMN_NAMES) {
+		tableModel = new DefaultTableModel(facade.getTableData(), COLUMN_NAMES) {
 			@Override
 			public boolean isCellEditable(int row, int column) {
 				return editEnabled;
@@ -58,14 +56,18 @@ public class CallsLogTableManager {
 	public void setUpTableModel(JTable table) {
 		this.table = table;
 
-		setUpTableColumnCellEditor(0, new DefaultCellEditor(createComboBox(Collections.singletonList(callsLogFacade.getCallTypes()))));
-		setUpTableColumnCellEditor(1, new DefaultCellEditor(createComboBox(Collections.singletonList(personsFacade.getPersonsNames()))));
-		setUpTableColumnCellEditor(2, new DefaultCellEditor(createComboBox(Collections.singletonList(personsFacade.getPersonsNames()))));
-		setUpTableColumnCellEditor(3, new DatePicker());
-		setUpTableColumnCellEditor(4, new DatePicker());
+		setUpTableColumnCellEditor(0, new DefaultCellEditor(createComboBox(Collections.singletonList(facade.getCallTypes()))));
+		setUpTableColumnCellEditor(1, new DefaultCellEditor(createComboBox(Collections.singletonList(facade.getPersonsNames()))));
+		setUpTableColumnCellEditor(3, new DefaultCellEditor(createComboBox(Collections.singletonList(facade.getPersonsNames()))));
+		setUpTableColumnCellEditor(5, new DatePicker());
+		setUpTableColumnCellEditor(6, new DatePicker());
 
 		setUpTableColumnCellRenderer(3, getRenderer());
 		setUpTableColumnCellRenderer(4, getRenderer());
+
+		hideColumn(2);
+		hideColumn(4);
+		hideColumn(7);
 	}
 
 	private JComboBox createComboBox(List<Object> options) {
@@ -110,5 +112,10 @@ public class CallsLogTableManager {
 			}
 		}
 		return modelData;
+	}
+
+	private void hideColumn(int number) {
+		table.getColumnModel().getColumn(number).setMinWidth(0);
+		table.getColumnModel().getColumn(number).setMaxWidth(0);
 	}
 }

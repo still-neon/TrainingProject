@@ -6,23 +6,20 @@
         <property name="callsLogTableManager" ref="tableConfigurator"/>
     </bean>
     <bean id="tableConfigurator" class="by.stn.callslogproject.callslog.CallsLogTableManager">
-        <property name="callsLogFacade" ref="callsLogFacade"/>
+        <property name="facade" ref="facade"/>
+    </bean>
+    <bean id="facade" class="by.stn.callslogproject.facade.Facade">
         <property name="callsLogService" ref="callsLogService"/>
         <property name="personsService" ref="personsService"/>
     </bean>
     <bean id="callsLogService" class="by.stn.callslogproject.callslog.CallsLogService">
-        <property name="facade" ref="facade"/>
         <property name="callsLogDao" ref="callsLogDao"/>
     </bean>
     <bean id="personsService" class="by.stn.callslogproject.personsinfo.PersonsService">
         <property name="personsDao" ref="personsDao"/>
     </bean>
-
     <bean id="callsLogDao" class="by.stn.callslogproject.callslog.CallsLogDaoImpl">
         <property name="personsDao" ref="personsDao"/>
     </bean>
     <bean id="personsDao" class="by.stn.callslogproject.personsinfo.PersonsDaoImpl"></bean>
-    <bean id="callsLogFacade" class="by.stn.callslogproject.callslog.CallsLogFacade">
-        <property name="personsDao" ref="personsDao"/>
-    </bean>
 </beans>

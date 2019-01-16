@@ -17,4 +17,8 @@ public class PersonsService {
 		}
 		return personsInfo;
 	}
+
+	public PersonsInfo getPerson(long id) throws Exception {
+		return personsDao.get(id);
+	}
 }
