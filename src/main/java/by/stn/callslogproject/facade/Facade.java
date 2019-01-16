@@ -8,7 +8,6 @@ import by.stn.callslogproject.personsinfo.PersonsService;
 import lombok.Setter;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -26,8 +25,12 @@ public class Facade {
 		return getUIData(callsLogService.getCallsLogEntries());
 	}
 
-	public List<CallsLogEntry.CallType> getCallTypes() {
-		return Arrays.asList(callsLogService.getCALL_TYPES());
+	public List<String> getCallTypes() {
+		List<String> callTypes = new ArrayList<>();
+		for (CallsLogEntry.CallType callType : callsLogService.getCALL_TYPES()) {
+			callTypes.add(callType.name());
+		}
+		return callTypes;
 	}
 
 	public List<String> getPersonsNames() {

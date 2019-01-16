@@ -12,7 +12,6 @@ import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 import java.text.SimpleDateFormat;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -40,7 +39,8 @@ public class CallsLogTableManager {
 	}
 
 	public void refresh() {
-		// fillTable();
+		table.setModel(createTableModel());
+		setUpTableModel(table);
 	}
 
 	public DefaultTableModel createTableModel() {
@@ -56,9 +56,9 @@ public class CallsLogTableManager {
 	public void setUpTableModel(JTable table) {
 		this.table = table;
 
-		setUpTableColumnCellEditor(0, new DefaultCellEditor(createComboBox(Collections.singletonList(facade.getCallTypes()))));
-		setUpTableColumnCellEditor(1, new DefaultCellEditor(createComboBox(Collections.singletonList(facade.getPersonsNames()))));
-		setUpTableColumnCellEditor(3, new DefaultCellEditor(createComboBox(Collections.singletonList(facade.getPersonsNames()))));
+		setUpTableColumnCellEditor(0, new DefaultCellEditor(createComboBox(facade.getCallTypes())));
+		setUpTableColumnCellEditor(1, new DefaultCellEditor(createComboBox(facade.getPersonsNames())));
+		setUpTableColumnCellEditor(3, new DefaultCellEditor(createComboBox(facade.getPersonsNames())));
 		setUpTableColumnCellEditor(5, new DatePicker());
 		setUpTableColumnCellEditor(6, new DatePicker());
 
@@ -70,7 +70,7 @@ public class CallsLogTableManager {
 		hideColumn(7);
 	}
 
-	private JComboBox createComboBox(List<Object> options) {
+	private JComboBox createComboBox(List<String> options) {
 		JComboBox comboBox = new JComboBox();
 		for (Object option : options) {
 			comboBox.addItem(option);
