@@ -8,7 +8,7 @@ public class PersonsService {
 	@Setter
 	private PersonsDao personsDao;
 
-	public List<PersonsInfo> getPersonsInfo() {
+	public List<PersonsInfo> getPersonsInfo() {//TODO: эксепшен
 		List<PersonsInfo> personsInfo = null;
 		try {
 			personsInfo = personsDao.getAll();

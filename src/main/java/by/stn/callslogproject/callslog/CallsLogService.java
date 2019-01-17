@@ -12,13 +12,11 @@ public class CallsLogService {
 	@Setter
 	private CallsLogDao callsLogDao;
 
-	public List<CallsLogEntry> getCallsLogEntries() {
+	public List<CallsLogEntry> getCallsLogEntries() throws Exception {
 		List<CallsLogEntry> callsLogEntries = null;
-		try {
-			callsLogEntries = callsLogDao.getAll();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+
+		callsLogEntries = callsLogDao.getAll();
+
 		return callsLogEntries;
 	}
 

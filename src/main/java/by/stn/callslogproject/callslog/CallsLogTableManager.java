@@ -2,7 +2,6 @@ package by.stn.callslogproject.callslog;
 
 import by.stn.callslogproject.facade.Facade;
 import by.stn.callslogproject.ui.DatePicker;
-import lombok.Getter;
 import lombok.Setter;
 
 import javax.swing.*;
@@ -16,7 +15,6 @@ import java.util.Date;
 import java.util.List;
 
 public class CallsLogTableManager {
-	@Getter
 	private static final String[] COLUMN_NAMES = {"CallType", "Caller", "CallerID", "Addressee", "AddresseeID", "StartDate", "EndDate", "ID"};
 	@Setter
 	private Facade facade;
@@ -57,15 +55,15 @@ public class CallsLogTableManager {
 		this.table = table;
 
 		setUpTableColumnCellEditor(0, new DefaultCellEditor(createComboBox(facade.getCallTypes())));
-		setUpTableColumnCellEditor(1, new DefaultCellEditor(createComboBox(facade.getPersonsNames())));
+		setUpTableColumnCellEditor(1, new DefaultCellEditor(createComboBox(facade.getPersonsNames())));//TODO: дублирование
 		setUpTableColumnCellEditor(3, new DefaultCellEditor(createComboBox(facade.getPersonsNames())));
 		setUpTableColumnCellEditor(5, new DatePicker());
 		setUpTableColumnCellEditor(6, new DatePicker());
 
-		setUpTableColumnCellRenderer(3, getRenderer());
-		setUpTableColumnCellRenderer(4, getRenderer());
+		setUpTableColumnCellRenderer(3, createRenderer());
+		setUpTableColumnCellRenderer(4, createRenderer());
 
-		hideColumn(2);
+		hideColumn(2);//TODO возможно в один метод
 		hideColumn(4);
 		hideColumn(7);
 	}
@@ -78,7 +76,7 @@ public class CallsLogTableManager {
 		return comboBox;
 	}
 
-	private TableCellRenderer getRenderer() {
+	private TableCellRenderer createRenderer() {
 		TableCellRenderer tableCellRenderer = new DefaultTableCellRenderer() {
 
 			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
