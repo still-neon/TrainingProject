@@ -54,18 +54,19 @@ public class CallsLogTableManager {
 	public void setUpTableModel(JTable table) {
 		this.table = table;
 
-		setUpTableColumnCellEditor(0, new DefaultCellEditor(createComboBox(facade.getCallTypes())));
-		setUpTableColumnCellEditor(1, new DefaultCellEditor(createComboBox(facade.getPersonsNames())));//TODO: дублирование
-		setUpTableColumnCellEditor(3, new DefaultCellEditor(createComboBox(facade.getPersonsNames())));
+		List<String> callTypes = facade.getCallTypes();
+		List<String> personNames = facade.getPersonsNames();
+
+		setUpTableColumnCellEditor(0, new DefaultCellEditor(createComboBox(callTypes)));
+		setUpTableColumnCellEditor(1, new DefaultCellEditor(createComboBox(personNames)));
+		setUpTableColumnCellEditor(3, new DefaultCellEditor(createComboBox(personNames)));
 		setUpTableColumnCellEditor(5, new DatePicker());
 		setUpTableColumnCellEditor(6, new DatePicker());
 
 		setUpTableColumnCellRenderer(3, createRenderer());
 		setUpTableColumnCellRenderer(4, createRenderer());
 
-		hideColumn(2);//TODO возможно в один метод
-		hideColumn(4);
-		hideColumn(7);
+		hideColumns(2, 4, 7);
 	}
 
 	private JComboBox createComboBox(List<String> options) {
@@ -112,8 +113,10 @@ public class CallsLogTableManager {
 		return modelData;
 	}
 
-	private void hideColumn(int number) {
-		table.getColumnModel().getColumn(number).setMinWidth(0);
-		table.getColumnModel().getColumn(number).setMaxWidth(0);
+	private void hideColumns(int... numbers) {
+		for (int number : numbers) {
+			table.getColumnModel().getColumn(number).setMinWidth(0);
+			table.getColumnModel().getColumn(number).setMaxWidth(0);
+		}
 	}
 }
