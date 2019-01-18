@@ -2,24 +2,24 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation=" http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
-
+    <bean id="uiCreator" class="by.stn.callslogproject.ui.UICreator">
+        <property name="callsLogTableManager" ref="tableConfigurator"/>
+    </bean>
+    <bean id="tableConfigurator" class="by.stn.callslogproject.callslog.CallsLogTableManager">
+        <property name="facade" ref="facade"/>
+    </bean>
+    <bean id="facade" class="by.stn.callslogproject.facade.Facade">
+        <property name="callsLogService" ref="callsLogService"/>
+        <property name="personsService" ref="personsService"/>
+    </bean>
+    <bean id="callsLogService" class="by.stn.callslogproject.callslog.CallsLogService">
+        <property name="callsLogDao" ref="callsLogDao"/>
+    </bean>
+    <bean id="personsService" class="by.stn.callslogproject.personsinfo.PersonsService">
+        <property name="personsDao" ref="personsDao"/>
+    </bean>
     <bean id="callsLogDao" class="by.stn.callslogproject.callslog.CallsLogDaoImpl">
         <property name="personsDao" ref="personsDao"/>
     </bean>
     <bean id="personsDao" class="by.stn.callslogproject.personsinfo.PersonsDaoImpl"></bean>
-    <bean id="tableConfigurator" class="by.stn.callslogproject.callslog.CallsLogTableManager">
-        <property name="callsLogDao" ref="callsLogDao"/>
-        <property name="personsDao" ref="personsDao"/>
-        <property name="service" ref="service"/>
-    </bean>
-    <bean id="uiCreator" class="by.stn.callslogproject.ui.UICreator">
-        <property name="callsLogTableManager" ref="tableConfigurator"/>
-    </bean>
-    <bean id="facade" class="by.stn.callslogproject.callslog.CallsLogFacade">
-        <property name="personsDao" ref="personsDao"/>
-    </bean>
-    <bean id="service" class="by.stn.callslogproject.callslog.CallsLogService">
-        <property name="facade" ref="facade"/>
-        <property name="callsLogDao" ref="callsLogDao"/>
-    </bean>
 </beans>

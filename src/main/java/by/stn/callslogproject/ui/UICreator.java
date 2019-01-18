@@ -19,43 +19,49 @@ public class UICreator {
 	private CallsLogTableManager callsLogTableManager;
 
 	public void create() {
-		SwingUtilities.invokeLater(new Runnable() {
-			JFrame frame;
-
-			public void run() {
-				frame = createFrame();
-				frame.add(createPanel(), BorderLayout.NORTH);
-				frame.add(createScrollPane(), BorderLayout.CENTER);
-			}
-
-			private JFrame createFrame() {
-				frame = new JFrame(APP_NAME);
-				frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
-				frame.setSize(700, 600);
-				frame.setResizable(true);
-				frame.setVisible(true);
-				frame.setLayout(new BorderLayout());
-				return frame;
-			}
-
-			private JPanel createPanel() {
-				JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-				panel.add(createButton(ADD_BUTTON_LABEL, e -> callsLogTableManager.addRow()));
-				panel.add(createButton(DELETE_BUTTON_LABEL, e -> callsLogTableManager.deleteRow()));
-				panel.add(createButton(SAVE_BUTTON_LABEL, e -> callsLogTableManager.save()));
-				panel.add(createButton(REFRESH_BUTTON_LABEL, e -> callsLogTableManager.refresh()));
-				return panel;
-			}
-
-			private JButton createButton(String label, ActionListener e) {
-				JButton button = new JButton(label);
-				button.addActionListener(e);
-				return button;
-			}
-
-			private JScrollPane createScrollPane() {
-				return new JScrollPane(callsLogTableManager.getTable());
-			}
+		SwingUtilities.invokeLater(() -> {
+			JFrame frame = createFrame();
+			frame.add(createPanel(), BorderLayout.NORTH);
+			frame.add(createScrollPane(), BorderLayout.CENTER);
 		});
+	}
+
+	private JFrame createFrame() {
+		JFrame frame = new JFrame(APP_NAME);
+		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		frame.setSize(700, 600);
+		frame.setResizable(true);
+		frame.setVisible(true);
+		frame.setLayout(new BorderLayout());
+		return frame;
+	}
+
+	private JPanel createPanel() {
+		JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		panel.add(createButton(ADD_BUTTON_LABEL, e -> callsLogTableManager.addRow()));
+		panel.add(createButton(DELETE_BUTTON_LABEL, e -> callsLogTableManager.deleteRow()));
+		panel.add(createButton(SAVE_BUTTON_LABEL, e -> callsLogTableManager.save()));
+		panel.add(createButton(REFRESH_BUTTON_LABEL, e -> callsLogTableManager.refresh()));
+		return panel;
+	}
+
+	private JButton createButton(String label, ActionListener e) {
+		JButton button = new JButton(label);
+		button.addActionListener(e);
+		return button;
+	}
+
+	private JScrollPane createScrollPane() {
+		return new JScrollPane(createTable());
+	}
+
+	private JTable createTable() {
+		JTable table = new JTable();
+		table.setModel(callsLogTableManager.createTableModel());
+		callsLogTableManager.setUpTableModel(table);
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		table.setAutoCreateRowSorter(true);
+		table.getRowSorter().toggleSortOrder(1);
+		return table;
 	}
 }

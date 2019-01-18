@@ -1,152 +1,119 @@
 package by.stn.callslogproject.callslog;
 
-import by.stn.callslogproject.personsinfo.PersonsDao;
-import by.stn.callslogproject.personsinfo.PersonsInfo;
+import by.stn.callslogproject.facade.Facade;
 import by.stn.callslogproject.ui.DatePicker;
 import lombok.Setter;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumn;
 import java.awt.*;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
 public class CallsLogTableManager {
-    private static final String[] COLUMN_NAMES = {"CallType", "Caller", "Addressee", "StartDate", "EndDate", "ID"};
-    private static final CallsLogEntry.CallType[] CALL_TYPES = {CallsLogEntry.CallType.INCOMING, CallsLogEntry.CallType.OUTGOING, CallsLogEntry.CallType.CONFERENCE};
-    private DefaultTableModel tableModel;
-    private JTable table;
-    @Setter
-    private CallsLogService service;
-    @Setter
-    private CallsLogDao callsLogDao;
-    @Setter
-    private PersonsDao personsDao;
-    private boolean editEnabled = true;
-   
-    public CallsLogTableManager() {
-        table = new JTable();
-    }
+	private static final String[] COLUMN_NAMES = {"CallType", "Caller", "CallerID", "Addressee", "AddresseeID", "StartDate", "EndDate", "ID"};
+	@Setter
+	private Facade facade;
+	private DefaultTableModel tableModel;
+	private JTable table;
+	private boolean editEnabled = true;
 
-    public void addRow() {
-        String[] str = {};
-        tableModel.addRow(str);
-        //tableModel.moveRow(0,0,table.getSelectedRow()+1);
-    }
+	public void addRow() {
+		String[] str = {};
+		tableModel.addRow(str);
+		//tableModel.moveRow(0,0,table.getSelectedRow()+1);
+	}
 
-    public void deleteRow() {
-        tableModel.removeRow(table.convertRowIndexToModel(table.getSelectedRow()));
-    }
+	public void deleteRow() {
+		tableModel.removeRow(table.convertRowIndexToModel(table.getSelectedRow()));
+	}
 
-    public void save() {
-        service.save(getModelData());
-    }
+	public void save() {
+		facade.save(getModelData());
+	}
 
-    public void refresh() {
-        getTable();
-    }
+	public void refresh() {
+		table.setModel(createTableModel());
+		setUpTableModel(table);
+	}
 
-    public JTable getTable() {
-        configureTable();//возможно нужно передавать table и тд тк непонятно что за методы
-        configureModel();
-        setRender();
-        return table;
-    }
+	public DefaultTableModel createTableModel() {
+		tableModel = new DefaultTableModel(facade.getTableData(), COLUMN_NAMES) {
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return editEnabled;
+			}
+		};
+		return tableModel;
+	}
 
-    private void configureTable() {
-        tableModel = new DefaultTableModel(getTableData(), COLUMN_NAMES) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return editEnabled;
-            }
-        };
-        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        table.setModel(tableModel);
-        table.setAutoCreateRowSorter(true);
-        table.getRowSorter().toggleSortOrder(Arrays.asList(COLUMN_NAMES).indexOf("ID"));
-    }
+	public void setUpTableModel(JTable table) {
+		this.table = table;
 
-    private void configureModel() {
-        List<PersonsInfo> personsInfo = null;
-        try {
-            personsInfo = personsDao.getAll();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+		setUpTableColumnCellEditor(0, new DefaultCellEditor(createComboBox(facade.getCallTypes())));
+		setUpTableColumnCellEditor(1, new DefaultCellEditor(createComboBox(facade.getPersonsNames())));//TODO: дублирование
+		setUpTableColumnCellEditor(3, new DefaultCellEditor(createComboBox(facade.getPersonsNames())));
+		setUpTableColumnCellEditor(5, new DatePicker());
+		setUpTableColumnCellEditor(6, new DatePicker());
 
-        JComboBox callTypeSelect = new JComboBox();
-        JComboBox personSelect = new JComboBox();
+		setUpTableColumnCellRenderer(3, createRenderer());
+		setUpTableColumnCellRenderer(4, createRenderer());
 
-        for (CallsLogEntry.CallType callType : CallsLogTableManager.CALL_TYPES) {
-            callTypeSelect.addItem(callType);
-        }
+		hideColumn(2);//TODO возможно в один метод
+		hideColumn(4);
+		hideColumn(7);
+	}
 
-        for (PersonsInfo personInfo : personsInfo) {
-            personSelect.addItem(personInfo.getId());
-        }
+	private JComboBox createComboBox(List<String> options) {
+		JComboBox comboBox = new JComboBox();
+		for (Object option : options) {
+			comboBox.addItem(option);
+		}
+		return comboBox;
+	}
 
-        TableColumn callTypeColumn = table.getColumnModel().getColumn(0);
-        TableColumn callerColumn = table.getColumnModel().getColumn(1);
-        TableColumn addresseeColumn = table.getColumnModel().getColumn(2);
-        TableColumn startDateColumn = table.getColumnModel().getColumn(3);
-        TableColumn endDateColumn = table.getColumnModel().getColumn(4);
+	private TableCellRenderer createRenderer() {
+		TableCellRenderer tableCellRenderer = new DefaultTableCellRenderer() {
 
-        callTypeColumn.setCellEditor(new DefaultCellEditor(callTypeSelect));
-        callerColumn.setCellEditor(new DefaultCellEditor(personSelect));
-        addresseeColumn.setCellEditor(new DefaultCellEditor(personSelect));
-        startDateColumn.setCellEditor(new DatePicker());
-        endDateColumn.setCellEditor(new DatePicker());
-    }
+			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
-    private void setRender() {
-        TableCellRenderer tableCellRenderer = new DefaultTableCellRenderer() {
+			public Component getTableCellRendererComponent(JTable table,
+														   Object value, boolean isSelected, boolean hasFocus,
+														   int row, int column) {
+				if (value instanceof Date) {
+					value = simpleDateFormat.format(value);
+				}
+				return super.getTableCellRendererComponent(table, value, isSelected,
+						hasFocus, row, column);
+			}
+		};
+		return tableCellRenderer;
+	}
 
-            SimpleDateFormat f = new SimpleDateFormat("dd/MM/yyyy");
+	private void setUpTableColumnCellEditor(int columnIndex, TableCellEditor tableCellEditor) {
+		table.getColumnModel().getColumn(columnIndex).setCellEditor(tableCellEditor);
+	}
 
-            public Component getTableCellRendererComponent(JTable table,
-                                                           Object value, boolean isSelected, boolean hasFocus,
-                                                           int row, int column) {
-                if( value instanceof Date) {
-                    value = f.format(value);
-                }
-                return super.getTableCellRendererComponent(table, value, isSelected,
-                        hasFocus, row, column);
-            }
-        };
+	private void setUpTableColumnCellRenderer(int columnIndex, TableCellRenderer tableCellRenderer) {
+		table.getColumnModel().getColumn(columnIndex).setCellRenderer(tableCellRenderer);
+	}
 
-        table.getColumnModel().getColumn(3).setCellRenderer(tableCellRenderer);
-        table.getColumnModel().getColumn(4).setCellRenderer(tableCellRenderer);
-    }
+	private Object[][] getModelData() {
+		Object[][] modelData = new Object[tableModel.getRowCount()][tableModel.getColumnCount()];
+		for (int i = 0; i < modelData.length; i++) {
+			for (int j = 0; j < tableModel.getColumnCount(); j++) {
+				modelData[i][j] = tableModel.getValueAt(i, j);
+			}
+		}
+		return modelData;
+	}
 
-    private Object[][] getTableData() {
-        List<CallsLogEntry> callsLogEntries = null;
-        try {
-            callsLogEntries = callsLogDao.getAll();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        Object[][] tableData = new Object[callsLogEntries.size()][COLUMN_NAMES.length];
-
-        for (int i = 0; i < callsLogEntries.size(); i++) {
-            CallsLogEntry entry = callsLogEntries.get(i);
-            tableData[i] = new Object[]{entry.getCallType(), entry.getCaller().getId(), entry.getAddressee().getId(), entry.getStartDate(), entry.getEndDate(), entry.getId()};
-        }
-        return tableData;
-    }
-
-    private Object[][] getModelData() {
-        Object[][] modelData = new Object[tableModel.getRowCount()][tableModel.getColumnCount()];
-        for(int i = 0; i < modelData.length; i++) {
-            for(int j = 0; j < tableModel.getColumnCount(); j++) {
-                modelData[i][j] = tableModel.getValueAt(i,j);
-
-            }
-        }
-        return modelData;
-    }
+	private void hideColumn(int number) {
+		table.getColumnModel().getColumn(number).setMinWidth(0);
+		table.getColumnModel().getColumn(number).setMaxWidth(0);
+	}
 }
