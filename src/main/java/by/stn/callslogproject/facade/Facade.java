@@ -2,6 +2,7 @@ package by.stn.callslogproject.facade;
 
 import by.stn.callslogproject.callslog.CallsLogEntry;
 import by.stn.callslogproject.callslog.CallsLogService;
+import by.stn.callslogproject.converter.Converter;
 import by.stn.callslogproject.personsinfo.PersonsInfo;
 import by.stn.callslogproject.personsinfo.PersonsService;
 import lombok.Setter;
@@ -14,17 +15,20 @@ public class Facade {
 	private CallsLogService callsLogService;
 	@Setter
 	private PersonsService personsService;
+	@Setter
+	private Converter converter;
 
 	public void save(Object[][] data) {
-		callsLogService.save(getCallsLogEntries(data));
+		callsLogService.save(converter.getStoredData(data, personsService));
 	}
 
 	public Object[][] getTableData() {//TODO передавать объект интерфейса в котором логика трансформации колс логов в массив
 		try {
-			return getUIData(callsLogService.getCallsLogEntries());//TODO:эксепшен на фасаде, вернемся к теме
+			return converter.getDisplayedData(callsLogService.getCallsLogEntries());//TODO:эксепшен на фасаде, вернемся к теме
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return null;
 	}
 
 	public List<String> getCallTypes() {
@@ -42,6 +46,4 @@ public class Facade {
 		}
 		return personsNames;
 	}
-
-
 }

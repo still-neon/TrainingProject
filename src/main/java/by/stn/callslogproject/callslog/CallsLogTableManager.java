@@ -2,6 +2,7 @@ package by.stn.callslogproject.callslog;
 
 import by.stn.callslogproject.facade.Facade;
 import by.stn.callslogproject.ui.DatePicker;
+import lombok.Getter;
 import lombok.Setter;
 
 import javax.swing.*;
@@ -17,10 +18,18 @@ import java.util.List;
 public class CallsLogTableManager {
 	private static final String[] COLUMN_NAMES = {"CallType", "Caller", "CallerID", "Addressee", "AddresseeID", "StartDate", "EndDate", "ID"};
 	@Setter
-	private Facade facade;
+	private static Facade facade;
 	private DefaultTableModel tableModel;
 	private JTable table;
 	private boolean editEnabled = true;
+
+	private static JComboBox createComboBox(List<String> options) {
+		JComboBox comboBox = new JComboBox();
+		for (Object option : options) {
+			comboBox.addItem(option);
+		}
+		return comboBox;
+	}
 
 	public void addRow() {
 		String[] str = {};
@@ -57,24 +66,17 @@ public class CallsLogTableManager {
 		List<String> callTypes = facade.getCallTypes();
 		List<String> personNames = facade.getPersonsNames();
 
-		setUpTableColumnCellEditor(0, new DefaultCellEditor(createComboBox(callTypes)));
-		setUpTableColumnCellEditor(1, new DefaultCellEditor(createComboBox(personNames)));
-		setUpTableColumnCellEditor(3, new DefaultCellEditor(createComboBox(personNames)));
-		setUpTableColumnCellEditor(5, new DatePicker());
-		setUpTableColumnCellEditor(6, new DatePicker());
+		setUpTableColumnsCellEditor();
+//		setUpTableColumnCellEditor(TableColumns.CALL_TYPE.getIndex(), new DefaultCellEditor(createComboBox(callTypes)));
+//		setUpTableColumnCellEditor(TableColumns.CALL_TYPE.getIndex(), new DefaultCellEditor(createComboBox(personNames)));
+//		setUpTableColumnCellEditor(TableColumns.CALL_TYPE.getIndex(), new DefaultCellEditor(createComboBox(personNames)));
+//		setUpTableColumnCellEditor(TableColumns.CALL_TYPE.getIndex(), new DatePicker());
+//		setUpTableColumnCellEditor(TableColumns.CALL_TYPE.getIndex(), new DatePicker());
 
-		setUpTableColumnCellRenderer(3, createRenderer());
-		setUpTableColumnCellRenderer(4, createRenderer());
+		setUpTableColumnCellRenderer(TableColumns.START_DATE.getIndex(), createRenderer());
+		setUpTableColumnCellRenderer(TableColumns.END_DATE.getIndex(), createRenderer());
 
-		hideColumns(2, 4, 7);
-	}
-
-	private JComboBox createComboBox(List<String> options) {
-		JComboBox comboBox = new JComboBox();
-		for (Object option : options) {
-			comboBox.addItem(option);
-		}
-		return comboBox;
+		hideColumns(TableColumns.CALLER_ID.getIndex(), TableColumns.ADDRESSEE_ID.getIndex(), TableColumns.ID.getIndex());
 	}
 
 	private TableCellRenderer createRenderer() {
@@ -82,17 +84,20 @@ public class CallsLogTableManager {
 
 			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
-			public Component getTableCellRendererComponent(JTable table,
-														   Object value, boolean isSelected, boolean hasFocus,
-														   int row, int column) {
+			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 				if (value instanceof Date) {
 					value = simpleDateFormat.format(value);
 				}
-				return super.getTableCellRendererComponent(table, value, isSelected,
-						hasFocus, row, column);
+				return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 			}
 		};
 		return tableCellRenderer;
+	}
+
+	private void setUpTableColumnsCellEditor() {
+		for (TableColumns column : TableColumns.values()) {
+			setUpTableColumnCellEditor(column.getIndex(), column.getTableCellEditor());
+		}
 	}
 
 	private void setUpTableColumnCellEditor(int columnIndex, TableCellEditor tableCellEditor) {
@@ -111,6 +116,37 @@ public class CallsLogTableManager {
 			}
 		}
 		return modelData;
+	}
+
+	public enum TableColumns {
+		CALL_TYPE(0, "Call Type", 0, new DefaultCellEditor(createComboBox(facade.getCallTypes()))),
+		CALLER("Caller", 1, new DefaultCellEditor(createComboBox(facade.getPersonsNames()))),
+		CALLER_ID("CallerID", 2, null),
+		ADDRESSEE("Addressee", 3, new DefaultCellEditor(createComboBox(facade.getPersonsNames()))),
+		ADDRESSEE_ID("AddresseeID", 4, null),
+		START_DATE("Start Date", 5, new DatePicker()),
+		END_DATE("End Date", 6, new DatePicker()),
+		ID("ID", 7, null);
+
+		@Getter
+		private String title;
+		@Getter
+		private int index;
+		@Getter
+		private TableCellEditor tableCellEditor;
+		@Getter
+		private boolean visible;
+		@Getter
+		private boolean needRender;
+
+
+		TableColumns(int index, String title, boolean visible, boolean needRender, TableCellEditor tableCellEditor) {
+			this.index = index;
+			this.title = title;
+			this.visible = visible;
+			this.needRender = needRender;
+			this.tableCellEditor = tableCellEditor;
+		}
 	}
 
 	private void hideColumns(int... numbers) {

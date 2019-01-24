@@ -7,9 +7,6 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by EugenKrasotkin on 12/11/2017.
- */
 public abstract class AbstractEntityDao<T extends by.stn.callslogproject.entity.Entity> implements EntityDao<T> {
     private static final String GET_ENTITY_QUERY_FORMAT = "SELECT * FROM %s WHERE id=%d";
     private static final String GET_ALL_QUERY_FORMAT = "SELECT * FROM %s";

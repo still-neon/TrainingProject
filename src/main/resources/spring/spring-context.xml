@@ -11,6 +11,9 @@
     <bean id="facade" class="by.stn.callslogproject.facade.Facade">
         <property name="callsLogService" ref="callsLogService"/>
         <property name="personsService" ref="personsService"/>
+        <property name="converter" ref="converter"/>
+    </bean>
+    <bean id="converter" class="by.stn.callslogproject.converter.Converter">
     </bean>
     <bean id="callsLogService" class="by.stn.callslogproject.callslog.CallsLogService">
         <property name="callsLogDao" ref="callsLogDao"/>
