@@ -21,7 +21,6 @@ public class CallsLogService {
 	}
 
 	public void save(List<CallsLogEntry> newData) {
-
 		try {
 			List<CallsLogEntry> oldData = callsLogDao.getAll();
 

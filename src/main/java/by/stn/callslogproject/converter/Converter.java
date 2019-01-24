@@ -14,7 +14,7 @@ public class Converter {
 
 		for (Object[] entity : data) {
 			CallsLogEntry callsLogEntry = new CallsLogEntry((Long) entity[CallsLogTableManager.TableColumns.ID.getIndex()]);
-			callsLogEntry.setCallType((CallsLogEntry.CallType) entity[CallsLogTableManager.TableColumns.CALL_TYPE.getIndex()]);
+			callsLogEntry.setCallType(CallsLogEntry.CallType.valueOf((String) entity[CallsLogTableManager.TableColumns.CALL_TYPE.getIndex()]));
 			try {
 				callsLogEntry.setCaller(personsService.getPerson((Long) entity[CallsLogTableManager.TableColumns.CALLER_ID.getIndex()]));
 				callsLogEntry.setAddressee(personsService.getPerson((Long) entity[CallsLogTableManager.TableColumns.ADDRESSEE_ID.getIndex()]));

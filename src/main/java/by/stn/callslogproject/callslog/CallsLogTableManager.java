@@ -45,22 +45,20 @@ public class CallsLogTableManager {
 	}
 
 	public void refresh() {
-//		table.setModel(createTableModel());
 		setUpTableModel(table);
 	}
 
-	public DefaultTableModel createTableModel() {
+	public void setUpTableModel(JTable table) {
+		this.table = table;
+
 		tableModel = new DefaultTableModel(facade.getTableData(), getColumnsTitles()) {
 			@Override
 			public boolean isCellEditable(int row, int column) {
 				return editEnabled;
 			}
 		};
-		return tableModel;
-	}
 
-	public void setUpTableModel(JTable table) {
-		this.table = table;
+		table.setModel(tableModel);
 		setUpTableColumns();
 	}
 
