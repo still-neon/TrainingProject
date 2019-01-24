@@ -16,7 +16,6 @@ import java.util.Date;
 import java.util.List;
 
 public class CallsLogTableManager {
-	private static final String[] COLUMN_NAMES = {"CallType", "Caller", "CallerID", "Addressee", "AddresseeID", "StartDate", "EndDate", "ID"};
 	@Setter
 	private static Facade facade;
 	private DefaultTableModel tableModel;
@@ -46,12 +45,12 @@ public class CallsLogTableManager {
 	}
 
 	public void refresh() {
-		table.setModel(createTableModel());
+//		table.setModel(createTableModel());
 		setUpTableModel(table);
 	}
 
 	public DefaultTableModel createTableModel() {
-		tableModel = new DefaultTableModel(facade.getTableData(), COLUMN_NAMES) {
+		tableModel = new DefaultTableModel(facade.getTableData(), getColumnsTitles()) {
 			@Override
 			public boolean isCellEditable(int row, int column) {
 				return editEnabled;
@@ -62,21 +61,7 @@ public class CallsLogTableManager {
 
 	public void setUpTableModel(JTable table) {
 		this.table = table;
-
-		List<String> callTypes = facade.getCallTypes();
-		List<String> personNames = facade.getPersonsNames();
-
-		setUpTableColumnsCellEditor();
-//		setUpTableColumnCellEditor(TableColumns.CALL_TYPE.getIndex(), new DefaultCellEditor(createComboBox(callTypes)));
-//		setUpTableColumnCellEditor(TableColumns.CALL_TYPE.getIndex(), new DefaultCellEditor(createComboBox(personNames)));
-//		setUpTableColumnCellEditor(TableColumns.CALL_TYPE.getIndex(), new DefaultCellEditor(createComboBox(personNames)));
-//		setUpTableColumnCellEditor(TableColumns.CALL_TYPE.getIndex(), new DatePicker());
-//		setUpTableColumnCellEditor(TableColumns.CALL_TYPE.getIndex(), new DatePicker());
-
-		setUpTableColumnCellRenderer(TableColumns.START_DATE.getIndex(), createRenderer());
-		setUpTableColumnCellRenderer(TableColumns.END_DATE.getIndex(), createRenderer());
-
-		hideColumns(TableColumns.CALLER_ID.getIndex(), TableColumns.ADDRESSEE_ID.getIndex(), TableColumns.ID.getIndex());
+		setUpTableColumns();
 	}
 
 	private TableCellRenderer createRenderer() {
@@ -94,9 +79,16 @@ public class CallsLogTableManager {
 		return tableCellRenderer;
 	}
 
-	private void setUpTableColumnsCellEditor() {
+	private void setUpTableColumns() {
 		for (TableColumns column : TableColumns.values()) {
-			setUpTableColumnCellEditor(column.getIndex(), column.getTableCellEditor());
+			if (column.visible) {
+				setUpTableColumnCellEditor(column.getIndex(), column.getTableCellEditor());
+				if (column.needRender) {
+					setUpTableColumnCellRenderer(column.getIndex(), createRenderer());
+				}
+			} else {
+				hideColumn(column.getIndex());
+			}
 		}
 	}
 
@@ -106,6 +98,19 @@ public class CallsLogTableManager {
 
 	private void setUpTableColumnCellRenderer(int columnIndex, TableCellRenderer tableCellRenderer) {
 		table.getColumnModel().getColumn(columnIndex).setCellRenderer(tableCellRenderer);
+	}
+
+	private void hideColumn(int number) {
+		table.getColumnModel().getColumn(number).setMinWidth(0);
+		table.getColumnModel().getColumn(number).setMaxWidth(0);
+	}
+
+	private String[] getColumnsTitles() {
+		String[] columnsTitles = new String[TableColumns.values().length];
+		for (int i = 0; i < columnsTitles.length; i++) {
+			columnsTitles[i] = TableColumns.values()[i].getTitle();
+		}
+		return columnsTitles;
 	}
 
 	private Object[][] getModelData() {
@@ -119,26 +124,25 @@ public class CallsLogTableManager {
 	}
 
 	public enum TableColumns {
-		CALL_TYPE(0, "Call Type", 0, new DefaultCellEditor(createComboBox(facade.getCallTypes()))),
-		CALLER("Caller", 1, new DefaultCellEditor(createComboBox(facade.getPersonsNames()))),
-		CALLER_ID("CallerID", 2, null),
-		ADDRESSEE("Addressee", 3, new DefaultCellEditor(createComboBox(facade.getPersonsNames()))),
-		ADDRESSEE_ID("AddresseeID", 4, null),
-		START_DATE("Start Date", 5, new DatePicker()),
-		END_DATE("End Date", 6, new DatePicker()),
-		ID("ID", 7, null);
+		CALL_TYPE(0, "Call Type", true, false, new DefaultCellEditor(createComboBox(facade.getCallTypes()))),
+		CALLER(1, "Caller", true, false, new DefaultCellEditor(createComboBox(facade.getPersonsNames()))),//TODO: need to discuss TableColumns
+		CALLER_ID(2, "CallerID", false, false, null),
+		ADDRESSEE(3, "Addressee", true, false, new DefaultCellEditor(createComboBox(facade.getPersonsNames()))),
+		ADDRESSEE_ID(4, "AddresseeID", false, false, null),
+		START_DATE(5, "Start Date", true, true, new DatePicker()),
+		END_DATE(6, "End Date", true, true, new DatePicker()),
+		ID(7, "ID", false, false, null);
 
-		@Getter
-		private String title;
 		@Getter
 		private int index;
 		@Getter
-		private TableCellEditor tableCellEditor;
+		private String title;
 		@Getter
 		private boolean visible;
 		@Getter
 		private boolean needRender;
-
+		@Getter
+		private TableCellEditor tableCellEditor;
 
 		TableColumns(int index, String title, boolean visible, boolean needRender, TableCellEditor tableCellEditor) {
 			this.index = index;
@@ -146,13 +150,6 @@ public class CallsLogTableManager {
 			this.visible = visible;
 			this.needRender = needRender;
 			this.tableCellEditor = tableCellEditor;
-		}
-	}
-
-	private void hideColumns(int... numbers) {
-		for (int number : numbers) {
-			table.getColumnModel().getColumn(number).setMinWidth(0);
-			table.getColumnModel().getColumn(number).setMaxWidth(0);
 		}
 	}
 }

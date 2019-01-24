@@ -1,6 +1,7 @@
 package by.stn.callslogproject.converter;
 
 import by.stn.callslogproject.callslog.CallsLogEntry;
+import by.stn.callslogproject.callslog.CallsLogTableManager;
 import by.stn.callslogproject.personsinfo.PersonsService;
 
 import java.util.ArrayList;
@@ -12,24 +13,24 @@ public class Converter {
 		List<CallsLogEntry> entities = new ArrayList<>();
 
 		for (Object[] entity : data) {
-			CallsLogEntry callsLogEntry = new CallsLogEntry((Long) entity[7]);
-			callsLogEntry.setCallType((CallsLogEntry.CallType) entity[0]);
+			CallsLogEntry callsLogEntry = new CallsLogEntry((Long) entity[CallsLogTableManager.TableColumns.ID.getIndex()]);
+			callsLogEntry.setCallType((CallsLogEntry.CallType) entity[CallsLogTableManager.TableColumns.CALL_TYPE.getIndex()]);
 			try {
-				callsLogEntry.setCaller(personsService.getPerson((Long) entity[2]));
-				callsLogEntry.setAddressee(personsService.getPerson((Long) entity[4]));
+				callsLogEntry.setCaller(personsService.getPerson((Long) entity[CallsLogTableManager.TableColumns.CALLER_ID.getIndex()]));
+				callsLogEntry.setAddressee(personsService.getPerson((Long) entity[CallsLogTableManager.TableColumns.ADDRESSEE_ID.getIndex()]));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 
-			callsLogEntry.setStartDate((Date) entity[3]);
-			callsLogEntry.setEndDate((Date) entity[4]);
+			callsLogEntry.setStartDate((Date) entity[CallsLogTableManager.TableColumns.START_DATE.getIndex()]);
+			callsLogEntry.setEndDate((Date) entity[CallsLogTableManager.TableColumns.END_DATE.getIndex()]);
 			entities.add(callsLogEntry);
 		}
 		return entities;
 	}
 
 	public Object[][] getDisplayedData(List<CallsLogEntry> callsLogEntries) {
-		Object[][] tableData = new Object[callsLogEntries.size()][7];
+		Object[][] tableData = new Object[callsLogEntries.size()][CallsLogTableManager.TableColumns.values().length];
 
 		for (CallsLogEntry callsLogEntry : callsLogEntries) {
 			tableData[callsLogEntries.indexOf(callsLogEntry)] = new Object[]{callsLogEntry.getCallType().name(), callsLogEntry.getCaller().getFullName(), callsLogEntry.getCaller().getId(), callsLogEntry.getAddressee().getFullName(), callsLogEntry.getAddressee().getId(), callsLogEntry.getStartDate(), callsLogEntry.getEndDate(), callsLogEntry.getId()};
