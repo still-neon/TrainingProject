@@ -7,7 +7,7 @@ import by.stn.callslogproject.personsinfo.PersonsInfo;
 import by.stn.callslogproject.personsinfo.PersonsService;
 import lombok.Setter;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Facade {
@@ -19,10 +19,10 @@ public class Facade {
 	private Converter converter;
 
 	public void save(Object[][] data) {
-		callsLogService.save(converter.getStoredData(data, personsService));
+		callsLogService.save(converter.getStoredData(data));
 	}
 
-	public Object[][] getTableData() {//TODO передавать объект интерфейса в котором логика трансформации колс логов в массив
+	public Object[][] getTableData() {
 		try {
 			return converter.getDisplayedData(callsLogService.getCallsLogEntries());//TODO:эксепшен на фасаде, вернемся к теме
 		} catch (Exception e) {
@@ -31,19 +31,11 @@ public class Facade {
 		return null;
 	}
 
-	public List<String> getCallTypes() {
-		List<String> callTypes = new ArrayList<>();
-		for (CallsLogEntry.CallType callType : callsLogService.getCALL_TYPES()) {
-			callTypes.add(callType.name());
-		}
-		return callTypes;
+	public List<CallsLogEntry.CallType> getCallTypes() {
+		return Arrays.asList(callsLogService.getCALL_TYPES());
 	}
 
-	public List<String> getPersonsNames() {
-		List<String> personsNames = new ArrayList<>();
-		for (PersonsInfo personsInfo : personsService.getPersonsInfo()) {
-			personsNames.add(personsInfo.getFullName());
-		}
-		return personsNames;
+	public List<PersonsInfo> getPersonsInfo() {
+		return personsService.getPersonsInfo();
 	}
 }

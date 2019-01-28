@@ -1,15 +1,12 @@
 package by.stn.callslogproject.personsinfo;
 
-import java.util.Date;
-
 import by.stn.callslogproject.Entity;
 import by.stn.callslogproject.entity.AbstractEntity;
 import lombok.Getter;
 import lombok.Setter;
 
-/**
- * Created by EugenKrasotkin on 11/29/2017.
- */
+import java.util.Date;
+
 @Entity(tableName = "person", columnsNames = {"fullname", "organizationname", "phone", "email", "creationdate"})
 public class PersonsInfo extends AbstractEntity {
     @Getter
@@ -31,4 +28,9 @@ public class PersonsInfo extends AbstractEntity {
     public PersonsInfo(Long id) {
         super(id);
     }
+
+	@Override
+	public String toString() {
+		return fullName;
+	}
 }

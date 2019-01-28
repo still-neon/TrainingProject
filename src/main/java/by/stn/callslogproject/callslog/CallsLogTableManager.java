@@ -12,6 +12,7 @@ import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -22,9 +23,9 @@ public class CallsLogTableManager {
 	private JTable table;
 	private boolean editEnabled = true;
 
-	private static JComboBox createComboBox(List<String> options) {
+	private static JComboBox createComboBox(List<Object> options) {
 		JComboBox comboBox = new JComboBox();
-		for (Object option : options) {
+		for (Object option : (List<Object>) options.get(0)) {
 			comboBox.addItem(option);
 		}
 		return comboBox;
@@ -122,14 +123,12 @@ public class CallsLogTableManager {
 	}
 
 	public enum TableColumns {
-		CALL_TYPE(0, "Call Type", true, false, new DefaultCellEditor(createComboBox(facade.getCallTypes()))),
-		CALLER(1, "Caller", true, false, new DefaultCellEditor(createComboBox(facade.getPersonsNames()))),//TODO: need to discuss TableColumns
-		CALLER_ID(2, "CallerID", false, false, null),
-		ADDRESSEE(3, "Addressee", true, false, new DefaultCellEditor(createComboBox(facade.getPersonsNames()))),
-		ADDRESSEE_ID(4, "AddresseeID", false, false, null),
-		START_DATE(5, "Start Date", true, true, new DatePicker()),
-		END_DATE(6, "End Date", true, true, new DatePicker()),
-		ID(7, "ID", false, false, null);
+		CALL_TYPE(0, "Call Type", true, false, new DefaultCellEditor(createComboBox(Collections.singletonList(facade.getCallTypes())))),
+		CALLER(1, "Caller", true, false, new DefaultCellEditor(createComboBox(Collections.singletonList(facade.getPersonsInfo())))),//TODO: need to discuss TableColumns
+		ADDRESSEE(2, "Addressee", true, false, new DefaultCellEditor(createComboBox(Collections.singletonList(facade.getPersonsInfo())))),
+		START_DATE(3, "Start Date", true, true, new DatePicker()),
+		END_DATE(4, "End Date", true, true, new DatePicker()),
+		ID(5, "ID", false, false, null);
 
 		@Getter
 		private int index;
