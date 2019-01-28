@@ -3,7 +3,6 @@ package by.stn.callslogproject.ui;
 import javax.swing.*;
 import javax.swing.table.TableCellEditor;
 import java.awt.*;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -36,12 +35,14 @@ public class DatePicker extends AbstractCellEditor implements TableCellEditor {
 		if (value != null) {
 			spinner.setValue(value);
 		} else {
-			try {
-				Date dt = simpleDateFormat.parse(simpleDateFormat.format(new Date()));
-				spinner.setValue(dt);
-			} catch (ParseException e) {
-				e.printStackTrace();
-			}
+//			try {
+//				String dat = simpleDateFormat.format(new Date());
+//				Date dt = simpleDateFormat.parse(simpleDateFormat.format(new Date()));
+//				spinner.setValue(dt);
+//			} catch (ParseException e) {
+//				e.printStackTrace();
+//			}
+			spinner.setValue(new Date());
 		}
 		return spinner;
 	}

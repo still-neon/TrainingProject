@@ -39,7 +39,7 @@ public class CallsLogDaoImpl extends AbstractEntityDao<CallsLogEntry> implements
 		query.setInt(1, entity.getCallType().getId());
 		query.setLong(2, entity.getCaller().getId());
 		query.setLong(3, entity.getAddressee().getId());
-		query.setDate(4, (Date) entity.getStartDate());
-		query.setDate(5, (Date) entity.getStartDate());
+		query.setDate(4, new Date(entity.getStartDate().getTime()));
+		query.setDate(5, new Date(entity.getEndDate().getTime()));
 	}
 }
