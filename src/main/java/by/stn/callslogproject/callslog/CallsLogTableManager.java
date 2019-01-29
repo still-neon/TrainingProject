@@ -21,8 +21,9 @@ public class CallsLogTableManager {
 
 	public void addRow() {
 		String[] str = {};
-		tableModel.addRow(str);
-		//tableModel.moveRow(0,0,table.getSelectedRow()+1);
+		tableModel.insertRow(table.convertRowIndexToModel(table.getSelectedRow()) + 1, str);
+//		tableModel.addRow(str);
+//		tableModel.moveRow(table.convertRowIndexToModel(table.getSelectedRow()),table.convertRowIndexToModel(table.getSelectedRow())+1,1);
 	}
 
 	public void deleteRow() {

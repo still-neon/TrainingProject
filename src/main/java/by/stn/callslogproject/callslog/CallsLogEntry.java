@@ -64,7 +64,6 @@ public class CallsLogEntry extends AbstractEntity {
 		this.callType = callType;
 	}
 
-
 	public enum CallType {
 		INCOMING(0), OUTGOING(1), CONFERENCE(2);
 

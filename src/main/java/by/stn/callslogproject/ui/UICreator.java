@@ -59,8 +59,8 @@ public class UICreator {
 		JTable table = new JTable();
 		callsLogTableManager.setUpTableModel(table);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		table.setAutoCreateRowSorter(true);
-		table.getRowSorter().toggleSortOrder(1);
+//		table.setAutoCreateRowSorter(true);
+//		table.getRowSorter().toggleSortOrder(1);
 		return table;
 	}
 }

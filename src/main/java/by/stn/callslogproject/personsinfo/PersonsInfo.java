@@ -11,7 +11,7 @@ import java.util.Date;
 public class PersonsInfo extends AbstractEntity {
     @Getter
     @Setter
-    private String fullName;//TODO: personDTO на ui
+    private String fullName;
     @Getter
     @Setter
     private String organizationName;
