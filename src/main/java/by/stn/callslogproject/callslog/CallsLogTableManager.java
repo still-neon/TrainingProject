@@ -124,7 +124,7 @@ public class CallsLogTableManager {
 
 	public enum TableColumns {
 		CALL_TYPE(0, "Call Type", true, false, new DefaultCellEditor(createComboBox(Collections.singletonList(facade.getCallTypes())))),
-		CALLER(1, "Caller", true, false, new DefaultCellEditor(createComboBox(Collections.singletonList(facade.getPersonsInfo())))),//TODO: need to discuss TableColumns
+		CALLER(1, "Caller", true, false, new DefaultCellEditor(createComboBox(Collections.singletonList(facade.getPersonsInfo())))),//TODO: copypast
 		ADDRESSEE(2, "Addressee", true, false, new DefaultCellEditor(createComboBox(Collections.singletonList(facade.getPersonsInfo())))),
 		START_DATE(3, "Start Date", true, true, new DatePicker()),
 		END_DATE(4, "End Date", true, true, new DatePicker()),
