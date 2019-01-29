@@ -2,7 +2,10 @@ package by.stn.callslogproject.personsinfo;
 
 import by.stn.callslogproject.entity.AbstractEntityDao;
 
-import java.sql.*;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  * Created by EugenKrasotkin on 12/12/2017.
@@ -35,6 +38,6 @@ public class PersonsDaoImpl extends AbstractEntityDao<PersonsInfo> implements Pe
         query.setString(2, entity.getOrganizationName());
         query.setString(3, entity.getPhone());
         query.setString(4, entity.getEmail());
-        query.setDate(5, (Date) entity.getCreationDate());
+        query.setDate(5, (Date) entity.getCreationDate());//TODO: check date
     }
 }
