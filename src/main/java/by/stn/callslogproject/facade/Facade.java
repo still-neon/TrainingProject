@@ -21,7 +21,11 @@ public class Facade {
 	private Converter converter;
 
 	public void save(Object[][] data) {
-		callsLogService.save(converter.getStoredData(data));
+		try {
+			callsLogService.save(converter.getStoredData(data));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public Object[][] getTableData() {

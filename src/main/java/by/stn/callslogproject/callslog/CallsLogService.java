@@ -20,26 +20,19 @@ public class CallsLogService {
 		return callsLogEntries;
 	}
 
-	public void save(List<CallsLogEntry> newData) {
-		try {
-			List<CallsLogEntry> oldData = callsLogDao.getAll();
+	public void save(List<CallsLogEntry> updatedData) throws Exception {
+		List<CallsLogEntry> dbData = callsLogDao.getAll();
 
-			for (CallsLogEntry callsLogEntry : getDeletedData(newData, oldData)) {
-				callsLogDao.delete(callsLogEntry.getId());
-			}
+		for (CallsLogEntry callsLogEntry : getDeletedData(updatedData, dbData)) {
+			callsLogDao.delete(callsLogEntry.getId());
+		}
 
-			for (CallsLogEntry callsLogEntry : getUpdatedData(newData, oldData)) {
-				callsLogDao.saveOrUpdate(callsLogEntry);
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
+		for (CallsLogEntry callsLogEntry : getSavedData(updatedData, dbData)) {
+			callsLogDao.saveOrUpdate(callsLogEntry);
 		}
 	}
 
-	private List<CallsLogEntry> getUpdatedData(List<CallsLogEntry> newData, List<CallsLogEntry> dbData) {
-		List<CallsLogEntry> updatedData = new ArrayList<>(newData);
-
+	private List<CallsLogEntry> getSavedData(List<CallsLogEntry> updatedData, List<CallsLogEntry> dbData) {
 		for (CallsLogEntry callsLogEntry : dbData) {
 			if (updatedData.contains(callsLogEntry)) {
 				updatedData.remove(callsLogEntry);
@@ -48,22 +41,13 @@ public class CallsLogService {
 		return updatedData;
 	}
 
-	private List<CallsLogEntry> getDeletedData(List<CallsLogEntry> newData, List<CallsLogEntry> dbData) {
+	private List<CallsLogEntry> getDeletedData(List<CallsLogEntry> updatedData, List<CallsLogEntry> dbData) {
 		List<CallsLogEntry> deletedData = new ArrayList<>();
-
 		for (CallsLogEntry callsLogEntry : dbData) {
-			if (isNotPresent(newData, callsLogEntry.getId())) {
+			if (!updatedData.contains(callsLogEntry)) {
 				deletedData.add(callsLogEntry);
 			}
 		}
 		return deletedData;
-	}
-
-	private boolean isNotPresent(List<CallsLogEntry> newData, long id) {
-		for (CallsLogEntry callsLogEntry : newData) {
-			if (callsLogEntry.getId() == id)
-				return false;
-		}
-		return true;
 	}
 }
