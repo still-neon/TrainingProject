@@ -1,34 +1,22 @@
 package by.stn.callslogproject.callslog;
 
 import by.stn.callslogproject.facade.Facade;
-import by.stn.callslogproject.ui.DatePicker;
-import lombok.Getter;
 import lombok.Setter;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellEditor;
-import javax.swing.table.TableCellRenderer;
-import java.awt.*;
-import java.text.SimpleDateFormat;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
 
 public class CallsLogTableManager {
 	@Setter
 	private static Facade facade;
+	@Setter
+	private static CallsLogColumnsManager callsLogColumnsManager;
 	private DefaultTableModel tableModel;
 	private JTable table;
-	private boolean editEnabled = true;
+	private boolean editEnabled;
 
-	private static JComboBox createComboBox(List<Object> options) {
-		JComboBox comboBox = new JComboBox();
-		for (Object option : (List<Object>) options.get(0)) {
-			comboBox.addItem(option);
-		}
-		return comboBox;
+	public CallsLogTableManager() {
+		editEnabled = true;
 	}
 
 	public void addRow() {
@@ -52,7 +40,7 @@ public class CallsLogTableManager {
 	public void setUpTableModel(JTable table) {
 		this.table = table;
 
-		tableModel = new DefaultTableModel(facade.getTableData(), getColumnsTitles()) {
+		tableModel = new DefaultTableModel(facade.getTableData(), CallsLogColumnsManager.getCOLUMNS_TITLES()) {
 			@Override
 			public boolean isCellEditable(int row, int column) {
 				return editEnabled;
@@ -60,56 +48,7 @@ public class CallsLogTableManager {
 		};
 
 		table.setModel(tableModel);
-		setUpTableColumns();
-	}
-
-	private TableCellRenderer createRenderer() {
-		TableCellRenderer tableCellRenderer = new DefaultTableCellRenderer() {
-
-			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
-
-			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-				if (value instanceof Date) {
-					value = simpleDateFormat.format(value);
-				}
-				return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-			}
-		};
-		return tableCellRenderer;
-	}
-
-	private void setUpTableColumns() {
-		for (TableColumns column : TableColumns.values()) {
-			if (column.visible) {
-				setUpTableColumnCellEditor(column.getIndex(), column.getTableCellEditor());
-				if (column.needRender) {
-					setUpTableColumnCellRenderer(column.getIndex(), createRenderer());
-				}
-			} else {
-				hideColumn(column.getIndex());
-			}
-		}
-	}
-
-	private void setUpTableColumnCellEditor(int columnIndex, TableCellEditor tableCellEditor) {
-		table.getColumnModel().getColumn(columnIndex).setCellEditor(tableCellEditor);
-	}
-
-	private void setUpTableColumnCellRenderer(int columnIndex, TableCellRenderer tableCellRenderer) {
-		table.getColumnModel().getColumn(columnIndex).setCellRenderer(tableCellRenderer);
-	}
-
-	private void hideColumn(int number) {
-		table.getColumnModel().getColumn(number).setMinWidth(0);
-		table.getColumnModel().getColumn(number).setMaxWidth(0);
-	}
-
-	private String[] getColumnsTitles() {
-		String[] columnsTitles = new String[TableColumns.values().length];
-		for (int i = 0; i < columnsTitles.length; i++) {
-			columnsTitles[i] = TableColumns.values()[i].getTitle();
-		}
-		return columnsTitles;
+		callsLogColumnsManager.setUpTableColumns(table);
 	}
 
 	private Object[][] getModelData() {
@@ -120,33 +59,5 @@ public class CallsLogTableManager {
 			}
 		}
 		return modelData;
-	}
-
-	public enum TableColumns {
-		CALL_TYPE(0, "Call Type", true, false, new DefaultCellEditor(createComboBox(Collections.singletonList(facade.getCallTypes())))),
-		CALLER(1, "Caller", true, false, new DefaultCellEditor(createComboBox(Collections.singletonList(facade.getPersonsInfo())))),//TODO: copypast
-		ADDRESSEE(2, "Addressee", true, false, new DefaultCellEditor(createComboBox(Collections.singletonList(facade.getPersonsInfo())))),
-		START_DATE(3, "Start Date", true, true, new DatePicker()),
-		END_DATE(4, "End Date", true, true, new DatePicker()),
-		ID(5, "ID", false, false, null);
-
-		@Getter
-		private int index;
-		@Getter
-		private String title;
-		@Getter
-		private boolean visible;
-		@Getter
-		private boolean needRender;
-		@Getter
-		private TableCellEditor tableCellEditor;
-
-		TableColumns(int index, String title, boolean visible, boolean needRender, TableCellEditor tableCellEditor) {
-			this.index = index;
-			this.title = title;
-			this.visible = visible;
-			this.needRender = needRender;
-			this.tableCellEditor = tableCellEditor;
-		}
 	}
 }

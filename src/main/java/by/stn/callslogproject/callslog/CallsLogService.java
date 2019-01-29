@@ -13,7 +13,7 @@ public class CallsLogService {
 	private CallsLogDao callsLogDao;
 
 	public List<CallsLogEntry> getCallsLogEntries() throws Exception {
-		List<CallsLogEntry> callsLogEntries = null;
+		List<CallsLogEntry> callsLogEntries;
 
 		callsLogEntries = callsLogDao.getAll();
 

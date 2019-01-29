@@ -4,9 +4,11 @@ import by.stn.callslogproject.callslog.CallsLogEntry;
 import by.stn.callslogproject.callslog.CallsLogService;
 import by.stn.callslogproject.converter.Converter;
 import by.stn.callslogproject.personsinfo.PersonsInfo;
+import by.stn.callslogproject.personsinfo.PersonsInfoDto;
 import by.stn.callslogproject.personsinfo.PersonsService;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -35,7 +37,11 @@ public class Facade {
 		return Arrays.asList(callsLogService.getCALL_TYPES());
 	}
 
-	public List<PersonsInfo> getPersonsInfo() {
-		return personsService.getPersonsInfo();
+	public List<PersonsInfoDto> getPersonsInfoDto() {
+		List<PersonsInfoDto> personsInfoDto = new ArrayList<>();
+		for (PersonsInfo personsInfo : personsService.getPersonsInfo()) {
+			personsInfoDto.add(converter.getPersonsInfoDto(personsInfo));
+		}
+		return personsInfoDto;
 	}
 }

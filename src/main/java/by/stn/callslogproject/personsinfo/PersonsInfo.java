@@ -28,9 +28,4 @@ public class PersonsInfo extends AbstractEntity {
     public PersonsInfo(Long id) {
         super(id);
     }
-
-	@Override
-	public String toString() {
-		return fullName;
-	}
 }
