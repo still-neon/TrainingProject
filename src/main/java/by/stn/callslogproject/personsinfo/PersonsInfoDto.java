@@ -7,7 +7,7 @@ public class PersonsInfoDto {
 	private Long id;
 	private String fullName;
 
-	public PersonsInfoDto(PersonsInfo personsInfo) {
+	public PersonsInfoDto(PersonsInfo personsInfo) {//TODO: dto toEntity() сам в себя
 		this.id = personsInfo.getId();
 		this.fullName = personsInfo.getFullName();
 	}

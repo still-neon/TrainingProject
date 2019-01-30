@@ -24,7 +24,7 @@ public class DatePicker extends AbstractCellEditor implements TableCellEditor {
 		Date latestDate = calendar.getTime();
 		SpinnerModel dateModel = new SpinnerDateModel(initDate, earliestDate, latestDate, Calendar.YEAR);
 
-		simpleDateFormat = new SimpleDateFormat(DATE_FORMAT_PATTERN);
+		simpleDateFormat = new SimpleDateFormat(DATE_FORMAT_PATTERN);//TODO:getdateformat
 		spinner = new JSpinner(dateModel);
 		spinner.setEditor(new JSpinner.DateEditor(spinner, DATE_FORMAT_PATTERN));
 	}

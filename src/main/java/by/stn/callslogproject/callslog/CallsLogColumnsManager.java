@@ -15,7 +15,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-public class CallsLogColumnsManager {
+public class CallsLogColumnsManager {//TODO: конфигуратор
 	@Getter
 	private static final String[] COLUMNS_TITLES = {"Call Type", "Caller", "Addressee", "Start Date", "End Date", "ID"};
 	@Setter
@@ -72,7 +72,7 @@ public class CallsLogColumnsManager {
 	}
 
 	public enum CallsLogColumns {
-		CALL_TYPE(0, COLUMNS_TITLES[0], true, false, getTableCellEditor(COLUMNS_TITLES[0])),
+		CALL_TYPE(0, COLUMNS_TITLES[0], true, false, getTableCellEditor(COLUMNS_TITLES[0])),//TODO: работает по разному для разных колонок
 		CALLER(1, COLUMNS_TITLES[1], true, false, getTableCellEditor(COLUMNS_TITLES[1])),
 		ADDRESSEE(2, COLUMNS_TITLES[2], true, false, getTableCellEditor(COLUMNS_TITLES[2])),
 		START_DATE(3, COLUMNS_TITLES[3], true, true, getTableCellEditor(COLUMNS_TITLES[3])),
@@ -80,7 +80,7 @@ public class CallsLogColumnsManager {
 		ID(5, COLUMNS_TITLES[5], false, false, getTableCellEditor(COLUMNS_TITLES[5]));
 
 		@Getter
-		private int index;
+		private int index;//TODO: лучше id
 		@Getter
 		private String title;
 		@Getter
@@ -99,7 +99,7 @@ public class CallsLogColumnsManager {
 		}
 
 		private static TableCellEditor getTableCellEditor(String column) {
-			if (column.equals(COLUMNS_TITLES[0])) {
+			if (column.equals(COLUMNS_TITLES[0])) {//TODO:завязка на название колонки
 				return new DefaultCellEditor(createComboBox(Collections.singletonList(facade.getCallTypes())));
 			} else if (column.equals(COLUMNS_TITLES[1]) || column.equals(COLUMNS_TITLES[2])) {
 				return new DefaultCellEditor(createComboBox(Collections.singletonList(facade.getPersonsInfoDto())));
