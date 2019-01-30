@@ -23,8 +23,8 @@ public class CallsLogDaoImpl extends AbstractEntityDao<CallsLogEntry> implements
 		callsLog.setCallType(rs.getInt("calltype"));
 		callsLog.setCaller(personsDao.get(rs.getInt("callerid")));
 		callsLog.setAddressee(personsDao.get(rs.getInt("addresseeid")));
-		callsLog.setEndDate(rs.getDate("startdate"));
-		callsLog.setStartDate(rs.getDate("enddate"));
+		callsLog.setStartDate(rs.getDate("startdate"));
+		callsLog.setEndDate(rs.getDate("enddate"));
 		return callsLog;
 	}
 

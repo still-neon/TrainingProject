@@ -1,5 +1,7 @@
 package by.stn.callslogproject.ui;
 
+import lombok.Getter;
+
 import javax.swing.*;
 import javax.swing.table.TableCellEditor;
 import java.awt.*;
@@ -8,6 +10,8 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class DatePicker extends AbstractCellEditor implements TableCellEditor {
+	@Getter
+	private static final String DATE_FORMAT_PATTERN = "dd/MM/yyyy";
 	JSpinner spinner;
 	SimpleDateFormat simpleDateFormat;
 
@@ -20,9 +24,9 @@ public class DatePicker extends AbstractCellEditor implements TableCellEditor {
 		Date latestDate = calendar.getTime();
 		SpinnerModel dateModel = new SpinnerDateModel(initDate, earliestDate, latestDate, Calendar.YEAR);
 
-		simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		simpleDateFormat = new SimpleDateFormat(DATE_FORMAT_PATTERN);//TODO:getdateformat
 		spinner = new JSpinner(dateModel);
-		spinner.setEditor(new JSpinner.DateEditor(spinner, "dd/MM/yyyy"));
+		spinner.setEditor(new JSpinner.DateEditor(spinner, DATE_FORMAT_PATTERN));
 	}
 
 	@Override
@@ -35,13 +39,6 @@ public class DatePicker extends AbstractCellEditor implements TableCellEditor {
 		if (value != null) {
 			spinner.setValue(value);
 		} else {
-//			try {
-//				String dat = simpleDateFormat.format(new Date());
-//				Date dt = simpleDateFormat.parse(simpleDateFormat.format(new Date()));
-//				spinner.setValue(dt);
-//			} catch (ParseException e) {
-//				e.printStackTrace();
-//			}
 			spinner.setValue(new Date());
 		}
 		return spinner;
