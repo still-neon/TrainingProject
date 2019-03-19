@@ -6,16 +6,16 @@ import by.stn.data_parser.tokens.Token;
 import java.util.List;
 
 public class Launcher {
-	private static String dataJSON = "[{\n" +
+	private static String jsonData = "[{\n" +
 			"    \"date\": \"August 2018\",\n" +
 			"    \"pairs\": [\n" +
 			"    {\n" +
 			"      \"text\": \"любая хрень\",\n" +
-			"      \"value\": \"275,33\"\n" +
+			"      \"value\": \"275.33\"\n" +
 			"    },\n" +
 			"    {\n" +
 			"      \"text\": \"очень хорошо\",\n" +
-			"      \"value\": \"$646\"\n" +
+			"      \"value\": \"646\"\n" +
 			"    },\n" +
 			"    {\n" +
 			"      \"text\": \"жрачка\",\n" +
@@ -28,11 +28,11 @@ public class Launcher {
 			"    \"pairs\": [\n" +
 			"    {\n" +
 			"      \"text\": \"любая хрень\",\n" +
-			"      \"value\": \"217,33\"\n" +
+			"      \"value\": \"217.33\"\n" +
 			"    },\n" +
 			"    {\n" +
 			"      \"text\": \"ни о чём\",\n" +
-			"      \"value\": \"$136\"\n" +
+			"      \"value\": \"136\"\n" +
 			"    },\n" +
 			"    {\n" +
 			"      \"text\": \"жрачка2\",\n" +
@@ -43,6 +43,6 @@ public class Launcher {
 
 	public static void main(String args[]) {
 		DataParser dataParser = new DataParser();
-		List<Token> parsedData = dataParser.getParsedJSONData(dataJSON);
+		List<Token> parsedData = dataParser.getParsedJSONData(jsonData);
 	}
 }
