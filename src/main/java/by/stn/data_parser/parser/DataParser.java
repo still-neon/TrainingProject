@@ -3,10 +3,9 @@ package by.stn.data_parser.parser;
 import by.stn.data_parser.tokens.DateToken;
 import by.stn.data_parser.tokens.TextNumberPairToken;
 import by.stn.data_parser.tokens.Token;
+import com.google.gson.Gson;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,21 +22,27 @@ public class DataParser {
 
 	public List<Token> getParsedJSONData(String jsonData) {
 		tokens = new ArrayList<>();
+		Gson gson = new Gson();
 
-		try {
-			for (Object object : (JSONArray) new JSONParser().parse(jsonData)) {
-				parseDate((JSONObject) object);
-				parseTextValuePairs((JSONObject) object);
-			}
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
+//		jsonData = "{'date' : 'August 2018'}";
+
+		DateToken tok = gson.fromJson(jsonData, DateToken.class);
+
+//		try {
+//			for (Object object : (JSONArray) new JSONParser().parse(jsonData)) {
+//				parseDate((JSONObject) object);
+//				parseTextValuePairs((JSONObject) object);
+//			}
+//		} catch (ParseException e) {
+//			e.printStackTrace();
+//		}
 		return tokens;
 	}
 
-	private void parseDate(JSONObject object) {
-		String[] pair = ((Map<String, String>) object).get(JSON_DATA_KEY1).split(MONTH_AND_YEAR_SEPARATOR, PARTS_NUMBER);
-		tokens.add(new DateToken(pair[0], Integer.valueOf(pair[1])));
+	private void parseDate(Gson gson) {
+
+//		String[] pair = ((Map<String, String>) object).get(JSON_DATA_KEY1).split(MONTH_AND_YEAR_SEPARATOR, PARTS_NUMBER);
+//		tokens.add(new DateToken(pair[0], Integer.valueOf(pair[1])));
 	}
 
 	private void parseTextValuePairs(JSONObject object) {
