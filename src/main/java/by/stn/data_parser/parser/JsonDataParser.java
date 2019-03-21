@@ -6,15 +6,17 @@ import by.stn.data_parser.tokens.TextNumberPairToken;
 import by.stn.data_parser.tokens.Token;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class DataParser {
-	private static final String JSON_DATE_FORMAT = "MMMM yyyy";
+public class JsonDataParser {
+	@Getter
+	private static final String DATE_FORMAT = "MMMM yyyy";
 
-	public List<Token> getParsedJSONData(String jsonData) {
-		Gson gson = new GsonBuilder().setDateFormat(JSON_DATE_FORMAT).create();
+	public List<Token> getParsedData(String jsonData) {
+		Gson gson = new GsonBuilder().setDateFormat(DATE_FORMAT).create();
 		Data[] dataArray = gson.fromJson(jsonData, Data[].class);
 
 		return createTokens(dataArray);

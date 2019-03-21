@@ -1,6 +1,7 @@
 package by.stn.data_parser;
 
-import by.stn.data_parser.parser.DataParser;
+import by.stn.data_parser.parser.CsvDataParser;
+import by.stn.data_parser.parser.JsonDataParser;
 import by.stn.data_parser.tokens.Token;
 
 import java.util.List;
@@ -41,8 +42,18 @@ public class Launcher {
 			"    ]\n" +
 			"}]";
 
+	private static String csvData = "\"August 2018\"\n" +
+			"\"любая хрень\",\"275.33\"\n" +
+			"\"жрачка\",37.33\n" +
+			"\"September 2018\"\n" +
+			"\"ни о чём\",\"136\"\n" +
+			"\"жрачка2\",166.10";
+
 	public static void main(String args[]) {
-		DataParser dataParser = new DataParser();
-		List<Token> parsedData = dataParser.getParsedJSONData(jsonData);
+		JsonDataParser jsonDataParser = new JsonDataParser();
+		CsvDataParser csvDataParser = new CsvDataParser();
+
+		List<Token> parsedDataJson = jsonDataParser.getParsedData(jsonData);
+		List<Token> parsedDataCsv = csvDataParser.getParsedData(csvData);
 	}
 }
