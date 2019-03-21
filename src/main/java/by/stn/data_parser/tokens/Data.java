@@ -1,14 +1,12 @@
 package by.stn.data_parser.tokens;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.util.Date;
 import java.util.List;
 
-@AllArgsConstructor
+@Getter
 public class Data {
-	@Getter
-	private String date;
-	@Getter
+	private Date date;
 	private List<TextNumberPairToken> pairs;
 }

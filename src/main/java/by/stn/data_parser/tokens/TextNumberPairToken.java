@@ -5,5 +5,5 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class TextNumberPairToken implements Token {
 	private String text;
-	private Double number;
+	private Double value;
 }

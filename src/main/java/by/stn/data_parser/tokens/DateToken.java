@@ -6,5 +6,5 @@ import java.util.Date;
 
 @AllArgsConstructor
 public class DateToken implements Token {
-	Date date;
+	private Date date;
 }
