@@ -1,6 +1,5 @@
 package by.stn.data_parser.parser;
 
-import by.stn.data_parser.tokens.DateToken;
 import by.stn.data_parser.tokens.Token;
 
 import java.text.ParseException;
@@ -8,13 +7,19 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CsvDataParser extends DataParser {
+public class CsvDataParser {
 	private static final String LINES_SEPARATOR = "\n";
 	private static final String PAIR_SEPARATOR = ",";
 	private static final int PAIR_PARTS_NUMBER = 2;
 	private static final String QUOTE = "\"";
 	private static final String EMPTY = "";
-	private SimpleDateFormat format = new SimpleDateFormat(DATE_FORMAT);
+	private SimpleDateFormat format;
+	private DataParserHelper dataParserHelper;
+
+	public CsvDataParser() {
+		format = new SimpleDateFormat(DataParserHelper.getDATE_FORMAT());
+		dataParserHelper = new DataParserHelper();
+	}
 
 	public List<Token> getParsedData(String csvData) {
 		csvData = deleteQuotes(csvData);
@@ -29,13 +34,13 @@ public class CsvDataParser extends DataParser {
 		for (String line : lines) {
 			if (!line.contains(PAIR_SEPARATOR)) {
 				try {
-					tokens.add(new DateToken(format.parse(line)));
+					tokens.add(dataParserHelper.createDateToken(format.parse(line)));
 				} catch (ParseException e) {
 					e.printStackTrace();
 				}
 			} else {
 				String[] pair = line.split(PAIR_SEPARATOR, PAIR_PARTS_NUMBER);
-//				tokens.add(new TextNumberPairToken(pair[0], Double.valueOf(pair[1])));
+				tokens.add(dataParserHelper.createTextNumberPairToken(pair[0], pair[1]));
 			}
 		}
 

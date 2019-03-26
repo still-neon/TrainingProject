@@ -49,9 +49,9 @@ public class Launcher {
 			"\"очень хорошо\",\"646,56\"\n" +
 			"\"жрачка\",37.33\n" +
 			"\"September 2018\"\n" +
-			"\"любая хрень\",\"$217,33\"\n" +
+			"\"любая хрень 123\",\"$217,33\"\n" +
 			"\"ни о чём\",\"$136\"\n" +
-			"\"жрачка\",$200.15";
+			"\"жрачка2\",$200.15";
 
 	public static void main(String args[]) {
 		JsonDataParser jsonDataParser = new JsonDataParser();

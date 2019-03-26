@@ -5,11 +5,13 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter
+@Setter
 public class TextNumberPairToken implements Token {
 	private String text;
-	private String value;
-	@Setter
 	private Double number;
-	@Setter
 	private String currency;
+
+	public TextNumberPairToken() {
+		currency = "";
+	}
 }

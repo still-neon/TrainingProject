@@ -8,5 +8,11 @@ import java.util.List;
 @Getter
 public class Data {
 	private Date date;
-	private List<TextNumberPairToken> pairs;
+	private List<TextNumberPair> pairs;
+
+	@Getter
+	public class TextNumberPair {
+		private String text;
+		private String value;
+	}
 }
