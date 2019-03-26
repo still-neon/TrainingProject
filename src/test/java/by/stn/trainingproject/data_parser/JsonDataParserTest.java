@@ -27,28 +27,20 @@ public class JsonDataParserTest {
 	@Test
 	public void checkJsonDataParser() {
 		List<Token> tokens = dataParser.getParsedData(Launcher.getJSON_DATA());
-		DateToken dateToken1 = (DateToken) tokens.get(0);
-		DateToken dateToken2 = (DateToken) tokens.get(4);
-		TextNumberPairToken textNumberPairToken1 = (TextNumberPairToken) tokens.get(1);
-		TextNumberPairToken textNumberPairToken2 = (TextNumberPairToken) tokens.get(2);
-		TextNumberPairToken textNumberPairToken3 = (TextNumberPairToken) tokens.get(3);
-		TextNumberPairToken textNumberPairToken4 = (TextNumberPairToken) tokens.get(5);
-		TextNumberPairToken textNumberPairToken5 = (TextNumberPairToken) tokens.get(6);
-		TextNumberPairToken textNumberPairToken6 = (TextNumberPairToken) tokens.get(7);
 
 		try {
-			checkDateParsing(dateToken1, "August 2018");
-			checkDateParsing(dateToken2, "September 2018");
+			checkDateParsing((DateToken) tokens.get(0), "August 2018");
+			checkDateParsing((DateToken) tokens.get(4), "September 2018");
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 
-		checkNumberPairParsing(textNumberPairToken1, "любая, хрень", 275d, "");
-		checkNumberPairParsing(textNumberPairToken2, "очень хорошо", 646.56, "");
-		checkNumberPairParsing(textNumberPairToken3, "жрачка", 37.33, "");
-		checkNumberPairParsing(textNumberPairToken4, "любая хрень 123", 217.33, "$");
-		checkNumberPairParsing(textNumberPairToken5, "ни о чём,", 136d, "$");
-		checkNumberPairParsing(textNumberPairToken6, "жрачка2", 200.15, "$");
+		checkNumberPairParsing((TextNumberPairToken) tokens.get(1), "любая, хрень", 275d, "");
+		checkNumberPairParsing((TextNumberPairToken) tokens.get(2), "очень хорошо", 646.56, "");
+		checkNumberPairParsing((TextNumberPairToken) tokens.get(3), "жрачка", 37.33, "");
+		checkNumberPairParsing((TextNumberPairToken) tokens.get(5), "любая хрень 123", 217.33, "$");
+		checkNumberPairParsing((TextNumberPairToken) tokens.get(6), "ни о чём,", 136d, "$");
+		checkNumberPairParsing((TextNumberPairToken) tokens.get(7), "жрачка2", 200.15, "$");
 	}
 
 	private void checkDateParsing(DateToken dateToken, String dateValue) throws ParseException {
