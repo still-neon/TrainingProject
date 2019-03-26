@@ -29,10 +29,25 @@ public class JsonDataParser {
 			tokens.add(new DateToken(data.getDate()));
 
 			for (TextNumberPairToken pair : data.getPairs()) {
+				setNumberValue(pair);
 				tokens.add(pair);
 			}
 		}
 
 		return tokens;
+	}
+
+	private void setNumberValue(TextNumberPairToken token) {
+		String numberValue = token.getValue();
+		if (numberValue.contains("$")) {
+			token.setCurrency("$");
+			numberValue = numberValue.replace("$", "");
+		} else {
+			token.setCurrency("");
+		}
+		if (numberValue.contains(",")) {
+			numberValue = numberValue.replace(",", ".");
+		}
+		token.setNumber(Double.valueOf(numberValue));
 	}
 }

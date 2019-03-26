@@ -5,9 +5,6 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
 
-/**
- * Created by EugenKrasotkin on 12/19/2017.
- */
 public class ProbabilityCalculatorTest {
     private static ProbabilityCalculator probabilityCalculator;
 

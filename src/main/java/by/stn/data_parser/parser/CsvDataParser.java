@@ -1,7 +1,6 @@
 package by.stn.data_parser.parser;
 
 import by.stn.data_parser.tokens.DateToken;
-import by.stn.data_parser.tokens.TextNumberPairToken;
 import by.stn.data_parser.tokens.Token;
 
 import java.text.ParseException;
@@ -36,7 +35,7 @@ public class CsvDataParser {
 				}
 			} else {
 				String[] pair = line.split(PAIR_SEPARATOR, PAIR_PARTS_NUMBER);
-				tokens.add(new TextNumberPairToken(pair[0], Double.valueOf(pair[1])));
+//				tokens.add(new TextNumberPairToken(pair[0], Double.valueOf(pair[1])));
 			}
 		}
 
