@@ -9,14 +9,9 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
-import static org.junit.Assert.assertTrue;
-
-public class JsonDataParserTest {
-	private static final String ERROR_MESSAGE_TEMPLATE = "Parsed %s value doesn't equal expected %s value. Actual: %s, Expected: %s";
+public class JsonDataParserTest extends DataParserTest {
 	private static JsonDataParser dataParser;
 
 	@BeforeClass
@@ -41,16 +36,5 @@ public class JsonDataParserTest {
 		checkNumberPairParsing((TextNumberPairToken) tokens.get(5), "любая хрень 123", 217.33, "$");
 		checkNumberPairParsing((TextNumberPairToken) tokens.get(6), "ни о чём,", 136d, "$");
 		checkNumberPairParsing((TextNumberPairToken) tokens.get(7), "жрачка2", 200.15, "$");
-	}
-
-	private void checkDateParsing(DateToken dateToken, String dateValue) throws ParseException {
-		Date date = new SimpleDateFormat(JsonDataParser.getDATE_FORMAT()).parse(dateValue);
-		assertTrue(String.format(ERROR_MESSAGE_TEMPLATE, "date", "date", dateToken.getDate(), date), dateToken.getDate().equals(date));
-	}
-
-	private void checkNumberPairParsing(TextNumberPairToken textNumberPairToken, String text, Double number, String currency) {
-		assertTrue(String.format(ERROR_MESSAGE_TEMPLATE, "text", "text", textNumberPairToken.getText(), text), textNumberPairToken.getText().equals(text));
-		assertTrue(String.format(ERROR_MESSAGE_TEMPLATE, "number", "number", textNumberPairToken.getNumber(), number), textNumberPairToken.getNumber().equals(number));
-		assertTrue(String.format(ERROR_MESSAGE_TEMPLATE, "currency", "currency", textNumberPairToken.getCurrency(), currency), textNumberPairToken.getCurrency().equals(currency));
 	}
 }

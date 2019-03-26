@@ -8,13 +8,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CsvDataParser {
+public class CsvDataParser extends DataParser {
 	private static final String LINES_SEPARATOR = "\n";
 	private static final String PAIR_SEPARATOR = ",";
 	private static final int PAIR_PARTS_NUMBER = 2;
 	private static final String QUOTE = "\"";
 	private static final String EMPTY = "";
-	private SimpleDateFormat format = new SimpleDateFormat(JsonDataParser.getDATE_FORMAT());
+	private SimpleDateFormat format = new SimpleDateFormat(DATE_FORMAT);
 
 	public List<Token> getParsedData(String csvData) {
 		csvData = deleteQuotes(csvData);

@@ -43,13 +43,15 @@ public class Launcher {
 			"    }\n" +
 			"    ]\n" +
 			"}]";
-
+	@Getter
 	private static final String CSV_DATA = "\"August 2018\"\n" +
-			"\"любая хрень\",\"275.33\"\n" +
+			"\"любая хрень\",\"275\"\n" +
+			"\"очень хорошо\",\"646,56\"\n" +
 			"\"жрачка\",37.33\n" +
 			"\"September 2018\"\n" +
-			"\"ни о чём\",\"136\"\n" +
-			"\"жрачка2\",166.10";
+			"\"любая хрень\",\"$217,33\"\n" +
+			"\"ни о чём\",\"$136\"\n" +
+			"\"жрачка\",$200.15";
 
 	public static void main(String args[]) {
 		JsonDataParser jsonDataParser = new JsonDataParser();
