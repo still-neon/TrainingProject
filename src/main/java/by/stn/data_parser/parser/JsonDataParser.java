@@ -1,6 +1,6 @@
 package by.stn.data_parser.parser;
 
-import by.stn.data_parser.tokens.Data;
+import by.stn.data_parser.data.Data;
 import by.stn.data_parser.tokens.Token;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

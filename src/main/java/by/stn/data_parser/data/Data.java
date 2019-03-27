@@ -1,4 +1,4 @@
-package by.stn.data_parser.tokens;
+package by.stn.data_parser.data;
 
 import lombok.Getter;
 
