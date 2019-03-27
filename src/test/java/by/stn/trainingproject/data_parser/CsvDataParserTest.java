@@ -22,7 +22,7 @@ public class CsvDataParserTest {
 	}
 
 	@Test
-	public void checkJsonDataParser() {
+	public void checkCsvDataParser() {
 		List<Token> tokens = dataParser.getParsedData(Launcher.getCSV_DATA());
 
 		try {

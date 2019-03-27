@@ -14,20 +14,19 @@ public class DataParserHelper {
 	private static final String INVALID_NUMBER_SEPARATOR = ",";
 	private static final String VALID_NUMBER_SEPARATOR = ".";
 
-	public TextNumberPairToken createTextNumberPairToken(String text, String number) {
-		TextNumberPairToken token = new TextNumberPairToken();
+	public TextNumberPairToken createTextNumberPairToken(String text, String numberValue) {
+		String currency = "";
 
-		token.setText(text);
+		if (numberValue.contains(DOLLAR_CURRENCY_SIGN)) {
+			currency = DOLLAR_CURRENCY_SIGN;
+			numberValue = numberValue.replace(DOLLAR_CURRENCY_SIGN, EMPTY_VALUE);
+		}
+		if (numberValue.contains(INVALID_NUMBER_SEPARATOR)) {
+			numberValue = numberValue.replace(INVALID_NUMBER_SEPARATOR, VALID_NUMBER_SEPARATOR);
+		}
 
-		if (number.contains(DOLLAR_CURRENCY_SIGN)) {
-			token.setCurrency(DOLLAR_CURRENCY_SIGN);
-			number = number.replace(DOLLAR_CURRENCY_SIGN, EMPTY_VALUE);
-		}
-		if (number.contains(INVALID_NUMBER_SEPARATOR)) {
-			number = number.replace(INVALID_NUMBER_SEPARATOR, VALID_NUMBER_SEPARATOR);
-		}
-		token.setNumber(Double.valueOf(number));
-		return token;
+		Double number = Double.valueOf(numberValue);
+		return new TextNumberPairToken(text, number, currency);
 	}
 
 	public DateToken createDateToken(Date date) {
