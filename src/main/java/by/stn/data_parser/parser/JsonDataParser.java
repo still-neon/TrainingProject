@@ -6,6 +6,9 @@ import by.stn.data_parser.tokens.Token;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,9 +19,15 @@ public class JsonDataParser {
 		dataParserHelper = new DataParserHelper();
 	}
 
-	public List<Token> getParsedData(String jsonData) {
-		Gson gson = new GsonBuilder().setDateFormat(DataParserHelper.getDATE_FORMAT()).create();
-		Data[] dataArray = gson.fromJson(jsonData, Data[].class);
+	public List<Token> getParsedData(String filePath) {
+		Data[] dataArray = null;
+
+		try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+			Gson gson = new GsonBuilder().setDateFormat(DataParserHelper.getDATE_FORMAT()).create();
+			dataArray = gson.fromJson(br, Data[].class);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 		return createTokens(dataArray);
 	}

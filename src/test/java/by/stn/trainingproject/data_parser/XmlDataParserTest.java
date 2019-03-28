@@ -22,7 +22,7 @@ public class XmlDataParserTest {
 	}
 
 	@Test
-	public void checkJsonDataParser() {
+	public void checkXmlDataParser() {
 		List<Token> tokens = dataParser.getParsedData(Launcher.getXML_FILE_PATH());
 
 		try {

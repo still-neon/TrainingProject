@@ -2,13 +2,15 @@ package by.stn.data_parser.parser;
 
 import by.stn.data_parser.tokens.Token;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CsvDataParser {
-	private static final String LINES_SEPARATOR = "\n";
 	private static final String PAIR_SEPARATOR = ",";
 	private static final int PAIR_PARTS_NUMBER = 2;
 	private static final String QUOTE = "\"";
@@ -21,17 +23,25 @@ public class CsvDataParser {
 		dataParserHelper = new DataParserHelper();
 	}
 
-	public List<Token> getParsedData(String csvData) {
-		csvData = deleteQuotes(csvData);
-		String[] lines = csvData.split(LINES_SEPARATOR);
+	public List<Token> getParsedData(String filePath) {
+		List<String> records = new ArrayList<>();
+		try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+			String line;
+			while ((line = br.readLine()) != null) {
+				records.add(line);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
-		return createTokens(lines);
+		return createTokens(records);
 	}
 
-	private List<Token> createTokens(String[] lines) {
+	private List<Token> createTokens(List<String> lines) {
 		List<Token> tokens = new ArrayList<>();
 
 		for (String line : lines) {
+			line = deleteQuotes(line);
 			if (!line.contains(PAIR_SEPARATOR)) {
 				try {
 					tokens.add(dataParserHelper.createDateToken(format.parse(line)));
