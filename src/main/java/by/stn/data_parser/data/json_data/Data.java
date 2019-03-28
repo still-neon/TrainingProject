@@ -1,5 +1,6 @@
-package by.stn.data_parser.data;
+package by.stn.data_parser.data.json_data;
 
+import by.stn.data_parser.data.TextNumberPair;
 import lombok.Getter;
 
 import java.util.Date;
@@ -9,10 +10,4 @@ import java.util.List;
 public class Data {
 	private Date date;
 	private List<TextNumberPair> pairs;
-
-	@Getter
-	public class TextNumberPair {
-		private String text;
-		private String value;
-	}
 }

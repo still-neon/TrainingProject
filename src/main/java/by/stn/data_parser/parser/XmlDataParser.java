@@ -1,28 +1,36 @@
 package by.stn.data_parser.parser;
 
-import by.stn.data_parser.data.Records;
+import by.stn.data_parser.data.TextNumberPair;
+import by.stn.data_parser.data.xml_data.Record;
+import by.stn.data_parser.data.xml_data.Records;
 import by.stn.data_parser.tokens.Token;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
-import java.io.StringReader;
+import java.io.File;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 public class XmlDataParser {
 	private DataParserHelper dataParserHelper;
+	private SimpleDateFormat format;
 
 	public XmlDataParser() {
+		format = new SimpleDateFormat(DataParserHelper.getDATE_FORMAT());
 		dataParserHelper = new DataParserHelper();
 	}
 
-	public List<Token> getParsedData(String xmlData) {
+	public List<Token> getParsedData(String filePath) {
+		File file = new File(filePath);
+
 		Records records = null;
 		try {
 			JAXBContext jaxbContext = JAXBContext.newInstance(Records.class);
 			Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-			records = (Records) jaxbUnmarshaller.unmarshal(new StringReader(xmlData));
+			records = (Records) jaxbUnmarshaller.unmarshal(file);
 		} catch (JAXBException e) {
 			e.printStackTrace();
 		}
@@ -30,16 +38,19 @@ public class XmlDataParser {
 		return createTokens(records);
 	}
 
-	private List<Token> createTokens(Records notes) {
+	private List<Token> createTokens(Records records) {
 		List<Token> tokens = new ArrayList<>();
 
-//		for (Data data : dataArray) {
-//			tokens.add(dataParserHelper.createDateToken(data.getDate()));
-//
-//			for (Data.TextNumberPair pair : data.getPairs()) {
-//				tokens.add(dataParserHelper.createTextNumberPairToken(pair.getText(), pair.getValue()));
-//			}
-//		}
+		for (Record record : records.getRecords()) {
+			try {
+				tokens.add(dataParserHelper.createDateToken(format.parse(record.getDate())));
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			for (TextNumberPair pair : record.getPairs().getTextNumberPairs()) {
+				tokens.add(dataParserHelper.createTextNumberPairToken(pair.getText(), pair.getValue()));
+			}
+		}
 
 		return tokens;
 	}

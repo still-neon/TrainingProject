@@ -1,6 +1,7 @@
 package by.stn.data_parser.parser;
 
-import by.stn.data_parser.data.Data;
+import by.stn.data_parser.data.TextNumberPair;
+import by.stn.data_parser.data.json_data.Data;
 import by.stn.data_parser.tokens.Token;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -28,7 +29,7 @@ public class JsonDataParser {
 		for (Data data : dataArray) {
 			tokens.add(dataParserHelper.createDateToken(data.getDate()));
 
-			for (Data.TextNumberPair pair : data.getPairs()) {
+			for (TextNumberPair pair : data.getPairs()) {
 				tokens.add(dataParserHelper.createTextNumberPairToken(pair.getText(), pair.getValue()));
 			}
 		}

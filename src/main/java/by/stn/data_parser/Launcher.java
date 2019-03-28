@@ -6,10 +6,16 @@ import by.stn.data_parser.parser.XmlDataParser;
 import by.stn.data_parser.tokens.Token;
 import lombok.Getter;
 
+import java.io.File;
 import java.util.List;
 
 
 public class Launcher {
+	private static final String PATH = System.getProperty("user.dir");
+	private static final String FS = System.getProperty("file.separator");
+	private static final String DATA_SETS_DIRECTORY_PATH = PATH + FS + "src" + FS + "main" + FS + "resources" + FS + "data_parser" + FS;
+	@Getter
+	private static final String XML_FILE_PATH = DATA_SETS_DIRECTORY_PATH + "data.xml";
 	@Getter
 	private static final String JSON_DATA = "[{\n" +
 			"    \"date\": \"August 2018\",\n" +
@@ -56,51 +62,15 @@ public class Launcher {
 			"\"ни о чём\",\"$136\"\n" +
 			"\"жрачка2\",$200.15";
 
-	@Getter
-	private static final String XML_DATA = "<records>\n" +
-			"\t<record>\n" +
-			"\t\t<date>August 2018</date>\n" +
-			"\t\t<pairs>\n" +
-			"\t\t\t<pair>\t\t\t\n" +
-			"\t\t\t\t<text>любая, хрень</text>\n" +
-			"\t\t\t\t<value>275</value>\n" +
-			"\t\t\t</pair>\n" +
-			"\t\t\t<pair>\t\t\t\n" +
-			"\t\t\t\t<text>очень хорошо</text>\n" +
-			"\t\t\t\t<value>646,56</value>\n" +
-			"\t\t\t</pair>\n" +
-			"\t\t\t<pair>\t\t\t\n" +
-			"\t\t\t\t<text>жрачка</text>\n" +
-			"\t\t\t\t<value>37.33</value>\n" +
-			"\t\t\t</pair>\n" +
-			"\t\t</pairs>\n" +
-			"\t</record>\n" +
-			"\t<record>\n" +
-			"\t\t<date>September 2018</date>\n" +
-			"\t\t<pairs>\n" +
-			"\t\t\t<pair>\t\t\t\n" +
-			"\t\t\t\t<text>любая хрень 123</text>\n" +
-			"\t\t\t\t<value>$217,33</value>\n" +
-			"\t\t\t</pair>\n" +
-			"\t\t\t<pair>\t\t\t\n" +
-			"\t\t\t\t<text>ни о чём,</text>\n" +
-			"\t\t\t\t<value>$136</value>\n" +
-			"\t\t\t</pair>\n" +
-			"\t\t\t<pair>\t\t\t\n" +
-			"\t\t\t\t<text>жрачка2</text>\n" +
-			"\t\t\t\t<value>$200.15</value>\n" +
-			"\t\t\t</pair>\n" +
-			"\t\t</pairs>\n" +
-			"\t</record>\n" +
-			"</records>";
-
 	public static void main(String args[]) {
+		File file = new File(PATH + "data.xml");
+		System.out.println(PATH);
 		JsonDataParser jsonDataParser = new JsonDataParser();
 		CsvDataParser csvDataParser = new CsvDataParser();
 		XmlDataParser xmlDataParser = new XmlDataParser();
 
 //		List<Token> parsedDataJson = jsonDataParser.getParsedData(JSON_DATA);
 //		List<Token> parsedDataCsv = csvDataParser.getParsedData(CSV_DATA);
-		List<Token> parsedDataXml = xmlDataParser.getParsedData(XML_DATA);
+		List<Token> parsedDataXml = xmlDataParser.getParsedData(XML_FILE_PATH);
 	}
 }
