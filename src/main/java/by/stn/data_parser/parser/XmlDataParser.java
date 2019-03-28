@@ -23,8 +23,8 @@ public class XmlDataParser {
 		dataParserHelper = new DataParserHelper();
 	}
 
-	public List<Token> getParsedData(String filePath) {
-		File file = new File(filePath);
+	public List<Token> getParsedData(String relativeFilePath) {
+		File file = new File(dataParserHelper.getFilePath(relativeFilePath));
 
 		Records records = null;
 		try {

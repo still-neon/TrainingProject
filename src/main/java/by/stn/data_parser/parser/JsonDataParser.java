@@ -19,10 +19,10 @@ public class JsonDataParser {
 		dataParserHelper = new DataParserHelper();
 	}
 
-	public List<Token> getParsedData(String filePath) {
+	public List<Token> getParsedData(String relativeFilePath) {
 		Data[] dataArray = null;
 
-		try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+		try (BufferedReader br = new BufferedReader(new FileReader(dataParserHelper.getFilePath(relativeFilePath)))) {
 			Gson gson = new GsonBuilder().setDateFormat(DataParserHelper.getDATE_FORMAT()).create();
 			dataArray = gson.fromJson(br, Data[].class);
 		} catch (IOException e) {

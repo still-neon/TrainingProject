@@ -23,9 +23,10 @@ public class CsvDataParser {
 		dataParserHelper = new DataParserHelper();
 	}
 
-	public List<Token> getParsedData(String filePath) {
+	public List<Token> getParsedData(String relativeFilePath) {
 		List<String> records = new ArrayList<>();
-		try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+
+		try (BufferedReader br = new BufferedReader(new FileReader(dataParserHelper.getFilePath(relativeFilePath)))) {
 			String line;
 			while ((line = br.readLine()) != null) {
 				records.add(line);

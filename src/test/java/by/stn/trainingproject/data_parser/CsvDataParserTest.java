@@ -23,7 +23,7 @@ public class CsvDataParserTest {
 
 	@Test
 	public void checkCsvDataParser() {
-		List<Token> tokens = dataParser.getParsedData(Launcher.getCSV_FILE_PATH());
+		List<Token> tokens = dataParser.getParsedData(Launcher.getCSV_RELATIVE_FILE_PATH());
 
 		try {
 			dataParserTestHelper.checkDateParsing((DateToken) tokens.get(0), "August 2018");

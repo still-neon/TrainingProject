@@ -32,4 +32,9 @@ public class DataParserHelper {
 	public DateToken createDateToken(Date date) {
 		return new DateToken(date);
 	}
+
+	public String getFilePath(String relativeFilePath) {
+		ClassLoader classLoader = getClass().getClassLoader();
+		return classLoader.getResource(relativeFilePath).getFile();
+	}
 }

@@ -23,7 +23,7 @@ public class JsonDataParserTest {
 
 	@Test
 	public void checkJsonDataParser() {
-		List<Token> tokens = dataParser.getParsedData(Launcher.getJSON_FILE_PATH());
+		List<Token> tokens = dataParser.getParsedData(Launcher.getJSON_RELATIVE_FILE_PATH());
 
 		try {
 			dataParserTestHelper.checkDateParsing((DateToken) tokens.get(0), "August 2018");
