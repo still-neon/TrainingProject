@@ -23,7 +23,7 @@ public class Launcher {
 		XmlDataParser xmlDataParser = new XmlDataParser();
 
 		List<Token> parsedDataJson = jsonDataParser.getParsedData(JSON_RELATIVE_FILE_PATH);
-		List<Token> parsedDataCsv = csvDataParser.getParsedData(CSV_RELATIVE_FILE_PATH);
-		List<Token> parsedDataXml = xmlDataParser.getParsedData(XML_RELATIVE_FILE_PATH);
+//		List<Token> parsedDataCsv = csvDataParser.getParsedData(CSV_RELATIVE_FILE_PATH);
+//		List<Token> parsedDataXml = xmlDataParser.getParsedData(XML_RELATIVE_FILE_PATH);
 	}
 }
