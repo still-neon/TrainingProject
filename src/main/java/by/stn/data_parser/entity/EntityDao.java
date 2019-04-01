@@ -3,7 +3,7 @@ package by.stn.data_parser.entity;
 import java.sql.SQLException;
 import java.util.List;
 
-public interface EntityDao<T extends Entity> {//TODO: clarify why deleting of <T extends Entity> causes getDataRecords() error
+public interface EntityDao<T extends Entity> {
 
 	Entity get(long id) throws Exception;
 
