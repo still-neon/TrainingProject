@@ -6,10 +6,6 @@ import lombok.Getter;
 import java.util.Date;
 
 public class DataRecord extends AbstractEntity {
-	private final static String BYN_SYMBOL = "Br";
-	private final static String USD_SYMBOL = "$";
-	private final static String EURO_SYMBOL = "€";
-	private final static String UNDEFINED_SYMBOL = "";
 	@Getter
 	private long id;
 	private String name;
@@ -24,7 +20,7 @@ public class DataRecord extends AbstractEntity {
 	}
 
 	public enum Currency {
-		BYN(BYN_SYMBOL), USD(USD_SYMBOL), EURO(EURO_SYMBOL), UNDEFINED(UNDEFINED_SYMBOL);
+		BYN("Br"), USD("$"), EURO("€"), UNDEFINED("");
 
 		@Getter
 		private String symbol;
