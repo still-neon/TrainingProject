@@ -1,10 +1,14 @@
 package by.stn.data_parser.parser;
 
-import by.stn.data_parser.tokens.Data;
+import by.stn.data_parser.data.TextNumberPair;
+import by.stn.data_parser.data.json_data.Data;
 import by.stn.data_parser.tokens.Token;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,9 +19,15 @@ public class JsonDataParser {
 		dataParserHelper = new DataParserHelper();
 	}
 
-	public List<Token> getParsedData(String jsonData) {
-		Gson gson = new GsonBuilder().setDateFormat(DataParserHelper.getDATE_FORMAT()).create();
-		Data[] dataArray = gson.fromJson(jsonData, Data[].class);
+	public List<Token> getParsedData(String relativeFilePath) {
+		Data[] dataArray = null;
+
+		try (BufferedReader br = new BufferedReader(new FileReader(dataParserHelper.getFilePath(relativeFilePath)))) {
+			Gson gson = new GsonBuilder().setDateFormat(DataParserHelper.getDATE_FORMAT()).create();
+			dataArray = gson.fromJson(br, Data[].class);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 		return createTokens(dataArray);
 	}
@@ -28,7 +38,7 @@ public class JsonDataParser {
 		for (Data data : dataArray) {
 			tokens.add(dataParserHelper.createDateToken(data.getDate()));
 
-			for (Data.TextNumberPair pair : data.getPairs()) {
+			for (TextNumberPair pair : data.getPairs()) {
 				tokens.add(dataParserHelper.createTextNumberPairToken(pair.getText(), pair.getValue()));
 			}
 		}

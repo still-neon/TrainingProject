@@ -1,5 +1,6 @@
 package by.stn.data_parser.tokens;
 
+import by.stn.data_parser.data_record.DataRecord;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -8,5 +9,5 @@ import lombok.Getter;
 public class TextNumberPairToken implements Token {
 	private String text;
 	private Double number;
-	private String currency;
+	private DataRecord.Currency currency;
 }
