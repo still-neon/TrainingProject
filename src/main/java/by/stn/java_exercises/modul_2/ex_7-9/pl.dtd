@@ -1,0 +1,7 @@
+<!DOCTYPE pointsList [
+        <!ELEMENT pointsList (point)*>
+        <!ELEMENT point (x,y)>
+        <!ELEMENT x (#PCDATA)>
+        <!ELEMENT y (#PCDATA)>
+        <!ATTLIST point unit (cm) #REQUIRED>
+        ]>

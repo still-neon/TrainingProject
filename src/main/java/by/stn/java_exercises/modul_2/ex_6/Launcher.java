@@ -1,4 +1,4 @@
-package by.stn.java_exercises.modul_2.ex_6_fix;
+package by.stn.java_exercises.modul_2.ex_6;
 
 import java.io.IOException;
 

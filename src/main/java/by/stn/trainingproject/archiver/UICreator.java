@@ -72,17 +72,7 @@ public class UICreator {
             switch (state) {
                 case INITIAL:
                     changeState(ComponentsState.INPROGRESS);
-                    workerPool.start(outputFileNum, new WorkerPool.Callback() {
-                        @Override
-                        public void update(long status) {
-                            if (status < 100) {
-                                label.setText("File is " + status + "% zipped");
-                            } else if (status == 100) {
-                                label.setText("File " + REGULAR_FILE + " is zipped");
-                                changeState(UICreator.ArchiveAction.ComponentsState.FINISHED);
-                            }
-                        }
-                    });
+					workerPool.start(outputFileNum, new LabelUpdater());
                     break;
                 case INPROGRESS:
                     changeState(ComponentsState.SUSPEND);
@@ -99,6 +89,18 @@ public class UICreator {
                     throw new IllegalStateException("Unsupported enum value = " + state);
             }
         }
+
+		public class LabelUpdater implements WorkerPool.Callback {
+			@Override
+			public void update(long status) {
+				if (status < 100) {
+					label.setText("File is " + status + "% zipped");
+				} else if (status == 100) {
+					label.setText("File " + REGULAR_FILE + " is zipped");
+					changeState(UICreator.ArchiveAction.ComponentsState.FINISHED);
+				}
+			}
+		}
 
         private void changeState(ComponentsState state) {
             this.state = state;

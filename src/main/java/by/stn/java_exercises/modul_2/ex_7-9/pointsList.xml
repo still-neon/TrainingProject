@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pointsList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.it-academy.by"
+            xsi:noNamespaceSchemaLocation="pointsList.xsd">
+    <point unit="cm">
+        <x>2</x>
+        <y>3</y>
+    </point>
+    <point unit="px">
+        <x>9</x>
+        <y>3</y>
+    </point>
+</pointsList>
