@@ -9,7 +9,7 @@ import java.util.Set;
  * Created by EugenKrasotkin on 4/25/2018.
  */
 public class Launcher {
-    public static final String FILE_NAME = "text.txt";
+	public static final String FILE_NAME = "data_sets/text.txt";
     private static final String PATH = System.getProperty("user.dir");
     private static final String FS = System.getProperty("file.separator");
     private static final String FILE_PATH = PATH + FS + "src" + FS + "main" + FS + "resources" + FS + FILE_NAME;

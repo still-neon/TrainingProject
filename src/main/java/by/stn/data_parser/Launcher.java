@@ -7,6 +7,7 @@ import by.stn.data_parser.tokens.Token;
 import lombok.Getter;
 
 import java.util.List;
+import java.util.Set;
 
 
 public class Launcher {
@@ -16,14 +17,19 @@ public class Launcher {
 	private static final String JSON_RELATIVE_FILE_PATH = "data_sets/data.json";
 	@Getter
 	private static final String CSV_RELATIVE_FILE_PATH = "data_sets/data.csv";
+	@Getter
+	private static final String FILE_PATH = "data_sets/text.txt";
 
 	public static void main(String args[]) {
 		JsonDataParser jsonDataParser = new JsonDataParser();
 		CsvDataParser csvDataParser = new CsvDataParser();
 		XmlDataParser xmlDataParser = new XmlDataParser();
 
-		List<Token> parsedDataJson = jsonDataParser.getParsedData(JSON_RELATIVE_FILE_PATH);
-//		List<Token> parsedDataCsv = csvDataParser.getParsedData(CSV_RELATIVE_FILE_PATH);
-//		List<Token> parsedDataXml = xmlDataParser.getParsedData(XML_RELATIVE_FILE_PATH);
+//		List<String> parsedDataJson = jsonDataParser.getParsedData(FILE_PATH);
+		Set<String> parsedDataCsv = csvDataParser.getParsedData(FILE_PATH);
+		for (String str : parsedDataCsv) {
+			System.out.println(str);
+		}
+		List<Token> parsedDataXml = xmlDataParser.getParsedData(XML_RELATIVE_FILE_PATH);
 	}
 }

@@ -8,7 +8,9 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class CsvDataParser {
 	private static final String PAIR_SEPARATOR = ",";
@@ -19,23 +21,26 @@ public class CsvDataParser {
 	private DataParserHelper dataParserHelper;
 
 	public CsvDataParser() {
-		format = new SimpleDateFormat(DataParserHelper.getDATE_FORMAT());
+//		format = new SimpleDateFormat(DataParserHelper.getDATE_FORMAT());
 		dataParserHelper = new DataParserHelper();
 	}
 
-	public List<Token> getParsedData(String relativeFilePath) {
-		List<String> records = new ArrayList<>();
+	public Set<String> getParsedData(String relativeFilePath) {
+		Set<String> records = new HashSet<>();
 
 		try (BufferedReader br = new BufferedReader(new FileReader(dataParserHelper.getFilePath(relativeFilePath)))) {
 			String line;
 			while ((line = br.readLine()) != null) {
-				records.add(line);
+				if (line.startsWith("http")) {
+
+					records.add(line);
+				}
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
-		return createTokens(records);
+		return records;
 	}
 
 	private List<Token> createTokens(List<String> lines) {

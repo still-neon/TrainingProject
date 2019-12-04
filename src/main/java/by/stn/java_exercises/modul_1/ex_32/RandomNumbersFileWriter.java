@@ -4,7 +4,7 @@ package by.stn.java_exercises.modul_1.ex_32;
  * Created by EugenKrasotkin on 3/13/2018.
  */
 public class RandomNumbersFileWriter {
-    public static final String FILE_NAME = "text.txt";
+	public static final String FILE_NAME = "data_sets/text.txt";
     public static final String SEPARATOR = " ";
     private static final String PATH = System.getProperty("user.dir");
     private static final String FS = System.getProperty("file.separator");
