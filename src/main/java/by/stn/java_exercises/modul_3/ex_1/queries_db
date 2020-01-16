@@ -1,0 +1,5 @@
+create database trainingBase
+create table expenses (num int, paydate date, receiver int, value dec)
+insert into expenses (num, paydate, receiver, value) values (1,'2011-5-10',2,94200.0)
+create table receivers (num int, receiver varchar(255))
+insert into receivers (num, receiver) values (1, 'kinopoisk.ru')

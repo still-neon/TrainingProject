@@ -8,6 +8,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class DataParserTestHelper {
@@ -19,7 +20,7 @@ public class DataParserTestHelper {
 	}
 
 	public void checkNumberPairParsing(TextNumberPairToken textNumberPairToken, String text, Double number, String currency) {
-		assertTrue(String.format(ERROR_MESSAGE_TEMPLATE, "text", "text", textNumberPairToken.getText(), text), textNumberPairToken.getText().equals(text));
+		assertEquals(String.format(ERROR_MESSAGE_TEMPLATE, "text", "text", textNumberPairToken.getText(), text), textNumberPairToken.getText(), text);
 		assertTrue(String.format(ERROR_MESSAGE_TEMPLATE, "number", "number", textNumberPairToken.getNumber(), number), textNumberPairToken.getNumber().equals(number));
 		assertTrue(String.format(ERROR_MESSAGE_TEMPLATE, "currency", "currency", textNumberPairToken.getCurrency(), currency), textNumberPairToken.getCurrency().equals(currency));
 	}

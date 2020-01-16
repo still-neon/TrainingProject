@@ -1,6 +1,7 @@
 package by.stn.trainingproject.data_parser;
 
 import by.stn.data_parser.parser.CsvDataParser;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -12,6 +13,15 @@ public class CsvDataParserTest {
 	public static void crateObject() {
 		dataParser = new CsvDataParser();
 		dataParserTestHelper = new DataParserTestHelper();
+	}
+
+	@Test
+	public void checkCsvDataParserNull() {
+		try {
+			Assert.assertNotNull("Null here!", null);
+		} catch (AssertionError er) {
+			throw er;
+		}
 	}
 
 	@Test

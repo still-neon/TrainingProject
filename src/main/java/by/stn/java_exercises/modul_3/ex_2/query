@@ -1,0 +1,1 @@
+select ex.num, ex.paydate, rec.receiver, ex.value from expenses as ex, receivers as rec where ex.receiver=rec.num and ex.value > 10000

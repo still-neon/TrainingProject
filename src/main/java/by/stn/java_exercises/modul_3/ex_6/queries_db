@@ -1,0 +1,3 @@
+select r.receiver, ex.value from receivers r, expenses ex where ex.receiver=r.num
+select SUM(ex.value) from expenses ex where ex.paydate=(select MAX(paydate) from expenses)
+select MAX(ex.value) from expenses ex where ex.paydate=(select paydate from expenses where value=(select MAX(value) from expenses))
