@@ -2,28 +2,20 @@ package by.stn.callslogproject.callslog;
 
 import by.stn.callslogproject.Entity;
 import by.stn.callslogproject.entity.AbstractEntity;
-import by.stn.callslogproject.personsinfo.PersonsInfo;
+import by.stn.callslogproject.personsinfo.PersonInfo;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Date;
 
+@Getter
+@Setter
 @Entity(tableName = "callslog", columnsNames = {"calltype", "callerid", "addresseeid", "startdate", "enddate"})
 public class CallsLogEntry extends AbstractEntity {
-	@Getter
-	@Setter
 	private CallType callType;
-	@Getter
-	@Setter
-	private PersonsInfo caller;
-	@Getter
-	@Setter
-	private PersonsInfo addressee;
-	@Getter
-	@Setter
+	private PersonInfo caller;
+	private PersonInfo addressee;
 	private Date startDate;
-	@Getter
-	@Setter
 	private Date endDate;
 
 	public CallsLogEntry(Long id) {

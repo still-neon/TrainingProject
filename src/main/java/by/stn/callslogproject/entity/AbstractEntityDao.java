@@ -24,50 +24,43 @@ public abstract class AbstractEntityDao<T extends by.stn.callslogproject.entity.
 		this.type = type;
 	}
 
-	protected abstract T resultSetToEntity(ResultSet rs) throws Exception;
+	protected abstract T getEntityFromResultSet(ResultSet resultSet) throws SQLException;
 
-	protected abstract void setUpdateQueryArguments(PreparedStatement query, T entity) throws SQLException;
+	protected abstract void setUpdateQueryArguments(PreparedStatement preparedStatement, T entity) throws SQLException;
 
-	protected abstract void setInsertQueryArguments(PreparedStatement query, T entity) throws SQLException;
+	protected abstract void setInsertQueryArguments(PreparedStatement preparedStatement, T entity) throws SQLException;
 
 	@Override
-	public T get(long id) throws Exception {
-		ResultSet rs = getResultSet(GET_ENTITY_QUERY_FORMAT, id);
-		return rs.next() ? resultSetToEntity(rs) : null;
+	public T get(long id) throws SQLException {
+		ResultSet resultSet = getResultSet(String.format(GET_ENTITY_QUERY_FORMAT, getTableName(), id));
+		return resultSet.next() ? getEntityFromResultSet(resultSet) : null;
 	}
 
 	@Override
-	public List<T> getAll() throws Exception {
-		return resultSetToEntities(getResultSet(GET_ALL_QUERY_FORMAT));
+	public List<T> getAll() throws SQLException {
+		return getEntitiesFromResultSet(getResultSet(String.format(GET_ALL_QUERY_FORMAT, getTableName())));
 	}
 
 	@Override
 	public long saveOrUpdate(T entity) throws SQLException {
-		Long id = entity.getId();
-		PreparedStatement pstm;
-		try (Connection con = ConnectionFactory.getConnection()) {
-			if (id == null) {
-				pstm = con.prepareStatement(getPreparedQueryForInsert());
-				setInsertQueryArguments(pstm, entity);
-				ResultSet rs = pstm.executeQuery();
-				rs.next();
-				id = rs.getLong(1);
+		try (Connection connection = ConnectionFactory.getConnection()) {
+			if (isNewRecord(entity)) {
+				save(connection.prepareStatement(getPreparedQueryForInsert()), entity);
 			} else {
-				pstm = con.prepareStatement(getPreparedQueryForUpdate());
-				setUpdateQueryArguments(pstm, entity);
-				pstm.executeUpdate();
+				update(connection.prepareStatement(getPreparedQueryForUpdate()), entity);
 			}
 		}
-		return id;
+		return entity.getId();
 	}
 
 	@Override
 	public boolean delete(long id) throws SQLException {
 		int result;
-		try (Connection con = ConnectionFactory.getConnection()) {
-			result = con.createStatement().executeUpdate(String.format(DELETE_ENTITY_QUERY_FORMAT, getTableName(), id));
+		try (Connection connection = ConnectionFactory.getConnection()) {
+			Statement statement = connection.createStatement();
+			result = statement.executeUpdate(String.format(DELETE_ENTITY_QUERY_FORMAT, getTableName(), id));
 		}
-		return result > 0;
+		return result != 0;
 	}
 
 	private String getTableName() {
@@ -78,43 +71,60 @@ public abstract class AbstractEntityDao<T extends by.stn.callslogproject.entity.
 		return type.getAnnotation(Entity.class).columnsNames();
 	}
 
-	private ResultSet getResultSet(String query, long... id) throws SQLException {
-		ResultSet rs;
-		try (Connection con = ConnectionFactory.getConnection()) {
-			Statement stm = con.createStatement();
-			if (id.length > 0) {
-				rs = stm.executeQuery(String.format(query, getTableName(), id[0]));
-			} else {
-				rs = stm.executeQuery(String.format(query, getTableName()));
-			}
+	private ResultSet getResultSet(String query) throws SQLException {
+		ResultSet resultSet;
+		try (Connection connection = ConnectionFactory.getConnection()) {
+			Statement statement = connection.createStatement();
+			resultSet = statement.executeQuery(query);
 		}
-		return rs;
+		return resultSet;
 	}
 
-	private List<T> resultSetToEntities(ResultSet rs) throws Exception {
-		List<T> result = new ArrayList<T>();
-		while (rs.next()) {
-			T ent = resultSetToEntity(rs);
-			result.add(ent);
+	private List<T> getEntitiesFromResultSet(ResultSet resultSet) throws SQLException {
+		List<T> entities = new ArrayList<>();
+		while (resultSet.next()) {
+			T entity = getEntityFromResultSet(resultSet);
+			entities.add(entity);
 		}
-		return result;
+		return entities;
 	}
 
 	private String getPreparedQueryForUpdate() {
-		StringBuilder sb = new StringBuilder();
-		for (String str : getColumnsNames()) {
-			sb.append(str).append(PREPARED_QUERY_PARAMETER_FOR_UPDATE);
+		StringBuilder querySetPart = new StringBuilder();
+		for (String columnName : getColumnsNames()) {
+			querySetPart.append(columnName).append(PREPARED_QUERY_PARAMETER_FOR_UPDATE);
 		}
-		return String.format(UPDATE_ENTITY_QUERY_FORMAT, getTableName(), sb.deleteCharAt(sb.length() - 1).toString());
+		return String.format(UPDATE_ENTITY_QUERY_FORMAT, getTableName(), getCorrectQueryPart(querySetPart));
 	}
 
 	private String getPreparedQueryForInsert() {
-		StringBuilder sb1 = new StringBuilder();
-		StringBuilder sb2 = new StringBuilder();
-		for (String str : getColumnsNames()) {
-			sb1.append(str).append(PREPARED_QUERY_COLUMN_SEPARATOR_SIGN);
-			sb2.append(PREPARED_QUERY_PARAMETER_PLACE);
+		StringBuilder columns = new StringBuilder();
+		StringBuilder parameters = new StringBuilder();
+		for (String columnName : getColumnsNames()) {
+			columns.append(columnName).append(PREPARED_QUERY_COLUMN_SEPARATOR_SIGN);
+			parameters.append(PREPARED_QUERY_PARAMETER_PLACE);
 		}
-		return String.format(INSERT_ENTITY_QUERY_FORMAT, getTableName(), sb1.deleteCharAt(sb1.length() - 1).toString(), sb2.deleteCharAt(sb2.length() - 1).toString());
+		return String.format(INSERT_ENTITY_QUERY_FORMAT, getTableName(), getCorrectQueryPart(columns), getCorrectQueryPart(parameters));
+	}
+
+	private String getCorrectQueryPart(StringBuilder querySetPart) {
+		querySetPart.deleteCharAt(querySetPart.length() - 1);
+		return querySetPart.toString();
+	}
+
+	private boolean isNewRecord(T entity) {
+		return entity.getId() == null;
+	}
+
+	private void save(PreparedStatement preparedStatement, T entity) throws SQLException {
+		setInsertQueryArguments(preparedStatement, entity);
+		ResultSet resultSet = preparedStatement.executeQuery();
+		resultSet.next();
+		entity.setId(resultSet.getLong(1));
+	}
+
+	private void update(PreparedStatement preparedStatement, T entity) throws SQLException {
+		setUpdateQueryArguments(preparedStatement, entity);
+		preparedStatement.executeUpdate();
 	}
 }

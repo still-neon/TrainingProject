@@ -12,8 +12,8 @@ import java.util.Date;
 public class DatePicker extends AbstractCellEditor implements TableCellEditor {
 	@Getter
 	private static final String DATE_FORMAT_PATTERN = "dd/MM/yyyy";
-	JSpinner spinner;
-	SimpleDateFormat simpleDateFormat;
+	private JSpinner spinner;
+	private SimpleDateFormat simpleDateFormat;
 
 	public DatePicker() {
 		Calendar calendar = Calendar.getInstance();
