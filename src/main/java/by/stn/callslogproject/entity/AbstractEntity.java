@@ -1,9 +1,11 @@
 package by.stn.callslogproject.entity;
 
 import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public abstract class AbstractEntity implements Entity {
-    @Getter
     private Long id;
 
     public AbstractEntity(Long id) {

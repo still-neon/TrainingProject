@@ -12,7 +12,7 @@ import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 public class UICreator {
 	private static final String APP_NAME = "CallsLog";
 	private static final String ADD_BUTTON_LABEL = "ADD";
-	private static final String SAVE_BUTTON_LABEL = "SAVE";
+	private static final String UPDATE_BUTTON_LABEL = "UPDATE";
 	private static final String REFRESH_BUTTON_LABEL = "REFRESH";
 	private static final String DELETE_BUTTON_LABEL = "DELETE";
 	@Setter
@@ -40,7 +40,7 @@ public class UICreator {
 		JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		panel.add(createButton(ADD_BUTTON_LABEL, e -> callsLogTableManager.addRow()));
 		panel.add(createButton(DELETE_BUTTON_LABEL, e -> callsLogTableManager.deleteRow()));
-		panel.add(createButton(SAVE_BUTTON_LABEL, e -> callsLogTableManager.save()));
+		panel.add(createButton(UPDATE_BUTTON_LABEL, e -> callsLogTableManager.update()));
 		panel.add(createButton(REFRESH_BUTTON_LABEL, e -> callsLogTableManager.refresh()));
 		return panel;
 	}
@@ -59,6 +59,7 @@ public class UICreator {
 		JTable table = new JTable();
 		callsLogTableManager.setUpTableModel(table);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		//TODO
 //		table.setAutoCreateRowSorter(true);
 //		table.getRowSorter().toggleSortOrder(1);
 		return table;

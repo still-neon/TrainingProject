@@ -10,7 +10,7 @@ public class CallsLogTableManager {
 	@Setter
 	private static Facade facade;
 	@Setter
-	private static CallsLogColumnsManager callsLogColumnsManager;
+	private static CallsLogColumnsConfigurator callsLogColumnsConfigurator;
 	private DefaultTableModel tableModel;
 	private JTable table;
 	private boolean editEnabled;
@@ -30,8 +30,8 @@ public class CallsLogTableManager {
 		tableModel.removeRow(table.convertRowIndexToModel(table.getSelectedRow()));
 	}
 
-	public void save() {
-		facade.save(getModelData());
+	public void update() {
+		facade.update(getModelData());
 	}
 
 	public void refresh() {
@@ -41,7 +41,7 @@ public class CallsLogTableManager {
 	public void setUpTableModel(JTable table) {
 		this.table = table;
 
-		tableModel = new DefaultTableModel(facade.getTableData(), CallsLogColumnsManager.getCOLUMNS_TITLES()) {
+		tableModel = new DefaultTableModel(facade.getDataToDisplay(), CallsLogColumnsConfigurator.getColumnsNames()) {
 			@Override
 			public boolean isCellEditable(int row, int column) {
 				return editEnabled;
@@ -49,14 +49,14 @@ public class CallsLogTableManager {
 		};
 
 		table.setModel(tableModel);
-		callsLogColumnsManager.setUpTableColumns(table);
+		callsLogColumnsConfigurator.setUpTableColumns(table);
 	}
 
 	private Object[][] getModelData() {
 		Object[][] modelData = new Object[tableModel.getRowCount()][tableModel.getColumnCount()];
-		for (int i = 0; i < modelData.length; i++) {
-			for (int j = 0; j < tableModel.getColumnCount(); j++) {
-				modelData[i][j] = tableModel.getValueAt(i, j);
+		for (int row = 0; row < modelData.length; row++) {
+			for (int column = 0; column < tableModel.getColumnCount(); column++) {
+				modelData[row][column] = tableModel.getValueAt(row, column);
 			}
 		}
 		return modelData;

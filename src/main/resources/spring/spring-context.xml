@@ -3,18 +3,18 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation=" http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
     <bean id="uiCreator" class="by.stn.callslogproject.ui.UICreator">
-        <property name="callsLogTableManager" ref="tableConfigurator"/>
+        <property name="callsLogTableManager" ref="callsLogTableManager"/>
     </bean>
-    <bean id="tableConfigurator" class="by.stn.callslogproject.callslog.CallsLogTableManager">
+    <bean id="callsLogTableManager" class="by.stn.callslogproject.callslog.CallsLogTableManager">
         <property name="facade" ref="facade"/>
-        <property name="callsLogColumnsManager" ref="columnConfigurator"/>
+        <property name="callsLogColumnsConfigurator" ref="callsLogColumnsConfigurator"/>
     </bean>
-    <bean id="columnConfigurator" class="by.stn.callslogproject.callslog.CallsLogColumnsManager">
+    <bean id="callsLogColumnsConfigurator" class="by.stn.callslogproject.callslog.CallsLogColumnsConfigurator">
         <property name="facade" ref="facade"/>
     </bean>
     <bean id="facade" class="by.stn.callslogproject.facade.Facade">
         <property name="callsLogService" ref="callsLogService"/>
-        <property name="personsService" ref="personsService"/>
+        <property name="personService" ref="personService"/>
         <property name="converter" ref="converter"/>
     </bean>
     <bean id="converter" class="by.stn.callslogproject.converter.Converter">
@@ -22,11 +22,11 @@
     <bean id="callsLogService" class="by.stn.callslogproject.callslog.CallsLogService">
         <property name="callsLogDao" ref="callsLogDao"/>
     </bean>
-    <bean id="personsService" class="by.stn.callslogproject.personsinfo.PersonsService">
-        <property name="personsDao" ref="personsDao"/>
+    <bean id="personService" class="by.stn.callslogproject.personsinfo.PersonService">
+        <property name="personDao" ref="personDao"/>
     </bean>
     <bean id="callsLogDao" class="by.stn.callslogproject.callslog.CallsLogDaoImpl">
-        <property name="personsDao" ref="personsDao"/>
+        <property name="personDao" ref="personDao"/>
     </bean>
-    <bean id="personsDao" class="by.stn.callslogproject.personsinfo.PersonsDaoImpl"></bean>
+    <bean id="personDao" class="by.stn.callslogproject.personsinfo.PersonDaoImpl"></bean>
 </beans>
